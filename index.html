@@ -16,23 +16,28 @@
         .tab-content.active { display: block; }
 
         .setup-box { background: #e3f2fd; padding: 15px; border-radius: 8px; border: 1px solid #bbdefb; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
-        .entry-box { background: #fffde7; padding: 15px; border-radius: 8px; border: 1px solid #fbc02d; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
-        .essential-box { background: #e0f2f1; padding: 15px; border-radius: 8px; border: 1px solid #4db6ac; margin-bottom: 20px; }
-        .encash-box { background: #e8f5e9; padding: 20px; border-radius: 8px; border: 1px solid #a5d6a7; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
-        .info-box { background: #fce4ec; padding: 20px; border-radius: 8px; border: 1px solid #f8bbd0; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
         
-        label { font-weight: bold; font-size: 13px; display: block; margin-bottom: 5px; color: #333; }
-        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; background-color: #fff; }
+        /* कर्मचारी निवडण्यासाठीचा ऑनलाईन डॅशबोर्ड बॉक्स */
+        .online-selector-box { background: #efebe9; padding: 15px; border-radius: 8px; border: 1px solid #d7ccc8; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; }
+        .online-selector-box select { max-width: 300px; font-weight: bold; color: #5d4037; }
+
+        .entry-box { background: #fffde7; padding: 15px; border-radius: 8px; border: 1px solid #fbc02d; margin-bottom: 20px; display: flex; flex-direction: row; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+        .entry-box > div { flex: 1; min-width: 140px; }
+        .entry-box .btn-group { flex: initial; display: flex; flex-direction: row; gap: 8px; min-width: auto; flex-wrap: wrap; }
+        
+        label { font-weight: bold; font-size: 13px; display: block; margin-bottom: 5px; color: #333; white-space: nowrap; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; background-color: #fff; height: 38px; }
         input:disabled, input[readonly] { background-color: #eee; color: #555; }
         
+        .essential-box { background: #e0f2f1; padding: 15px; border-radius: 8px; border: 1px solid #4db6ac; margin-bottom: 20px; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end; }
         
-        .btn-group { display: flex; flex-direction: row; gap: 10px; margin-top: 18px; width: 100%; justify-content: flex-start; align-items: center; }
-        .btn-add { background-color: #1a73e8; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
-        .btn-pagebreak { background-color: #0288d1; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
-        .btn-excel { background-color: #2e7d32; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
-        .btn-delete { background-color: #d32f2f; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
-        .btn-clear { background-color: #555555; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
+        /* बटणे */
+        .btn-add { background-color: #1a73e8; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
+        .btn-pagebreak { background-color: #0288d1; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
+        .btn-excel { background-color: #2e7d32; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
+        .btn-delete { background-color: #d32f2f; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
+        .btn-clear { background-color: #555555; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
         
         .btn-calc-bonus { background-color: #00796b; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; }
         .btn-save-bonus { background-color: #e65100; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; display: none; }
@@ -67,6 +72,18 @@
     </div>
 
     <div id="page1" class="tab-content active">
+        
+        <div class="online-selector-box">
+            <label style="margin-bottom: 0; font-size: 15px;">🌐 ऑनलाईन सेवक निवडा (Select Employee ID):</label>
+            <select id="employee_select" onchange="onEmployeeChange()">
+                <option value="">-- सेवक निवडा --</option>
+                <option value="EMP101">सेवक १ (EMP101)</option>
+                <option value="EMP102">सेवक २ (EMP102)</option>
+                <option value="EMP103">सेवक ३ (EMP103)</option>
+            </select>
+            <span style="font-size: 12px; color: #666;">(आयडी निवडताच डेटाबेस मधून वैयक्तिक माहिती लोड होईल)</span>
+        </div>
+
         <div class="setup-box" id="initialSetup">
             <div>
                 <label>मागील रजा संपल्याचा दिनांक (P3):</label>
@@ -215,7 +232,7 @@
     const joinPick = flatpickr("#info_join_date", { ...config, onChange: saveEmployeeInfo });
     const retirePick = flatpickr("#info_retire_date", { ...config, onChange: saveEmployeeInfo });
 
-    // 🌐 लाईन २१०: ऑनलाईन सिंकिंग URL जोडण्याची अचूक जागा
+    // 🌐 ऑनलाईन सिंकिंग युआरएल फंक्शन
     function syncToGoogleSheet(packData) {
         let googleWebAppUrl = "येथे_तुमची_वेब_अॅप_URL_पेस्ट_करा"; 
         
@@ -236,6 +253,44 @@
             console.error(err);
             document.getElementById("syncLoader").style.display = "none";
         });
+    }
+
+    // 🌐 ऑनलाईन डेटाबेसमधून विशिष्ट सेवकाचा वैयक्तिक डेटा मिळवण्याचे लॉजिक
+    function fetchEmployeeLeaveHistory(selectedEmpId) {
+        if(!selectedEmpId) return;
+        
+        // फाईरबेस किंवा एपीआय कडून फक्त त्या सेवकाचा वैयक्तिक डेटा मागवणे
+        database.ref('leave_records/' + selectedEmpId).once('value').then((snapshot) => {
+            let employeeHistory = snapshot.val() || [];
+            history = employeeHistory;
+            localStorage.setItem("pmc_leave_history", JSON.stringify(history));
+            
+            if(history.length > 0) {
+                isFirstEntry = false;
+                let lastRecord = history[history.length - 1];
+                document.getElementById('a_start').value = lastRecord.type === "bonus" ? lastRecord.nextA : formatDMY(nextDay(parseDMY(lastRecord.p)));
+                document.getElementById('deleteBtn').style.display = "inline-block";
+            } else {
+                isFirstEntry = true;
+                document.getElementById('a_start').value = "";
+                document.getElementById('deleteBtn').style.display = "none";
+            }
+            renderTable();
+        }).catch((error) => {
+            console.error("डेटा लोड करताना त्रुटी आली: ", error);
+        });
+    }
+
+    // ड्रॉपडाऊन बदलल्यावर चालणारे फंक्शन
+    function onEmployeeChange() {
+        let empId = document.getElementById('employee_select').value;
+        if(empId) {
+            if (typeof database !== 'undefined') {
+                fetchEmployeeLeaveHistory(empId);
+            } else {
+                alert(`डेटाबेस कनेक्शन उपलब्ध नाही! (निवडलेला आयडी: ${empId}). बॅक-एंड SDK कन्फिगर केल्यावर हा डेटा लाईव्ह दिसेल.`);
+            }
+        }
     }
 
     window.onload = function() {
