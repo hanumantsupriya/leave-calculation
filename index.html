@@ -220,7 +220,29 @@
     let tempTotalDays = 0;
     let tempSpentDays = 0;
     let tempDutyDays = 0;
+// लाईन २२३ च्या रिकाम्या जागेत हा कोड पेस्ट करा:
 
+function onEmployeeChange() {
+    let selectEl = document.getElementById('employee_select');
+    let empCode = selectEl.value;
+    if(!empCode) return;
+
+    let selectedOption = selectEl.options[selectEl.selectedIndex];
+    let empName = selectedOption.getAttribute('data-name');
+
+    document.getElementById('info_pf').value = empCode;
+    document.getElementById('info_name').value = empName;
+    saveEmployeeInfo();
+    
+    // जर आपण तयार केलेली गुगल वेब ॲप URL वर सेट असेल तर लिस्ट लोड होईल
+    if (typeof googleWebAppUrl !== 'undefined') {
+        fetch(googleWebAppUrl)
+        .then(res => res.json())
+        .then(data => {
+            console.log("डेटाबेस लोड झाला");
+        });
+    }
+}
     const config = { dateFormat: "d/m/Y", allowInput: true };
     const p3Pick = flatpickr("#p3_date", { ...config, onChange: setFirstStartDate });
     const bPick = flatpickr("#b_end", { ...config, onChange: updateLeaveStartDate });
