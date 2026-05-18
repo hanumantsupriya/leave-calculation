@@ -218,11 +218,11 @@
     let tempSpentDays = 0;
     let tempDutyDays = 0;
 
-    // 🌐 लाईन २१०: तुमची गुगल वेब ॲप URL येथे पेस्ट करा
+    // 🌐 अचूक जोडलेली तुमची गुगल वेब ॲप URL
     let googleWebAppUrl = "https://script.google.com/macros/s/AKfycbyvrU3jRuG_dsc_CYIHyFnRs_hoNU3m7ROM71cOQ2QfafjHchamcJ3JUPV_nLsYtsoE/exec"; 
 
     function syncToGoogleSheet(packData) {
-        if (googleWebAppUrl.includes("https://script.google.com/macros/s/AKfycbyvrU3jRuG_dsc_CYIHyFnRs_hoNU3m7ROM71cOQ2QfafjHchamcJ3JUPV_nLsYtsoE/execा")) return;
+        if (googleWebAppUrl.includes("पेस्ट_करा")) return;
         document.getElementById("syncLoader").style.display = "inline";
         fetch(googleWebAppUrl, {
             method: "POST",
@@ -284,14 +284,6 @@
                 console.error("डेटाबेस लोड करताना एरर आला:", err);
                 document.getElementById("employee_select").innerHTML = '<option value="">❌ डेटा लोड होऊ शकला नाही</option>';
             });
-        } else {
-            // जर लिंक टाकली नसेल तर चाचणी ड्रॉपडाऊन ठेवणे
-            let dropdown = document.getElementById("employee_select");
-            dropdown.innerHTML = `
-                <option value="">-- वरील लाईन २१० मध्ये वेब ॲप URL पेस्ट करा --</option>
-                <option value="EMP101" data-name="हनुमंत रामचन्द्र आडागळे">EMP101 - हनुमंत रामचन्द्र आडागळे</option>
-                <option value="EMP102" data-name="सुप्रिया हनुमंत आडागळे">EMP102 - सुप्रिया हनुमंत आडागळे</option>
-            `;
         }
 
         if(localStorage.getItem("pmc_leave_history")) {
@@ -448,6 +440,7 @@
         bPick.clear(); pLeavePick.clear();
     }
 
+    // (इतर सर्व गणिताचे फंक्शन्स पूर्वीप्रमाणेच सुरक्षित आहेत...)
     function calculateBonusLeave() {
         let startStr = document.getElementById('bonus_start_date').value;
         let endStr = document.getElementById('bonus_end_date').value;
