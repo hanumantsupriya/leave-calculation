@@ -16,27 +16,23 @@
         .tab-content.active { display: block; }
 
         .setup-box { background: #e3f2fd; padding: 15px; border-radius: 8px; border: 1px solid #bbdefb; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+        .entry-box { background: #fffde7; padding: 15px; border-radius: 8px; border: 1px solid #fbc02d; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+        .essential-box { background: #e0f2f1; padding: 15px; border-radius: 8px; border: 1px solid #4db6ac; margin-bottom: 20px; }
+        .encash-box { background: #e8f5e9; padding: 20px; border-radius: 8px; border: 1px solid #a5d6a7; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        .info-box { background: #fce4ec; padding: 20px; border-radius: 8px; border: 1px solid #f8bbd0; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
         
-        /* सेवक निवडण्यासाठीचा ऑनलाईन डॅशबोर्ड बॉक्स */
-        .online-selector-box { background: #efebe9; padding: 15px; border-radius: 8px; border: 1px solid #d7ccc8; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; }
-        .online-selector-box select { max-width: 300px; font-weight: bold; color: #5d4037; }
-
-        .entry-box { background: #fffde7; padding: 15px; border-radius: 8px; border: 1px solid #fbc02d; margin-bottom: 20px; display: flex; flex-direction: row; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
-        .entry-box > div { flex: 1; min-width: 140px; }
-        .entry-box .btn-group { flex: initial; display: flex; flex-direction: row; gap: 8px; min-width: auto; flex-wrap: wrap; }
-        
-        label { font-weight: bold; font-size: 13px; display: block; margin-bottom: 5px; color: #333; white-space: nowrap; }
-        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; background-color: #fff; height: 38px; }
+        label { font-weight: bold; font-size: 13px; display: block; margin-bottom: 5px; color: #333; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; background-color: #fff; }
         input:disabled, input[readonly] { background-color: #eee; color: #555; }
         
-        .essential-box { background: #e0f2f1; padding: 15px; border-radius: 8px; border: 1px solid #4db6ac; margin-bottom: 20px; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end; }
         
-        .btn-add { background-color: #1a73e8; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
-        .btn-pagebreak { background-color: #0288d1; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
-        .btn-excel { background-color: #2e7d32; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
-        .btn-delete { background-color: #d32f2f; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
-        .btn-clear { background-color: #555555; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
+        .btn-group { display: flex; flex-direction: row; gap: 10px; margin-top: 18px; width: 100%; justify-content: flex-start; align-items: center; }
+        .btn-add { background-color: #1a73e8; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
+        .btn-pagebreak { background-color: #0288d1; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
+        .btn-excel { background-color: #2e7d32; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
+        .btn-delete { background-color: #d32f2f; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
+        .btn-clear { background-color: #555555; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; font-weight: bold; flex: 1; text-align: center; }
         
         .btn-calc-bonus { background-color: #00796b; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; }
         .btn-save-bonus { background-color: #e65100; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; display: none; }
@@ -56,6 +52,7 @@
         .accumulated { color: #2e7d32; font-weight: bold; background: #f1f8e9; }
         .result-card { background: #ffffff; padding: 15px; border: 2px dashed #2e7d32; border-radius: 8px; margin-top: 20px; text-align: center; font-size: 18px; font-weight: bold; color: #1b5e20; }
         .footer-msg { margin-top: 30px; padding: 15px; background-color: #eeeeee; border-radius: 8px; text-align: center; font-size: 14px; color: #333; border: 1px solid #ccc; }
+        .sync-loader { font-size: 13px; color: #e65100; font-weight: bold; display: none; margin-left: 10px; }
     </style>
 </head>
 <body>
@@ -70,21 +67,9 @@
     </div>
 
     <div id="page1" class="tab-content active">
-        
-        <div class="online-selector-box">
-            <label style="margin-bottom: 0; font-size: 15px;">🌐 ऑनलाईन सेवक निवडा (Select Employee ID):</label>
-            <select id="employee_select" onchange="onEmployeeChange()">
-                <option value="">-- सेवक निवडा --</option>
-                <option value="EMP101">सेवक १ (EMP101)</option>
-                <option value="EMP102">सेवक २ (EMP102)</option>
-                <option value="EMP103">सेवक ३ (EMP103)</option>
-            </select>
-            <span style="font-size: 12px; color: #666;">(आयडी निवडताच डेटाबेस मधून लाईव्ह वैयक्तिक माहिती लोड होईल)</span>
-        </div>
-
         <div class="setup-box" id="initialSetup">
             <div>
-                <label>마गील रजा संपल्याचा दिनांक (P3):</label>
+                <label>मागील रजा संपल्याचा दिनांक (P3):</label>
                 <input type="text" id="p3_date" placeholder="DD/MM/YYYY">
             </div>
             <div>
@@ -118,6 +103,7 @@
                 <button class="btn-excel" onclick="downloadExcel()">Excel डाउनलोड करा</button>
                 <button class="btn-delete" id="deleteBtn" style="display:none;" onclick="deleteLastEntry()">शेवटची नोंद हटवा</button>
                 <button class="btn-clear" onclick="clearAllData()">सर्व डेटा पुसा</button>
+                <span id="syncLoader" class="sync-loader">🔄 गुगल शीटमध्ये जमा होत आहे...</span>
             </div>
         </div>
 
@@ -229,6 +215,29 @@
     const joinPick = flatpickr("#info_join_date", { ...config, onChange: saveEmployeeInfo });
     const retirePick = flatpickr("#info_retire_date", { ...config, onChange: saveEmployeeInfo });
 
+    // 🌐 लाईन २१०: ऑनलाईन सिंकिंग URL जोडण्याची अचूक जागा
+    function syncToGoogleSheet(packData) {
+        let googleWebAppUrl = "येथे_तुमची_वेब_अॅप_URL_पेस्ट_करा"; 
+        
+        if (googleWebAppUrl.includes("पेस्ट_करा")) return;
+
+        document.getElementById("syncLoader").style.display = "inline";
+        fetch(googleWebAppUrl, {
+            method: "POST",
+            mode: "no-cors",
+            cache: "no-cache",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(packData)
+        })
+        .then(() => {
+            document.getElementById("syncLoader").style.display = "none";
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById("syncLoader").style.display = "none";
+        });
+    }
+
     window.onload = function() {
         if(localStorage.getItem("pmc_leave_history")) {
             history = JSON.parse(localStorage.getItem("pmc_leave_history"));
@@ -237,7 +246,6 @@
             if(localStorage.getItem("pmc_page_breaks")) {
                 pageBreaks = JSON.parse(localStorage.getItem("pmc_page_breaks"));
             }
-            
             document.getElementById('p3_date').value = initialValues.p3;
             document.getElementById('p3_date').disabled = true;
             document.getElementById('z3_bal').value = initialValues.el;
@@ -255,8 +263,6 @@
             document.getElementById('info_desig').value = emp.desig || "";
             document.getElementById('info_dept').value = emp.dept || "";
             document.getElementById('info_pf').value = emp.pf || "";
-            if(emp.joinDate) joinPick.setDate(emp.joinDate);
-            if(emp.retireDate) retirePick.setDate(emp.retireDate);
         }
         if(localStorage.getItem("pmc_calc_pay")) {
             let calc = JSON.parse(localStorage.getItem("pmc_calc_pay"));
@@ -265,49 +271,6 @@
             calculateEncashment();
         }
     };
-
-    // --- तुमचा ऑनलाईन डेटाबेस फेच करण्याचा कोड येथे जोडला आहे ---
-    function fetchEmployeeLeaveHistory(selectedEmpId) {
-        if(!selectedEmpId) return;
-        
-        // फाईरबेस किंवा एपीआय कडून फक्त त्या सेवकाचा वैयक्तिक डेटा मागवणे
-        database.ref('leave_records/' + selectedEmpId).once('value').then((snapshot) => {
-            let employeeHistory = snapshot.val() || [];
-            // जुन्या डेटाच्या जागी नवीन सेवकाचा डेटा रिप्लेस करणे
-            history = employeeHistory;
-            localStorage.setItem("pmc_leave_history", JSON.stringify(history));
-            
-            // जर डेटा मिळाला तर सुरुवातीच्या तारखा सेट करणे
-            if(history.length > 0) {
-                isFirstEntry = false;
-                let lastRecord = history[history.length - 1];
-                document.getElementById('a_start').value = lastRecord.type === "bonus" ? lastRecord.nextA : formatDMY(nextDay(parseDMY(lastRecord.p)));
-                document.getElementById('deleteBtn').style.display = "inline-block";
-            } else {
-                isFirstEntry = true;
-                document.getElementById('a_start').value = "";
-                document.getElementById('deleteBtn').style.display = "none";
-            }
-            
-            // हा डेटा थेट आपल्या 'renderTable()' फंक्शनला पाठवून स्क्रीनवर दाखवणे
-            renderTable();
-        }).catch((error) => {
-            console.error("डेटा लोड करताना त्रुटी आली: ", error);
-        });
-    }
-
-    // ड्रॉपडाऊन बदलल्यावर चालणारे नवीन फंक्शन
-    function onEmployeeChange() {
-        let empId = document.getElementById('employee_select').value;
-        if(empId) {
-            // जर खरोखरच फाईरबेस जोडलेले असेल तर हे चालू होईल
-            if (typeof database !== 'undefined') {
-                fetchEmployeeLeaveHistory(empId);
-            } else {
-                alert(`डेटाबेस कनेक्शन उपलब्ध नाही! (निवडलेला आयडी: ${empId}). बॅक-एंड SDK कन्फिगर केल्यावर हा डेटा लाईव्ह दिसेल.`);
-            }
-        }
-    }
 
     function parseDMY(str) {
         if(!str) return null;
@@ -419,12 +382,22 @@
         finalEL = applyLimits(finalEL, 365);
         finalML = applyLimits(finalML, 120);
 
-        history.push({ type: "regular", a, b: (b && b.trim() !== "") ? b : "---", e, f, g, h, k_val, l_val, o, p, q, r_diff, finalEL, finalML });
+        let displayB = (b && b.trim() !== "") ? b : "---";
+        history.push({ type: "regular", a, b: displayB, e, f, g, h, k_val, l_val, o, p, q, r_diff, finalEL, finalML });
         localStorage.setItem("pmc_leave_history", JSON.stringify(history));
-        
-        // जर ऑनलाईन डेटाबेस असेल तर तिथेही सिंक (Sync) करण्यासाठी तुम्ही येथे `database.ref().set()` जोडू शकता.
-
         renderTable();
+
+        let pack = {
+            empName: document.getElementById("info_name").value || "---",
+            empPf: document.getElementById("info_pf").value || "---",
+            hajarPeriod: `${a} - ${displayB}`, hajarDays: f, lwpDays: e,
+            satleliEL: g.toFixed(2), satleliML: h.toFixed(2),
+            ekunEL: k_val.toFixed(2), ekunML: l_val.toFixed(2),
+            gairhajarPeriod: `${o} - ${p}`, rajaType: q, rajaDays: r_diff,
+            antimEL: finalEL.toFixed(2), antimML: finalML.toFixed(2)
+        };
+        syncToGoogleSheet(pack);
+
         let nextA = formatDMY(nextDay(parseDMY(p)));
         document.getElementById('a_start').value = nextA;
         document.getElementById('o_leave_start').value = nextA;
@@ -460,7 +433,7 @@
         tempSpentDays = totalR;
         tempDutyDays = dutyDays;
 
-        document.getElementById('bonusResultMsg').innerHTML = `एकूण दिवस: ${totalCalendarDays} | खर्च रजा: ${totalR} | कामाचे दिवस: ${dutyDays}<br>🎯 पात्र अतिरिक्त रजा: ${extraLeaveFloor} दिवस`;
+        document.getElementById('bonusResultMsg').innerHTML = `निवडलेल्या अवधीचे एकूण दिवस: ${totalCalendarDays} दिवस<br>एकूण खर्च झालेल्या सर्व रजा/LWP: ${totalR} दिवस<br>प्रत्यक्ष कामाचे दिवस (Duty Days): ${dutyDays} दिवस<br>🎯 एकूण पात्र अतिरिक्त रजा (केवळ मुख्य पूर्णांक संख्या): ${extraLeaveFloor} दिवस`;
         document.getElementById('saveBonusBtn').style.display = "inline-block";
     }
 
@@ -483,7 +456,19 @@
         });
         localStorage.setItem("pmc_leave_history", JSON.stringify(history));
         renderTable();
-        document.getElementById('bonusResultMsg').innerText = "अतिरिक्त रजा यशस्वीरित्या तक्त्यात जमा केली आहे!";
+
+        let pack = {
+            empName: document.getElementById("info_name").value || "---",
+            empPf: document.getElementById("info_pf").value || "---",
+            hajarPeriod: `अतिरिक्त रजा अवधी (${tempBonusPeriod})`, hajarDays: tempDutyDays, lwpDays: 0,
+            satleliEL: tempBonusCalculated, satleliML: 0,
+            ekunEL: updatedEL.toFixed(2), ekunML: currentML.toFixed(2),
+            gairhajarPeriod: "---", rajaType: "अतिरिक्त रजा मंजुरी", rajaDays: tempBonusCalculated,
+            antimEL: updatedEL.toFixed(2), antimML: currentML.toFixed(2)
+        };
+        syncToGoogleSheet(pack);
+
+        document.getElementById('bonusResultMsg').innerText = "अकलूज/अतिरिक्त रजा यशस्वीरित्या तक्त्यात जमा केली आहे!";
         document.getElementById('saveBonusBtn').style.display = "none";
         tempBonusCalculated = 0;
     }
