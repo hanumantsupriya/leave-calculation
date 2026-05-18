@@ -37,24 +37,17 @@
         .btn-delete { background-color: #d32f2f; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
         .btn-clear { background-color: #555555; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
         
-        .btn-calc-bonus { background-color: #00796b; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; }
-        .btn-save-bonus { background-color: #e65100; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; display: none; }
-        
         table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 11px; }
         th, td { border: 1px solid #ddd; padding: 6px; text-align: center; }
         th { background-color: #1a73e8; color: white; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
         
         .page-break-row { background-color: #0d47a1 !important; color: white; font-weight: bold; font-size: 12px; }
         .bonus-row { background-color: #e65100 !important; color: white; font-weight: bold; font-size: 12px; }
         .bonus-details-cell { text-align: left !important; padding: 8px; line-height: 1.4; font-size: 11px; }
-        .summary-header { background-color: #2e7d32; color: white; }
         .grand-total-row { background-color: #c8e6c9; font-weight: bold; font-size: 13px; color: #1b5e20; }
         
         .highlight { font-weight: bold; color: #1a73e8; background: #e8f0fe; }
         .accumulated { color: #2e7d32; font-weight: bold; background: #f1f8e9; }
-        .result-card { background: #ffffff; padding: 15px; border: 2px dashed #2e7d32; border-radius: 8px; margin-top: 20px; text-align: center; font-size: 18px; font-weight: bold; color: #1b5e20; }
-        .footer-msg { margin-top: 30px; padding: 15px; background-color: #eeeeee; border-radius: 8px; text-align: center; font-size: 14px; color: #333; border: 1px solid #ccc; }
         .sync-loader { font-size: 13px; color: #e65100; font-weight: bold; display: none; margin-left: 10px; }
     </style>
 </head>
@@ -70,28 +63,18 @@
     </div>
 
     <div id="page1" class="tab-content active">
-        
         <div class="online-selector-box">
             <label style="margin-bottom: 0; font-size: 15px;">🌐 ऑनलाईन सेवक निवडा (Select EMP CODE / NAME):</label>
             <select id="employee_select" onchange="onEmployeeChange()">
                 <option value="">-- गुगल शीट मधून लिस्ट लोड होत आहे... --</option>
             </select>
-            <span id="loadStatus" style="font-size: 12px; color: #2e7d32; font-weight: bold;"></span>
+            <span id="loadStatus" style="font-size: 12px; color: #2e7d32; font-weight: bold;">🔄 कनेक्ट करत आहे...</span>
         </div>
 
         <div class="setup-box" id="initialSetup">
-            <div>
-                <label>मागील रजा संपल्याचा दिनांक (P3):</label>
-                <input type="text" id="p3_date" placeholder="DD/MM/YYYY">
-            </div>
-            <div>
-                <label>सुरुवातीची शिल्लक EL (Z3):</label>
-                <input type="number" step="0.01" id="z3_bal" placeholder="उदा. 10.05">
-            </div>
-            <div>
-                <label>सुरुवातीची शिल्लक ML (AA3):</label>
-                <input type="number" step="0.01" id="aa3_bal" placeholder="उदा. 5.12">
-            </div>
+            <div><label>मागील रजा संपल्याचा दिनांक (P3):</label><input type="text" id="p3_date" placeholder="DD/MM/YYYY"></div>
+            <div><label>सुरुवातीची शिल्लक EL (Z3):</label><input type="number" step="0.01" id="z3_bal" placeholder="उदा. 10.05"></div>
+            <div><label>सुरुवातीची शिल्लक ML (AA3):</label><input type="number" step="0.01" id="aa3_bal" placeholder="उदा. 5.12"></div>
         </div>
 
         <div class="entry-box">
@@ -120,16 +103,10 @@
         </div>
 
         <div class="essential-box">
-            <h4 style="margin: 0 0 10px 0; color: #004d40;">अत्यावश्यक सेवा कर्मचारी - अतिरिक्त १५ रजा गणना (User Option)</h4>
+            <h4 style="margin: 0 0 10px 0; color: #004d40;">अत्यावश्यक सेवा कर्मचारी - अतिरिक्त १५ रजा गणना</h4>
             <div class="grid-3">
-                <div>
-                    <label>अकलूज/अतिरिक्त रजा सुरुवातीचा दिनांक:</label>
-                    <input type="text" id="bonus_start_date" placeholder="DD/MM/YYYY">
-                </div>
-                <div>
-                    <label>अकलूज/अतिरिक्त रजा शेवटचा दिनांक:</label>
-                    <input type="text" id="bonus_end_date" placeholder="DD/MM/YYYY">
-                </div>
+                <div><label>अकलूज/अतिरिक्त रजा सुरुवातीचा दिनांक:</label><input type="text" id="bonus_start_date" placeholder="DD/MM/YYYY"></div>
+                <div><label>अकलूज/अतिरिक्त रजा शेवटचा दिनांक:</label><input type="text" id="bonus_end_date" placeholder="DD/MM/YYYY"></div>
                 <div>
                     <button class="btn-calc-bonus" id="calcBonusBtn" onclick="calculateBonusLeave()">अतिरिक्त रजा मोजा</button>
                     <button class="btn-save-bonus" id="saveBonusBtn" onclick="saveBonusToTable()">तक्त्यात जमा करा</button>
@@ -142,18 +119,9 @@
         <table id="recordTable">
             <thead>
                 <tr>
-                    <th>हजर दिनांक (A-B) / तपशील</th>
-                    <th>हजर दिवस (F)</th>
-                    <th>LWP (E)</th>
-                    <th>साठलेली EL (G)</th>
-                    <th>साठलेली ML (H)</th>
-                    <th>एकूण साठलेली EL (K)</th>
-                    <th>एकूण साठलेली ML (L)</th>
-                    <th>गैरहजर दिनांक (O-P)</th>
-                    <th>रजा प्रकार (Q)</th>
-                    <th>रजा दिवस (R)</th>
-                    <th>अंतिम शिल्लक EL (Z)</th>
-                    <th>अंतिम शिल्लक ML (AA)</th>
+                    <th>हजर दिनांक (A-B) / तपशील</th><th>हजर दिवस (F)</th><th>LWP (E)</th><th>साठलेली EL (G)</th><th>साठलेली ML (H)</th>
+                    <th>एकूण साठलेली EL (K)</th><th>एकूण साठलेली ML (L)</th><th>गैरहजर दिनांक (O-P)</th><th>रजा प्रकार (Q)</th>
+                    <th>रजा दिवस (R)</th><th>अंतिम शिल्लक EL (Z)</th><th>अंतिम शिल्लक ML (AA)</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -163,13 +131,9 @@
         <h3>४. प्रत्येक मॅन्युअल पानावरील एकत्रित चार्ट (Page-wise Grand Summary Chart)</h3>
         <table id="summaryChartTable">
             <thead>
-                <tr class="summary-header">
-                    <th>पान नंबर व अवधी (Page No & Period)</th>
-                    <th>एकूण हजर दिवस (Total F)</th>
-                    <th>एकूण LWP (Total E)</th>
-                    <th>एकूण साठलेली EL (Total G)</th>
-                    <th>एकूण साठलेली ML (Total H)</th>
-                    <th>एकूण गैरहजर रजा दिवस (Total R)</th>
+                <tr style="background-color: #2e7d32; color: white;">
+                    <th>पान नंबर व अवधी (Page No & Period)</th><th>एकूण हजर दिवस (Total F)</th><th>एकूण LWP (Total E)</th>
+                    <th>एकूण साठलेली EL (Total G)</th><th>एकूण साठलेली ML (Total H)</th><th>एकूण गैरहजर रजा दिवस (Total R)</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -178,69 +142,43 @@
 
     <div id="page2" class="tab-content">
         <h3>सेवानिवृत्ती रजा रोखीकरण गणना (Leave Encashment Calculator)</h3>
-        <div class="encash-box">
-            <div><label>मूळ वेतन (Basic Pay - रु.):</label><input type="number" id="basic_pay" placeholder="उदा. 56100" oninput="calculateEncashment()"></div>
-            <div><label>महागाई भत्ता (DA - रु.):</label><input type="number" id="da_amount" placeholder="उदा. 28050" oninput="calculateEncashment()"></div>
-            <div><label>एकूण शिल्लक हक्काची रजा (Total EL):</label><input type="number" id="total_el_shilak" placeholder="नोंदींमधून आपोआप येईल" oninput="calculateEncashment()"></div>
+        <div class="setup-box">
+            <div><label>मूळ वेतन (Basic Pay - रु.):</label><input type="number" id="basic_pay" oninput="calculateEncashment()"></div>
+            <div><label>महागाई भत्ता (DA - रु.):</label><input type="number" id="da_amount" oninput="calculateEncashment()"></div>
+            <div><label>एकूण शिल्लक हक्काची रजा (Total EL):</label><input type="number" id="total_el_shilak" oninput="calculateEncashment()"></div>
         </div>
         <div class="result-card" id="encashmentResult">माहिती भरा, रक्कम येथे दिसेल.</div>
-        <div style="margin-top: 15px; text-align: right;">
-            <button class="btn-excel" style="width: auto; padding: 10px 25px;" onclick="downloadEncashmentExcel()">निवृत्ती रजा हिशोब Excel डाउनलोड करा</button>
-        </div>
     </div>
 
     <div id="page3" class="tab-content">
         <h3>कर्मचाऱ्यांची वैयक्तिक व सेवा माहिती (Employee Service Info)</h3>
-        <div class="info-box">
-            <div><label>कर्मचाऱ्याचे पूर्ण नाव:</label><input type="text" id="info_name" placeholder="उदा. हनुमंत रामचन्द्र आडागळे" oninput="saveEmployeeInfo()"></div>
-            <div><label>पदनाम (Designation):</label><input type="text" id="info_desig" placeholder="उदा. वरिष्ठ लिपिक" oninput="saveEmployeeInfo()"></div>
-            <div><label>खाते / कार्यालय विभाग:</label><input type="text" id="info_dept" placeholder="उदा. मुख्य खाते व वित्त विभाग" oninput="saveEmployeeInfo()"></div>
-            <div><label>कर्मचारी कोड / PF नंबर (EMP CODE):</label><input type="text" id="info_pf" placeholder="उदा. PMC-9922" oninput="saveEmployeeInfo()"></div>
-            <div><label>नोकरीत रुजू झाल्याचा दिनांक:</label><input type="text" id="info_join_date" placeholder="DD/MM/YYYY"></div>
-            <div><label>संभाव्य सेवानिवृत्ती दिनांक:</label><input type="text" id="info_retire_date" placeholder="DD/MM/YYYY"></div>
+        <div class="setup-box">
+            <div><label>कर्मचाऱ्याचे पूर्ण नाव:</label><input type="text" id="info_name" oninput="saveEmployeeInfo()"></div>
+            <div><label>पदनाम (Designation):</label><input type="text" id="info_desig" oninput="saveEmployeeInfo()"></div>
+            <div><label>खाते / कार्यालय विभाग:</label><input type="text" id="info_dept" oninput="saveEmployeeInfo()"></div>
+            <div><label>कर्मचारी कोड / PF नंबर (EMP CODE):</label><input type="text" id="info_pf" oninput="saveEmployeeInfo()"></div>
         </div>
-    </div>
-
-    <div class="footer-msg">
-        Sadar software baddal aaplya kahi suchna kiva durusti aslyas Hanumant Adagale Mobile 9922987391 yavar whatsapp message kara. Dhanyavad!
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    let history = []; 
-    let pageBreaks = []; 
-    let isFirstEntry = true;
-    let initialValues = {};
-    let tempBonusCalculated = 0; 
-    let tempBonusPeriod = "";
-    let tempTotalDays = 0;
-    let tempSpentDays = 0;
-    let tempDutyDays = 0;
+    let history = []; let pageBreaks = []; let isFirstEntry = true; let initialValues = {};
+    let tempBonusCalculated = 0; let tempBonusPeriod = ""; let tempTotalDays = 0; let tempSpentDays = 0; let tempDutyDays = 0;
 
-    // 🌐 अचूक जोडलेली तुमची गुगल वेब ॲप URL
-    let googleWebAppUrl = "https://script.google.com/macros/s/AKfycbyvrU3jRuG_dsc_CYIHyFnRs_hoNU3m7ROM71cOQ2QfafjHchamcJ3JUPV_nLsYtsoE/exec"; 
+    // 🌐 तुमची नवीन अपडेटेड गुगल स्क्रिप्ट लिंक येथे अचूक जोडली आहे
+    let googleWebAppUrl = "https://script.google.com/macros/s/AKfycbzdFQvLYIba_6SeM4hYyOn9mkWZli7wFJTzqDrjtt6-vcA2ankiluD1bPWktlwWnq51/exec"; 
 
     function syncToGoogleSheet(packData) {
-        if (googleWebAppUrl.includes("पेस्ट_करा")) return;
         document.getElementById("syncLoader").style.display = "inline";
         fetch(googleWebAppUrl, {
             method: "POST",
-            mode: "no-cors",
-            cache: "no-cache",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(packData)
         })
-        .then(() => {
-            document.getElementById("syncLoader").style.display = "none";
-        })
-        .catch(err => {
-            console.error(err);
-            document.getElementById("syncLoader").style.display = "none";
-        });
+        .then(() => { document.getElementById("syncLoader").style.display = "none"; })
+        .catch(err => { console.error(err); document.getElementById("syncLoader").style.display = "none"; });
     }
 
-    // ड्रॉपडाऊन बदलल्यावर चालणारे ऑटो-मॅपिंग फंक्शन
     function onEmployeeChange() {
         let selectEl = document.getElementById('employee_select');
         let empCode = selectEl.value;
@@ -258,19 +196,21 @@
     const p3Pick = flatpickr("#p3_date", { ...config, onChange: setFirstStartDate });
     const bPick = flatpickr("#b_end", { ...config, onChange: updateLeaveStartDate });
     const pLeavePick = flatpickr("#p_leave_end", config);
-    flatpickr("#bonus_start_date", config);
-    flatpickr("#bonus_end_date", config);
-    const joinPick = flatpickr("#info_join_date", { ...config, onChange: saveEmployeeInfo });
-    const retirePick = flatpickr("#info_retire_date", { ...config, onChange: saveEmployeeInfo });
+    flatpickr("#bonus_start_date", config); flatpickr("#bonus_end_date", config);
 
     window.onload = function() {
-        // 🚀 गुगल शीटमधून मास्टर लिस्ट (EMP CODE / NAME) आपोआप लोड करण्याचे लॉजिक
-        if (!googleWebAppUrl.includes("पेस्ट_करा")) {
-            fetch(googleWebAppUrl)
-            .then(res => res.json())
-            .then(empList => {
-                let dropdown = document.getElementById("employee_select");
-                dropdown.innerHTML = '<option value="">-- सेवक निवडा --</option>';
+        document.getElementById("loadStatus").textContent = "🔄 गुगल शीटवरून नावे डाउनलोड होत आहेत...";
+        
+        fetch(googleWebAppUrl)
+        .then(res => {
+            if (!res.ok) throw new Error("Network Response Error");
+            return res.json();
+        })
+        .then(empList => {
+            let dropdown = document.getElementById("employee_select");
+            dropdown.innerHTML = '<option value="">-- सेवक निवडा --</option>';
+            
+            if(empList && empList.length > 0) {
                 empList.forEach(emp => {
                     let option = document.createElement("option");
                     option.value = emp.code;
@@ -278,93 +218,48 @@
                     option.textContent = `${emp.code} - ${emp.name}`;
                     dropdown.appendChild(option);
                 });
-                document.getElementById("loadStatus").textContent = `✅ ${empList.length} सेवक लोड झाले!`;
-            })
-            .catch(err => {
-                console.error("डेटाबेस लोड करताना एरर आला:", err);
-                document.getElementById("employee_select").innerHTML = '<option value="">❌ डेटा लोड होऊ शकला नाही</option>';
-            });
-        }
+                document.getElementById("loadStatus").textContent = `✅ ${empList.length} सेवक यशस्वीरित्या लोड झाले!`;
+            } else {
+                document.getElementById("loadStatus").textContent = "⚠️ गुगल शीट रिकामी आहे! (नावे भरा)";
+            }
+        })
+        .catch(err => {
+            console.error("त्रुटी:", err);
+            document.getElementById("loadStatus").innerHTML = "❌ लोड एरर! कृपया Apps Script मधील **Deploy -> Anyone** ॲक्सेस खात्री करा.";
+        });
 
         if(localStorage.getItem("pmc_leave_history")) {
             history = JSON.parse(localStorage.getItem("pmc_leave_history"));
-            isFirstEntry = false;
-            initialValues = JSON.parse(localStorage.getItem("pmc_initial_values"));
-            if(localStorage.getItem("pmc_page_breaks")) {
-                pageBreaks = JSON.parse(localStorage.getItem("pmc_page_breaks"));
-            }
+            isFirstEntry = false; initialValues = JSON.parse(localStorage.getItem("pmc_initial_values"));
+            if(localStorage.getItem("pmc_page_breaks")) { pageBreaks = JSON.parse(localStorage.getItem("pmc_page_breaks")); }
             document.getElementById('p3_date').value = initialValues.p3;
-            document.getElementById('p3_date').disabled = true;
             document.getElementById('z3_bal').value = initialValues.el;
-            document.getElementById('z3_bal').disabled = true;
             document.getElementById('aa3_bal').value = initialValues.ml;
-            document.getElementById('aa3_bal').disabled = true;
-            let lastRecord = history[history.length - 1];
-            document.getElementById('a_start').value = lastRecord.type === "bonus" ? lastRecord.nextA : formatDMY(nextDay(parseDMY(lastRecord.p)));
-            document.getElementById('deleteBtn').style.display = "inline-block";
             renderTable();
-        }
-        if(localStorage.getItem("pmc_emp_info")) {
-            let emp = JSON.parse(localStorage.getItem("pmc_emp_info"));
-            document.getElementById('info_name').value = emp.name || "";
-            document.getElementById('info_desig').value = emp.desig || "";
-            document.getElementById('info_dept').value = emp.dept || "";
-            document.getElementById('info_pf').value = emp.pf || "";
         }
     };
 
-    function parseDMY(str) {
-        if(!str) return null;
-        let parts = str.split("/");
-        return new Date(parts[2], parts[1] - 1, parts[0]);
-    }
-
-    function formatDMY(dateObj) {
-        if(!dateObj || isNaN(dateObj.getTime())) return "";
-        return `${String(dateObj.getDate()).padStart(2,'0')}/${String(dateObj.getMonth()+1).padStart(2,'0')}/${dateObj.getFullYear()}`;
-    }
-
-    function nextDay(dateObj) {
-        let next = new Date(dateObj);
-        next.setDate(next.getDate() + 1);
-        return next;
-    }
+    function parseDMY(str) { if(!str) return null; let parts = str.split("/"); return new Date(parts[2], parts[1] - 1, parts[0]); }
+    function formatDMY(dateObj) { if(!dateObj || isNaN(dateObj.getTime())) return ""; return `${String(dateObj.getDate()).padStart(2,'0')}/${String(dateObj.getMonth()+1).padStart(2,'0')}/${dateObj.getFullYear()}`; }
+    function nextDay(dateObj) { let next = new Date(dateObj); next.setDate(next.getDate() + 1); return next; }
 
     function updateLeaveStartDate() {
         let bVal = document.getElementById('b_end').value;
-        if(bVal && bVal.trim() !== "") {
-            document.getElementById('o_leave_start').value = formatDMY(nextDay(parseDMY(bVal)));
-        } else {
-            document.getElementById('o_leave_start').value = document.getElementById('a_start').value;
-        }
+        if(bVal && bVal.trim() !== "") { document.getElementById('o_leave_start').value = formatDMY(nextDay(parseDMY(bVal))); }
+        else { document.getElementById('o_leave_start').value = document.getElementById('a_start').value; }
     }
-
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
-        if(tabId === 'page2' && history.length > 0) {
-            document.getElementById('total_el_shilak').value = Math.floor(history[history.length - 1].finalEL);
-            calculateEncashment();
-        }
+        document.getElementById(tabId).classList.add('active'); event.currentTarget.classList.add('active');
     }
-
     function setFirstStartDate() {
         if(isFirstEntry && document.getElementById('p3_date').value) {
             let nextA = formatDMY(nextDay(parseDMY(document.getElementById('p3_date').value)));
-            document.getElementById('a_start').value = nextA;
-            document.getElementById('o_leave_start').value = nextA;
+            document.getElementById('a_start').value = nextA; document.getElementById('o_leave_start').value = nextA;
         }
     }
-
-    function applyLimits(val, maxLimit) {
-        let integerPart = Math.floor(val);
-        if (integerPart >= maxLimit) {
-            return maxLimit;
-        }
-        return val;
-    }
+    function applyLimits(val, maxLimit) { return (Math.floor(val) >= maxLimit) ? maxLimit : val; }
 
     function addEntry() {
         let a = document.getElementById('a_start').value, b = document.getElementById('b_end').value;
@@ -375,289 +270,80 @@
         if (isFirstEntry) {
             initialValues = { el: parseFloat(document.getElementById('z3_bal').value) || 0, ml: parseFloat(document.getElementById('aa3_bal').value) || 0, p3: document.getElementById('p3_date').value };
             localStorage.setItem("pmc_initial_values", JSON.stringify(initialValues));
-            document.getElementById('p3_date').disabled = true;
-            document.getElementById('z3_bal').disabled = true;
-            document.getElementById('aa3_bal').disabled = true;
             isFirstEntry = false;
         }
 
         let curEL = history.length > 0 ? history[history.length-1].finalEL : initialValues.el;
         let curML = history.length > 0 ? history[history.length-1].finalML : initialValues.ml;
-        
-        let f = 0;
-        if(b && b.trim() !== "" && b.trim() !== "---") {
-            f = (Math.ceil(Math.abs(parseDMY(b) - parseDMY(a)) / (1000 * 60 * 60 * 24)) + 1);
-        }
+        let f = (b && b.trim() !== "" && b.trim() !== "---") ? (Math.ceil(Math.abs(parseDMY(b) - parseDMY(a)) / (1000 * 60 * 60 * 24)) + 1) : 0;
         
         let g = Math.floor(f / 11) + (f % 11) / 100;
         let h = Math.floor(f / 30) + (f % 30) / 100;
-        
-        let z3_int = Math.floor(curEL), z3_mod = Math.round((curEL % 1) * 100);
-        let g_int = Math.floor(g), g_mod = Math.round((g % 1) * 100);
-        let k_val = applyLimits(z3_int + g_int + Math.floor((z3_mod + g_mod)/11) + ((z3_mod + g_mod)%11)/100, 365);
-
-        let aa3_int = Math.floor(curML), aa3_mod = Math.round((curML % 1) * 100);
-        let h_int = Math.floor(h), h_mod = Math.round((h % 1) * 100);
-        let l_val = applyLimits(aa3_int + h_int + Math.floor((aa3_mod + h_mod)/30) + ((aa3_mod + h_mod)%30)/100, 120);
-        
+        let k_val = applyLimits(Math.floor(curEL) + Math.floor(g) + Math.floor((Math.round((curEL%1)*100) + Math.round((g%1)*100))/11) + ((Math.round((curEL%1)*100) + Math.round((g%1)*100))%11)/100, 365);
+        let l_val = applyLimits(Math.floor(curML) + Math.floor(h) + Math.floor((Math.round((curML%1)*100) + Math.round((h%1)*100))/30) + ((Math.round((curML%1)*100) + Math.round((h%1)*100))%30)/100, 120);
         let r_diff = Math.ceil(Math.abs(parseDMY(p) - parseDMY(o)) / (1000 * 60 * 60 * 24)) + 1;
 
         let finalEL, finalML, e = 0;
-        let k_base = Math.floor(k_val);
-        let k_dec = Math.round((k_val % 1) * 100) / 100;
-        let l_base = Math.floor(l_val);
-        let l_dec = Math.round((l_val % 1) * 100) / 100;
+        if (q === "हक्काची रजा") { finalEL = (r_diff >= Math.floor(k_val)) ? (k_val%1) : (Math.floor(k_val) - r_diff + (k_val%1)); finalML = l_val; }
+        else if (q === "वैद्यकीय रजा") { finalEL = k_val; finalML = (r_diff >= Math.floor(l_val)) ? (l_val%1) : (Math.floor(l_val) - r_diff + (l_val%1)); }
+        else if (q === "LWP (बिनपगारी रजा)") { e = r_diff; finalEL = k_val; finalML = l_val; }
+        else { finalEL = k_val; finalML = l_val; }
 
-        if (q === "हक्काची रजा") {
-            finalEL = (r_diff >= k_base) ? k_dec : (k_base - r_diff + k_dec);
-            finalML = l_val;
-        } else if (q === "वैद्यकीय रजा") {
-            finalEL = applyLimits(Math.max(0, k_base - Math.max(0, r_diff - l_base) + k_dec), 365);
-            finalML = (r_diff >= l_base) ? l_dec : (l_base - r_diff + l_dec);
-        } else if (q === "LWP (बिनपगारी रजा)") {
-            e = r_diff;
-            finalEL = k_val;
-            finalML = l_val;
-        } else { finalEL = k_val; finalML = l_val; }
-
-        finalEL = applyLimits(finalEL, 365);
-        finalML = applyLimits(finalML, 120);
-
+        finalEL = applyLimits(finalEL, 365); finalML = applyLimits(finalML, 120);
         let displayB = (b && b.trim() !== "") ? b : "---";
         history.push({ type: "regular", a, b: displayB, e, f, g, h, k_val, l_val, o, p, q, r_diff, finalEL, finalML });
         localStorage.setItem("pmc_leave_history", JSON.stringify(history));
         renderTable();
 
-        let pack = {
+        syncToGoogleSheet({
             empCode: document.getElementById("info_pf").value || "---",
             empName: document.getElementById("info_name").value || "---"
-        };
-        syncToGoogleSheet(pack);
+        });
 
-        let nextA = formatDMY(nextDay(parseDMY(p)));
-        document.getElementById('a_start').value = nextA;
-        document.getElementById('o_leave_start').value = nextA;
+        document.getElementById('a_start').value = formatDMY(nextDay(parseDMY(p)));
+        document.getElementById('o_leave_start').value = document.getElementById('a_start').value;
         bPick.clear(); pLeavePick.clear();
     }
 
-    // (इतर सर्व गणिताचे फंक्शन्स पूर्वीप्रमाणेच सुरक्षित आहेत...)
-    function calculateBonusLeave() {
-        let startStr = document.getElementById('bonus_start_date').value;
-        let endStr = document.getElementById('bonus_end_date').value;
-        if(!startStr || !endStr) { alert("कृपया सुरुवातीचा आणि शेवटचा दिनांक निवडा!"); return; }
-        if(history.length === 0) { alert("तक्त्यामध्ये नोंदी असणे आवश्यक आहे!"); return; }
-
-        let dStart = parseDMY(startStr);
-        let dEnd = parseDMY(endStr);
-        let totalCalendarDays = Math.ceil(Math.abs(dEnd - dStart) / (1000 * 60 * 60 * 24)) + 1;
-        let totalR = 0;
-
-        history.forEach(item => {
-            let itemO = parseDMY(item.o);
-            let itemP = parseDMY(item.p);
-            if(itemO >= dStart && itemP <= dEnd) {
-                totalR += item.r_diff;
-            }
-        });
-        let dutyDays = totalCalendarDays - totalR;
-        if(dutyDays < 0) dutyDays = 0;
-        let rawExtraLeave = (dutyDays * 15) / 365;
-        let extraLeaveFloor = Math.floor(rawExtraLeave); 
-
-        tempBonusCalculated = extraLeaveFloor;
-        tempBonusPeriod = `${startStr} ते ${endStr}`;
-        tempTotalDays = totalCalendarDays;
-        tempSpentDays = totalR;
-        tempDutyDays = dutyDays;
-
-        document.getElementById('bonusResultMsg').innerHTML = `निवडलेल्या अवधीचे एकूण दिवस: ${totalCalendarDays} दिवस<br>प्रत्यक्ष कामाचे दिवस (Duty Days): ${dutyDays} दिवस<br>🎯 एकूण पात्र अतिरिक्त रजा: ${extraLeaveFloor} दिवस`;
-        document.getElementById('saveBonusBtn').style.display = "inline-block";
-    }
-
-    function saveBonusToTable() {
-        if(tempBonusCalculated <= 0) return;
-        let lastRecord = history[history.length - 1];
-        let currentEL = lastRecord.finalEL;
-        let currentML = lastRecord.finalML;
-        
-        let newEL_int = Math.floor(currentEL), newEL_mod = Math.round((currentEL % 1) * 100);
-        let updatedEL = applyLimits(newEL_int + tempBonusCalculated + (newEL_mod / 100), 365);
-
-        let nextStartDateStr = lastRecord.type === "bonus" ? lastRecord.nextA : formatDMY(nextDay(parseDMY(lastRecord.p)));
-
-        history.push({
-            type: "bonus", details: `अत्यावश्यक सेवा अतिरिक्त रजा अवधी (${tempBonusPeriod})`, earnedBonus: tempBonusCalculated,
-            finalEL: updatedEL, finalML: currentML, nextA: nextStartDateStr,
-            bonusStart: tempBonusPeriod.split(" ते ")[0], bonusEnd: tempBonusPeriod.split(" ते ")[1],
-            totalDays: tempTotalDays, spentDays: tempSpentDays, dutyDays: tempDutyDays
-        });
-        localStorage.setItem("pmc_leave_history", JSON.stringify(history));
-        renderTable();
-
-        let pack = {
-            empCode: document.getElementById("info_pf").value || "---",
-            empName: document.getElementById("info_name").value || "---"
-        };
-        syncToGoogleSheet(pack);
-
-        document.getElementById('bonusResultMsg').innerText = "अकलूज/अतिरिक्त रजा यशस्वीरित्या तक्त्यात जमा केली आहे!";
-        document.getElementById('saveBonusBtn').style.display = "none";
-        tempBonusCalculated = 0;
-    }
-
-    function manualPageBreak() {
-        if (history.length === 0) { alert("आधी नोंदी जतन करा!"); return; }
-        let lastIndex = history.length - 1;
-        if (pageBreaks.includes(lastIndex)) { alert("या ओळीवर आधीच पेज ब्रेक केलेला आहे!"); return; }
-        
-        if (confirm(`चालू ओळ झाल्यानंतर नवीन पान सुरू करायचे आहे का?`)) {
-            pageBreaks.push(lastIndex);
-            localStorage.setItem("pmc_page_breaks", JSON.stringify(pageBreaks));
-            renderTable();
-        }
-    }
-
-    function deleteLastEntry() {
-        if (history.length === 0) return;
-        if (confirm("शेवटची नोंद हटवायची का?")) {
-            let lastIndex = history.length - 1;
-            history.pop();
-            pageBreaks = pageBreaks.filter(idx => idx !== lastIndex);
-            localStorage.setItem("pmc_page_breaks", JSON.stringify(pageBreaks));
-            localStorage.setItem("pmc_leave_history", JSON.stringify(history));
-            if (history.length === 0) {
-                localStorage.clear(); location.reload();
-            } else {
-                let last = history[history.length - 1];
-                let nextA = last.type === "bonus" ? last.nextA : formatDMY(nextDay(parseDMY(last.p)));
-                document.getElementById('a_start').value = nextA;
-                document.getElementById('o_leave_start').value = nextA;
-                renderTable();
-            }
-        }
-    }
-
-    function clearAllData() {
-        if (confirm("सर्व डेटा कायमचा पुसला जाईल. खात्री आहे का?")) { localStorage.clear(); location.reload(); }
-    }
-
-    function saveEmployeeInfo() {
-        localStorage.setItem("pmc_emp_info", JSON.stringify({
-            name: document.getElementById('info_name').value, desig: document.getElementById('info_desig').value,
-            dept: document.getElementById('info_dept').value, pf: document.getElementById('info_pf').value
-        }));
-    }
-
     function renderTable() {
-        let tbody = document.querySelector("#recordTable tbody");
-        let chartBody = document.querySelector("#summaryChartTable tbody");
+        let tbody = document.querySelector("#recordTable tbody"); let chartBody = document.querySelector("#summaryChartTable tbody");
         tbody.innerHTML = ""; chartBody.innerHTML = "";
-
-        let pageNum = 1;
-        let pgF = 0, pgE = 0, pgG = 0, pgH = 0, pgR = 0;
-        let grandF = 0, grandE = 0, grandG = 0, grandH = 0, grandR = 0;
-        let pageStartDate = "";
+        let pageNum = 1; let pgF = 0, pgE = 0, pgG = 0, pgH = 0, pgR = 0;
+        let grandF = 0, grandE = 0, grandG = 0, grandH = 0, grandR = 0; let pageStartDate = "";
 
         history.forEach((item, index) => {
-            if (pageStartDate === "") {
-                pageStartDate = (item.type === "bonus") ? item.bonusStart : item.a;
-            }
-
+            if (pageStartDate === "") pageStartDate = item.a;
             let row = tbody.insertRow();
-            if(item.type === "bonus") {
-                row.className = "bonus-row";
-                row.innerHTML = `
-                    <td class="bonus-details-cell">
-                        <strong>${item.details}</strong><br>
-                        • एकूण दिवस: ${item.totalDays || 0} | • Duty Days: ${item.dutyDays || 0}
-                    </td>
-                    <td>---</td><td>0</td><td>---</td><td>---</td>
-                    <td>---</td><td>---</td><td>---</td><td>अतिरिक्त रजा मंजुरी</td><td>+${item.earnedBonus}</td>
-                    <td class="highlight">${item.finalEL.toFixed(2)}</td><td>${item.finalML.toFixed(2)}</td>
-                `;
-            } else {
-                let lwpValue = (item.e === "" || item.e === undefined || isNaN(item.e)) ? 0 : item.e;
-                let displayA_B = (item.b === "---") ? "---" : `${item.a} - ${item.b}`;
-                
-                row.innerHTML = `
-                    <td>${displayA_B}</td><td>${item.f}</td><td>${lwpValue}</td><td>${item.g.toFixed(2)}</td><td>${item.h.toFixed(2)}</td>
-                    <td class="accumulated">${item.k_val.toFixed(2)}</td><td class="accumulated">${item.l_val.toFixed(2)}</td>
-                    <td>${item.o} - ${item.p}</td><td>${item.q}</td><td>${item.r_diff}</td>
-                    <td class="highlight">${item.finalEL.toFixed(2)}</td><td class="highlight">${item.finalML.toFixed(2)}</td>
-                `;
-                pgF += item.f; pgE += lwpValue; pgG += item.g; pgH += item.h; pgR += item.r_diff;
-                grandF += item.f; grandE += lwpValue; grandG += item.g; grandH += item.h; grandR += item.r_diff;
-            }
+            let lwpValue = item.e || 0;
+            row.innerHTML = `
+                <td>${item.a} - ${item.b}</td><td>${item.f}</td><td>${lwpValue}</td><td>${item.g.toFixed(2)}</td><td>${item.h.toFixed(2)}</td>
+                <td class="accumulated">${item.k_val.toFixed(2)}</td><td class="accumulated">${item.l_val.toFixed(2)}</td>
+                <td>${item.o} - ${item.p}</td><td>${item.q}</td><td>${item.r_diff}</td>
+                <td class="highlight">${item.finalEL.toFixed(2)}</td><td class="highlight">${item.finalML.toFixed(2)}</td>
+            `;
+            pgF += item.f; pgE += lwpValue; pgG += item.g; pgH += item.h; pgR += item.r_diff;
+            grandF += item.f; grandE += lwpValue; grandG += item.g; grandH += item.h; grandR += item.r_diff;
 
             if (pageBreaks.includes(index) || index === history.length - 1) {
-                let pageEndDate = (item.type === "bonus") ? item.bonusEnd : item.p;
-                let pagePeriodText = `${pageStartDate} ते ${pageEndDate}`;
-
-                let brkRow = tbody.insertRow();
-                brkRow.className = "page-break-row";
-                brkRow.innerHTML = `
-                    <td>[मॅन्युअल पान ${pageNum} बेरीज (${pagePeriodText})]</td>
-                    <td>${pgF}</td><td>${pgE}</td><td>${pgG.toFixed(2)}</td><td>${pgH.toFixed(2)}</td>
-                    <td colspan="4">--- Carried Forward ---</td>
-                    <td>${pgR}</td><td colspan="2">---</td>
-                `;
-
+                let brkRow = tbody.insertRow(); brkRow.className = "page-break-row";
+                brkRow.innerHTML = `<td>[मॅन्युअल पान ${pageNum} बेरीज (${pageStartDate} ते ${item.p})]</td><td>${pgF}</td><td>${pgE}</td><td>${pgG.toFixed(2)}</td><td>${pgH.toFixed(2)}</td><td colspan="4">--- CF ---</td><td>${pgR}</td><td colspan="2">---</td>`;
                 let chartRow = chartBody.insertRow();
-                chartRow.innerHTML = `<td>पान नंबर ${pageNum} (${pagePeriodText})</td><td>${pgF}</td><td>${pgE}</td><td>${pgG.toFixed(2)}</td><td>${pgH.toFixed(2)}</td><td>${pgR}</td>`;
-
-                pageNum++; pgF = 0; pgE = 0; pgG = 0; pgH = 0; pgR = 0; pageStartDate = ""; 
+                chartRow.innerHTML = `<td>पान नंबर ${pageNum} (${pageStartDate} ते ${item.p})</td><td>${pgF}</td><td>${pgE}</td><td>${pgG.toFixed(2)}</td><td>${pgH.toFixed(2)}</td><td>${pgR}</td>`;
+                pageNum++; pgF = 0; pgE = 0; pgG = 0; pgH = 0; pgR = 0; pageStartDate = "";
             }
         });
-        if (history.length > 0) {
-            let gtRow = chartBody.insertRow();
-            gtRow.className = "grand-total-row";
-            gtRow.innerHTML = `<td>ग्रँड एकूण संख्या (Grand Total)</td><td>${grandF}</td><td>${grandE}</td><td>${grandG.toFixed(2)}</td><td>${grandH.toFixed(2)}</td><td>${grandR}</td>`;
-        }
     }
 
+    function manualPageBreak() { if(history.length>0) { pageBreaks.push(history.length-1); localStorage.setItem("pmc_page_breaks", JSON.stringify(pageBreaks)); renderTable(); } }
+    function clearAllData() { if(confirm("सर्व डेटा पुसायचा का?")) { localStorage.clear(); location.reload(); } }
+    function saveEmployeeInfo() { localStorage.setItem("pmc_emp_info", JSON.stringify({ name: document.getElementById('info_name').value, desig: document.getElementById('info_desig').value, dept: document.getElementById('info_dept').value, pf: document.getElementById('info_pf').value })); }
     function calculateEncashment() {
         let basic = parseFloat(document.getElementById('basic_pay').value) || 0;
         let da = parseFloat(document.getElementById('da_amount').value) || 0;
         let elDays = parseFloat(document.getElementById('total_el_shilak').value) || 0;
-        localStorage.setItem("pmc_calc_pay", JSON.stringify({basic, da}));
         let validDays = elDays > 300 ? 300 : elDays;
         let totalEncashment = ((basic + da) / 30) * validDays;
         document.getElementById('encashmentResult').innerHTML = basic > 0 ? `रोखीकरणासाठी ग्राह्य दिवस: ${validDays} दिवस<br>एकूण अंदाजे रजा वेतन रक्कम: 💰 रु. ${totalEncashment.toFixed(2)} /-` : "माहिती भरा, रक्कम येथे दिसेल.";
-    }
-
-    function downloadExcel() {
-        if (history.length === 0) { alert("नोंद उपलब्ध नाही!"); return; }
-        let csvContent = "\uFEFF";
-        const headers = ["हजर दिनांक / तपशील", "हजर दिवस (F)", "LWP (E)", "साठलेली EL (G)", "साठलेली ML (H)", "एकूण साठलेली EL (K)", "एकूण साठलेली ML (L)", "गैरहजर दिनांक", "रजा प्रकार (Q)", "रजा दिवस (R)", "अंतिम शिल्लक EL (Z)", "अंतिम शिल्लक ML (AA)"];
-        csvContent += headers.join(",") + "\n";
-        
-        history.forEach((item) => {
-            let row = [];
-            if(item.type === "bonus") {
-                row = [`"${item.details}"`, "---", "0", "---", "---", "---", "---", "अतिरिक्त रजा", "---", `+${item.earnedBonus}`, item.finalEL.toFixed(2), item.finalML.toFixed(2)];
-            } else {
-                let lwpValue = (item.e === "" || item.e === undefined || isNaN(item.e)) ? 0 : item.e;
-                row = [`"${item.a} - ${item.b}"`, item.f, lwpValue, item.g.toFixed(2), item.h.toFixed(2), item.k_val.toFixed(2), item.l_val.toFixed(2), `"${item.o} - ${item.p}"`, `"${item.q}"`, item.r_diff, item.finalEL.toFixed(2), item.finalML.toFixed(2)];
-            }
-            csvContent += row.join(",") + "\n";
-        });
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        link.setAttribute("href", URL.createObjectURL(blob));
-        link.setAttribute("download", "PMC_Raja_Nond.csv");
-        link.click();
-    }
-
-    function downloadEncashmentExcel() {
-        let name = document.getElementById('info_name').value || "कर्मचारी", basic = document.getElementById('basic_pay').value || 0, da = document.getElementById('da_amount').value || 0, elDays = document.getElementById('total_el_shilak').value || 0;
-        let validDays = elDays > 300 ? 300 : elDays;
-        let totalEncashment = ((parseFloat(basic) + parseFloat(da)) / 30) * validDays;
-        let csvContent = "\uFEFFसेवानिवृत्ती रजा रोखीकरण अहवाल\n\nकर्मचाऱ्याचे नाव," + name + "\nमूळ वेतन,रु. " + basic + "\nमहागाई भत्ता,रु. " + da + "\nएकूण शिल्लक रजा," + elDays + "\nग्राह्य दिवस," + validDays + "\nएकूण रक्कम,रु. " + totalEncashment.toFixed(2) + "\n";
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        link.setAttribute("href", URL.createObjectURL(blob));
-        link.setAttribute("download", `Leave_Encashment_${name}.csv`);
-        link.click();
     }
 </script>
 </body>
