@@ -17,7 +17,6 @@
 
         .setup-box { background: #e3f2fd; padding: 15px; border-radius: 8px; border: 1px solid #bbdefb; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         
-        /* कर्मचारी निवडण्यासाठीचा ऑनलाईन डॅशबोर्ड बॉक्स */
         .online-selector-box { background: #efebe9; padding: 15px; border-radius: 8px; border: 1px solid #d7ccc8; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; }
         .online-selector-box select { max-width: 300px; font-weight: bold; color: #5d4037; }
 
@@ -32,7 +31,6 @@
         .essential-box { background: #e0f2f1; padding: 15px; border-radius: 8px; border: 1px solid #4db6ac; margin-bottom: 20px; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end; }
         
-        /* बटणे */
         .btn-add { background-color: #1a73e8; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
         .btn-pagebreak { background-color: #0288d1; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
         .btn-excel { background-color: #2e7d32; color: white; padding: 0 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; height: 38px; white-space: nowrap; text-align: center; }
@@ -74,14 +72,14 @@
     <div id="page1" class="tab-content active">
         
         <div class="online-selector-box">
-            <label style="margin-bottom: 0; font-size: 15px;">🌐 ऑनलाईन सेवक निवडा (Select Employee ID):</label>
+            <label style="margin-bottom: 0; font-size: 15px;">🌐 ऑनलाईन सेवक निवडा (Select EMP CODE / NAME):</label>
             <select id="employee_select" onchange="onEmployeeChange()">
                 <option value="">-- सेवक निवडा --</option>
-                <option value="EMP101">सेवक १ (EMP101)</option>
-                <option value="EMP102">सेवक २ (EMP102)</option>
-                <option value="EMP103">सेवक ३ (EMP103)</option>
+                <option value="EMP101" data-name="हनुमंत रामचन्द्र आडागळे">EMP101 - हनुमंत रामचन्द्र आडागळे</option>
+                <option value="EMP102" data-name="सुप्रिया हनुमंत आडागळे">EMP102 - सुप्रिया हनुमंत आडागळे</option>
+                <option value="EMP103" data-name="मंदार हनुमंत आडागळे">EMP103 - मंदार हनुमंत आडागळे</option>
             </select>
-            <span style="font-size: 12px; color: #666;">(आयडी निवडताच डेटाबेस मधून वैयक्तिक माहिती लोड होईल)</span>
+            <span style="font-size: 12px; color: #666;">(निवडताच डेटाबेस मधून वैयक्तिक माहिती लोड होईल)</span>
         </div>
 
         <div class="setup-box" id="initialSetup">
@@ -200,7 +198,7 @@
             <div><label>कर्मचाऱ्याचे पूर्ण नाव:</label><input type="text" id="info_name" placeholder="उदा. हनुमंत रामचन्द्र आडागळे" oninput="saveEmployeeInfo()"></div>
             <div><label>पदनाम (Designation):</label><input type="text" id="info_desig" placeholder="उदा. वरिष्ठ लिपिक" oninput="saveEmployeeInfo()"></div>
             <div><label>खाते / कार्यालय विभाग:</label><input type="text" id="info_dept" placeholder="उदा. मुख्य खाते व वित्त विभाग" oninput="saveEmployeeInfo()"></div>
-            <div><label>कर्मचारी कोड / PF नंबर:</label><input type="text" id="info_pf" placeholder="उदा. PMC-9922" oninput="saveEmployeeInfo()"></div>
+            <div><label>कर्मचारी कोड / PF नंबर (EMP CODE):</label><input type="text" id="info_pf" placeholder="उदा. PMC-9922" oninput="saveEmployeeInfo()"></div>
             <div><label>नोकरीत रुजू झाल्याचा दिनांक:</label><input type="text" id="info_join_date" placeholder="DD/MM/YYYY"></div>
             <div><label>संभाव्य सेवानिवृत्ती दिनांक:</label><input type="text" id="info_retire_date" placeholder="DD/MM/YYYY"></div>
         </div>
@@ -232,7 +230,7 @@
     const joinPick = flatpickr("#info_join_date", { ...config, onChange: saveEmployeeInfo });
     const retirePick = flatpickr("#info_retire_date", { ...config, onChange: saveEmployeeInfo });
 
-    // 🌐 ऑनलाईन सिंकिंग युआरएल फंक्शन
+    // 🌐 ऑनलाईन सिंकिंग URL फंक्शन (फक्त २ मुख्य कॉलम पॅकेज पाठवण्यासाठी)
     function syncToGoogleSheet(packData) {
         let googleWebAppUrl = "येथे_तुमची_वेब_अॅप_URL_पेस्ट_करा"; 
         
@@ -255,41 +253,39 @@
         });
     }
 
-    // 🌐 ऑनलाईन डेटाबेसमधून विशिष्ट सेवकाचा वैयक्तिक डेटा मिळवण्याचे लॉजिक
-    function fetchEmployeeLeaveHistory(selectedEmpId) {
-        if(!selectedEmpId) return;
-        
-        // फाईरबेस किंवा एपीआय कडून फक्त त्या सेवकाचा वैयक्तिक डेटा मागवणे
-        database.ref('leave_records/' + selectedEmpId).once('value').then((snapshot) => {
-            let employeeHistory = snapshot.val() || [];
-            history = employeeHistory;
-            localStorage.setItem("pmc_leave_history", JSON.stringify(history));
-            
-            if(history.length > 0) {
-                isFirstEntry = false;
-                let lastRecord = history[history.length - 1];
-                document.getElementById('a_start').value = lastRecord.type === "bonus" ? lastRecord.nextA : formatDMY(nextDay(parseDMY(lastRecord.p)));
-                document.getElementById('deleteBtn').style.display = "inline-block";
-            } else {
-                isFirstEntry = true;
-                document.getElementById('a_start').value = "";
-                document.getElementById('deleteBtn').style.display = "none";
-            }
-            renderTable();
-        }).catch((error) => {
-            console.error("डेटा लोड करताना त्रुटी आली: ", error);
-        });
-    }
-
-    // ड्रॉपडाऊन बदलल्यावर चालणारे फंक्शन
+    // 🌐 २ कॉलम्स ऑनलाईन फेच आणि मॅपिंग लॉजिक
     function onEmployeeChange() {
-        let empId = document.getElementById('employee_select').value;
-        if(empId) {
-            if (typeof database !== 'undefined') {
-                fetchEmployeeLeaveHistory(empId);
-            } else {
-                alert(`डेटाबेस कनेक्शन उपलब्ध नाही! (निवडलेला आयडी: ${empId}). बॅक-एंड SDK कन्फिगर केल्यावर हा डेटा लाईव्ह दिसेल.`);
-            }
+        let selectEl = document.getElementById('employee_select');
+        let empCode = selectEl.value;
+        if(!empCode) return;
+
+        let selectedOption = selectEl.options[selectEl.selectedIndex];
+        let empName = selectedOption.getAttribute('data-name');
+
+        // कर्मचारी माहितीच्या टॅबमध्ये माहिती स्वयंचलित भरणे
+        document.getElementById('info_pf').value = empCode;
+        document.getElementById('info_name').value = empName;
+        saveEmployeeInfo();
+
+        // जर फाईरबेस SDK उपलब्ध असेल तर त्याचा इतिहास फेच करणे
+        if (typeof database !== 'undefined') {
+            database.ref('leave_records/' + empCode).once('value').then((snapshot) => {
+                history = snapshot.val() || [];
+                localStorage.setItem("pmc_leave_history", JSON.stringify(history));
+                if(history.length > 0) {
+                    isFirstEntry = false;
+                    let lastRecord = history[history.length - 1];
+                    document.getElementById('a_start').value = lastRecord.type === "bonus" ? lastRecord.nextA : formatDMY(nextDay(parseDMY(lastRecord.p)));
+                    document.getElementById('deleteBtn').style.display = "inline-block";
+                } else {
+                    isFirstEntry = true;
+                    document.getElementById('a_start').value = "";
+                    document.getElementById('deleteBtn').style.display = "none";
+                }
+                renderTable();
+            });
+        } else {
+            console.log("डेटाबेस कनेक्टेड नाही, लोकल मॅपिंग पूर्ण झाले.");
         }
     }
 
@@ -318,12 +314,6 @@
             document.getElementById('info_desig').value = emp.desig || "";
             document.getElementById('info_dept').value = emp.dept || "";
             document.getElementById('info_pf').value = emp.pf || "";
-        }
-        if(localStorage.getItem("pmc_calc_pay")) {
-            let calc = JSON.parse(localStorage.getItem("pmc_calc_pay"));
-            document.getElementById('basic_pay').value = calc.basic || "";
-            document.getElementById('da_amount').value = calc.da || "";
-            calculateEncashment();
         }
     };
 
@@ -442,14 +432,10 @@
         localStorage.setItem("pmc_leave_history", JSON.stringify(history));
         renderTable();
 
+        // 🚀 ऑनलाईन २ कॉलम सुरक्षित पाठवणे
         let pack = {
-            empName: document.getElementById("info_name").value || "---",
-            empPf: document.getElementById("info_pf").value || "---",
-            hajarPeriod: `${a} - ${displayB}`, hajarDays: f, lwpDays: e,
-            satleliEL: g.toFixed(2), satleliML: h.toFixed(2),
-            ekunEL: k_val.toFixed(2), ekunML: l_val.toFixed(2),
-            gairhajarPeriod: `${o} - ${p}`, rajaType: q, rajaDays: r_diff,
-            antimEL: finalEL.toFixed(2), antimML: finalML.toFixed(2)
+            empCode: document.getElementById("info_pf").value || "---",
+            empName: document.getElementById("info_name").value || "---"
         };
         syncToGoogleSheet(pack);
 
@@ -488,7 +474,7 @@
         tempSpentDays = totalR;
         tempDutyDays = dutyDays;
 
-        document.getElementById('bonusResultMsg').innerHTML = `निवडलेल्या अवधीचे एकूण दिवस: ${totalCalendarDays} दिवस<br>एकूण खर्च झालेल्या सर्व रजा/LWP: ${totalR} दिवस<br>प्रत्यक्ष कामाचे दिवस (Duty Days): ${dutyDays} दिवस<br>🎯 एकूण पात्र अतिरिक्त रजा (केवळ मुख्य पूर्णांक संख्या): ${extraLeaveFloor} दिवस`;
+        document.getElementById('bonusResultMsg').innerHTML = `निवडलेल्या अवधीचे एकूण दिवस: ${totalCalendarDays} दिवस<br>प्रत्यक्ष कामाचे दिवस (Duty Days): ${dutyDays} दिवस<br>🎯 एकूण पात्र अतिरिक्त रजा: ${extraLeaveFloor} दिवस`;
         document.getElementById('saveBonusBtn').style.display = "inline-block";
     }
 
@@ -513,13 +499,8 @@
         renderTable();
 
         let pack = {
-            empName: document.getElementById("info_name").value || "---",
-            empPf: document.getElementById("info_pf").value || "---",
-            hajarPeriod: `अतिरिक्त रजा अवधी (${tempBonusPeriod})`, hajarDays: tempDutyDays, lwpDays: 0,
-            satleliEL: tempBonusCalculated, satleliML: 0,
-            ekunEL: updatedEL.toFixed(2), ekunML: currentML.toFixed(2),
-            gairhajarPeriod: "---", rajaType: "अतिरिक्त रजा मंजुरी", rajaDays: tempBonusCalculated,
-            antimEL: updatedEL.toFixed(2), antimML: currentML.toFixed(2)
+            empCode: document.getElementById("info_pf").value || "---",
+            empName: document.getElementById("info_name").value || "---"
         };
         syncToGoogleSheet(pack);
 
@@ -567,8 +548,7 @@
     function saveEmployeeInfo() {
         localStorage.setItem("pmc_emp_info", JSON.stringify({
             name: document.getElementById('info_name').value, desig: document.getElementById('info_desig').value,
-            dept: document.getElementById('info_dept').value, pf: document.getElementById('info_pf').value,
-            joinDate: document.getElementById('info_join_date').value, retireDate: document.getElementById('info_retire_date').value
+            dept: document.getElementById('info_dept').value, pf: document.getElementById('info_pf').value
         }));
     }
 
@@ -593,7 +573,7 @@
                 row.innerHTML = `
                     <td class="bonus-details-cell">
                         <strong>${item.details}</strong><br>
-                        • एकूण दिवस: ${item.totalDays || 0} | • रजा खर्च: ${item.spentDays || 0} | • Duty Days: ${item.dutyDays || 0}
+                        • एकूण दिवस: ${item.totalDays || 0} | • Duty Days: ${item.dutyDays || 0}
                     </td>
                     <td>---</td><td>0</td><td>---</td><td>---</td>
                     <td>---</td><td>---</td><td>---</td><td>अतिरिक्त रजा मंजुरी</td><td>+${item.earnedBonus}</td>
@@ -676,7 +656,7 @@
         let name = document.getElementById('info_name').value || "कर्मचारी", basic = document.getElementById('basic_pay').value || 0, da = document.getElementById('da_amount').value || 0, elDays = document.getElementById('total_el_shilak').value || 0;
         let validDays = elDays > 300 ? 300 : elDays;
         let totalEncashment = ((parseFloat(basic) + parseFloat(da)) / 30) * validDays;
-        let csvContent = "\uFEFFसेवानिवृत्ती रजा रोखीकरण अहवाल\n\nकर्मचाऱ्याचे नाव," + name + "\nमूळ वेतन,रु. " + basic + "\nमहागाई भत्ता,रु. " + da + "\nएकूण शिल्लक रजा," + elDays + "\nग्राह्य दिवस," + validDays + "\nएकूण रक्कम,रु. " + totalEncashment.toFixed(2) + "\n";
+        let csvContent = "\uFEFFसेवानिवृत्ती रजा रोखीकरण अहवाल\n\nकर्मчаऱ्याचे नाव," + name + "\nमूळ वेतन,रु. " + basic + "\nमहागाई भत्ता,रु. " + da + "\nएकूण शिल्लक रजा," + elDays + "\nग्राह्य दिवस," + validDays + "\nएकूण रक्कम,रु. " + totalEncashment.toFixed(2) + "\n";
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         link.setAttribute("href", URL.createObjectURL(blob));
