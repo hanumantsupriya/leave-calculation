@@ -42,7 +42,7 @@ tr:nth-child(even) { background-color: #f9f9f9; }
 
     <!-- PAGE 5 -->
     <div id="page5" class="tab-content active">
-        <h3>वरिष्ठ श्रेणी / MACPS वेतननिश्चिती व फरक बिल</h3>
+        <h3>वरિષ્ઠ श्रेणी / MACPS वेतननिश्चिती व फरक बिल</h3>
         <div class="entry-box">
             <div>
                 <label>वेतन आयोग प्रकार:</label>
@@ -65,7 +65,7 @@ tr:nth-child(even) { background-color: #f9f9f9; }
 
         <div class="result-card" id="fixationRuleMsg" style="display: none;"></div>
 
-        <h3>📋 महिनावार सविस्तर फरक तक्ता (प्रत्यक्ष दिवस व सरळ बेरीज पद्धती ✎)</h3>
+        <h3>📋 महिनावार सविस्तर फरक तक्ता (दुरुस्त केलेल्या वजाबाकीसह ✎)</h3>
         <div style="overflow-x: auto;">
             <table id="fixationStatementTable">
                 <thead>
@@ -99,6 +99,7 @@ const payMatrix = {
     "S-10": [29200, 30100, 31000, 31900, 32900, 33900, 34900, 35900, 37000, 38100, 39200, 40400, 41600, 42800, 44100, 45400, 46800, 48200, 49600, 51100]
 };
 
+// उर्वरित S-Levels स्वयंचलित सुरक्षित जनरेट करण्यासाठी
 for(let i=1; i<=31; i++) {
     let key = "S-" + i;
     if(!payMatrix[key]) {
@@ -118,6 +119,7 @@ window.onload = function() {
 };
 
 function parseDMY(str) { if(!str) return null; let parts = str.split("/"); return new Date(parts[2], parts[1] - 1, parts[0]); }
+function switchTab(tabId) { }
 
 function initializeFixationDropdowns() {
     let drSel = document.getElementById('fix_drawn_level'); 
@@ -125,6 +127,7 @@ function initializeFixationDropdowns() {
     if(!drSel || !duSel) return;
     drSel.innerHTML = ""; duSel.innerHTML = "";
     let is7th = document.getElementById('fix_pay_comm').value === "7";
+    
     if(is7th) {
         for(let i=1; i<=31; i++) {
             let opt1 = document.createElement('option'); opt1.value = "S-"+i; opt1.innerText = "S-"+i;
@@ -133,6 +136,13 @@ function initializeFixationDropdowns() {
             if(i===10) opt2.selected = true;
             drSel.appendChild(opt1); duSel.appendChild(opt2);
         }
+    } else {
+        const gradePays = [1900, 2400, 2800, 4200, 4400, 4600];
+        gradePays.forEach(gp => {
+            let opt1 = document.createElement('option'); opt1.value = "GP-"+gp; opt1.innerText = "GP " + gp;
+            let opt2 = document.createElement('option'); opt2.value = "GP-"+gp; opt2.innerText = "GP " + gp;
+            drSel.appendChild(opt1); duSel.appendChild(opt2);
+        });
     }
 }
 
@@ -146,31 +156,41 @@ function getHistoricalDARate(dateObj) {
 function getHistoricalHRARate(dateObj) { return (getHistoricalDARate(dateObj) >= 0.50) ? 0.30 : (dateObj.getFullYear() >= 2021 ? 0.27 : 0.24); }
 
 function calculateAutomaticFixationDiff() {
+    let commType = document.getElementById('fix_pay_comm').value;
     let drawnLevel = document.getElementById('fix_drawn_level').value; 
-    let dueLevel = document.getElementById('fixationMasterSelect' ? dueLevel : document.getElementById('fix_due_level').value); 
+    let dueLevel = document.getElementById('fix_due_level').value; 
     let drawnBasicStart = parseInt(document.getElementById('fix_drawn_basic').value) || 0; 
     let startStr = document.getElementById('fix_start_date').value; 
     let endStr = document.getElementById('fix_end_date').value;
     
     if (drawnBasicStart <= 0 || !startStr || !endStr) { alert("कृपया सर्व माहिती अचूक भरा!"); return; }
     let dStart = parseDMY(startStr); let dEnd = parseDMY(endStr);
+    if (dEnd < dStart) { alert("अखेर दिनांक चुकीचा आहे!"); return; }
     
-    let targetMatrix = payMatrix[dueLevel] || payMatrix["S-10"];
-    let nextStageBasic = targetMatrix.find(amt => amt >= drawnBasicStart) || targetMatrix[0];
-    let nextStageIndex = targetMatrix.indexOf(nextStageBasic);
-    let startMonth = dStart.getMonth() + 1;
+    let dueBasicStart = drawnBasicStart; let ruleText = "";
     
-    let bonusIncrements = (startMonth >= 1 && startMonth <= 6) ? 1 : 2;
-    if (bonusIncrements === 2) {
-        let isConfirm = confirm("नियमानुसार या कालावधीसाठी २ वेतनवाढी लागू होत आहेत. २ वेतनवाढी द्यायच्या का?\n(१ वेतनवाढ देण्यासाठी 'Cancel' करा)");
-        if (!isConfirm) { bonusIncrements = 1; }
+    if(commType === "7") {
+        let targetMatrix = payMatrix[dueLevel] || payMatrix["S-10"];
+        let nextStageBasic = targetMatrix.find(amt => amt >= drawnBasicStart) || targetMatrix[0];
+        let nextStageIndex = targetMatrix.indexOf(nextStageBasic);
+        let startMonth = dStart.getMonth() + 1;
+        
+        let bonusIncrements = (startMonth >= 1 && startMonth <= 6) ? 1 : 2;
+        if (bonusIncrements === 2) {
+            let isConfirm = confirm("नियमानुसार या कालावधीसाठी २ वेतनवाढी लागू होत आहेत. २ वेतनवाढी द्यायच्या का?\n(१ वेतनवाढ देण्यासाठी 'Cancel' करा)");
+            if (!isConfirm) { bonusIncrements = 1; }
+        }
+        
+        let finalDueIndex = nextStageIndex + bonusIncrements;
+        if (finalDueIndex >= targetMatrix.length) finalDueIndex = targetMatrix.length - 1;
+        dueBasicStart = targetMatrix[finalDueIndex];
+        ruleText = `💡 ७ व्या वेतन आयोगानुसार एकूण <strong>${bonusIncrements}</strong> सुधारित वेतनवाढ लागू केली आहे.`;
+    } else {
+        dueBasicStart = Math.round((drawnBasicStart * 1.03) / 10) * 10;
+        ruleText = `💡 ६ व्या वेतन आयोगानुसार ३% वेतनवाढ गृहीत धरून काल्पनिक टप्पा निश्चित केला आहे.`;
     }
     
-    let finalDueIndex = nextStageIndex + bonusIncrements;
-    if (finalDueIndex >= targetMatrix.length) finalDueIndex = targetMatrix.length - 1;
-    let dueBasicStart = targetMatrix[finalDueIndex];
-    
-    let formattedMsg = `<strong>वेतननिश्चिती अहवाल:</strong><br>• एकूण <strong>${bonusIncrements}</strong> वेतनवाढ लागू.<br>• सुधारित निश्चित मूळ वेतन: <strong>रु. ${dueBasicStart} (${dueLevel})</strong>`;
+    let formattedMsg = `<strong>वेतननिश्चिती अहवाल:</strong><br>${ruleText}<br>• सुरवातीचे मूळ वेतन: रु. ${drawnBasicStart} (${drawnLevel})<br>• वरिष्ठ सुधारित निश्चित मूळ वेतन: <strong>रु. ${dueBasicStart} (${dueLevel})</strong>`;
     document.getElementById('fixationRuleMsg').style.display = "block"; document.getElementById('fixationRuleMsg').innerHTML = formattedMsg;
     
     calculatedStatements = [];
@@ -179,41 +199,31 @@ function calculateAutomaticFixationDiff() {
     
     let activeDrawnBasic = drawnBasicStart; let activeDueBasic = dueBasicStart;
     
-    // संपूर्ण कालवधी मोजण्यासाठी एकूण महिन्यांची संख्या
-    let totalMonths = (endCursor.getFullYear() - currentCursor.getFullYear()) * 12 + (endCursor.getMonth() - currentCursor.getMonth()) + 1;
-    let monthIdx = 0;
-
     while (currentCursor <= endCursor) {
         let curYear = currentCursor.getFullYear(); let curMonth = currentCursor.getMonth() + 1;
         let daysInMonth = new Date(curYear, curMonth, 0).getDate();
         let mLabel = currentCursor.toLocaleString('en-US', { month: 'short', year: '2-digit' }).toUpperCase();
         
         if (calculatedStatements.length > 0 && curMonth === 7) {
-            let drIdx = payMatrix[drawnLevel].indexOf(activeDrawnBasic);
-            if (drIdx !== -1 && drIdx < payMatrix[drawnLevel].length - 1) activeDrawnBasic = payMatrix[drawnLevel][drIdx + 1];
-            let duIdx = payMatrix[dueLevel].indexOf(activeDueBasic);
-            if (duIdx !== -1 && duIdx < payMatrix[dueLevel].length - 1) activeDueBasic = payMatrix[dueLevel][duIdx + 1];
-        }
-        
-        // 🌟 तारखेनुसार प्रत्यक्ष दिवस मोजण्याचे लॉजिक 🌟
-        let presentDays = daysInMonth;
-        if (monthIdx === 0) {
-            // पहिल्या महिन्यात (मार्च २०१९): १४ तारखेपासून महिन्याच्या शेवटपर्यंतचे दिवस
-            presentDays = daysInMonth - dStart.getDate() + 1;
-        } else if (monthIdx === totalMonths - 1) {
-            // शेवटच्या महिन्यात (मार्च २०२६): १ तारखेपासून १९ तारखेपर्यंतचे दिवस
-            presentDays = dEnd.getDate();
+            if (commType === "7") {
+                let drIdx = payMatrix[drawnLevel].indexOf(activeDrawnBasic);
+                if (drIdx !== -1 && drIdx < payMatrix[drawnLevel].length - 1) activeDrawnBasic = payMatrix[drawnLevel][drIdx + 1];
+                let duIdx = payMatrix[dueLevel].indexOf(activeDueBasic);
+                if (duIdx !== -1 && duIdx < payMatrix[dueLevel].length - 1) activeDueBasic = payMatrix[dueLevel][duIdx + 1];
+            } else {
+                activeDrawnBasic = Math.round((activeDrawnBasic * 1.03) / 10) * 10;
+                activeDueBasic = Math.round((activeDueBasic * 1.03) / 10) * 10;
+            }
         }
         
         calculatedStatements.push({
-            month: mLabel, actualDays: daysInMonth, presentDays: presentDays,
+            month: mLabel, actualDays: daysInMonth, presentDays: daysInMonth,
             daRate: getHistoricalDARate(currentCursor), hraRate: getHistoricalHRARate(currentCursor),
             drBasicNominal: activeDrawnBasic, duBasicNominal: activeDueBasic,
-            drBasic: 0, drDa: 0, drHra: 0, drCps: 0, drChs: 0, drTotal: 0,
-            duBasic: 0, duDa: 0, duHra: 0, duCps: 0, duChs: 0, duTotal: 0,
+            drBasic: activeDrawnBasic, drDa: 0, drHra: 0, drCps: 0, drChs: 0, drTotal: 0,
+            duBasic: activeDueBasic, duDa: 0, duHra: 0, duCps: 0, duChs: 0, duTotal: 0,
             diffBasic: 0, diffDa: 0, diffHra: 0, diffCps: 0, diffChs: 0, diffTotal: 0
         });
-        monthIdx++;
         currentCursor.setMonth(currentCursor.getMonth() + 1);
     }
     recalculateMathLogic();
@@ -224,7 +234,6 @@ function recalculateMathLogic() {
         let daysInMonth = item.actualDays; let pDays = item.presentDays;
         let curYear = 2000 + parseInt(item.month.split("-")[1]);
 
-        // DUE CALCULATIONS (प्रत्यक्ष दिवसानुसार विभागणी)
         item.duBasic = Math.round((item.duBasicNominal / daysInMonth) * pDays);
         item.duDa = Math.round(item.duBasic * item.daRate); 
         item.duHra = Math.round(item.duBasic * item.hraRate); 
@@ -232,7 +241,6 @@ function recalculateMathLogic() {
         item.duChs = (curYear === 2020 && (item.month.includes("MAY") || item.month.includes("JUN") || item.month.includes("JUL"))) ? 0 : Math.round((item.duBasic + item.duDa) * 0.01); 
         item.duTotal = item.duBasic + item.duDa + item.duHra;
 
-        // DRAWN CALCULATIONS (प्रत्यक्ष दिवसानुसार विभागणी)
         item.drBasic = Math.round((item.drBasicNominal / daysInMonth) * pDays);
         item.drDa = Math.round(item.drBasic * item.daRate); 
         item.drHra = Math.round(item.drBasic * item.hraRate); 
@@ -240,22 +248,19 @@ function recalculateMathLogic() {
         item.drChs = (curYear === 2020 && (item.month.includes("MAY") || item.month.includes("JUN") || item.month.includes("JUL"))) ? 0 : Math.round((item.drBasic + item.drDa) * 0.01); 
         item.drTotal = item.drBasic + item.drDa + item.drHra;
 
-        // DIFFERENCE CALCULATIONS (DUE - DRAWN सरळ फरक)
         item.diffBasic = item.duBasic - item.drBasic; 
         item.diffDa = item.duDa - item.drDa; 
         item.diffHra = item.duHra - item.drHra; 
         item.diffCps = item.duCps - item.drCps; 
         item.diffChs = item.duChs - item.drChs; 
-        
-        // 🌟 तुमच्या सूचनेनुसार: सर्व फरकांची सरळ बेरीज करण्याचे सूत्र 🌟
-        item.diffTotal = item.diffBasic + item.diffDa + item.diffHra + item.diffCps + item.diffChs;
+        item.diffTotal = (item.diffBasic + item.diffDa + item.diffHra) - (item.diffCps + item.diffChs);
     });
     renderStatementTable();
 }
 
 function renderStatementTable() {
     let tbody = document.querySelector("#fixationStatementTable tbody"); if(!tbody) return; tbody.innerHTML = "";
-    if (calculatedStatements.length === 0) { tbody.innerHTML = `<tr><td colspan="22" style="color: #666; text-align: center;">अजून कोणतीही गणना केलेली नाही।</td></tr>`; return; }
+    if (calculatedStatements.length === 0) { tbody.innerHTML = `<tr><td colspan="22" style="color: #666; text-align: center;">अजून कोणतीही गणना केलेली नाही.</td></tr>`; return; }
     
     let tDuB=0, tDuD=0, tDuH=0, tDuC=0, tDuChs=0, tDuT=0; 
     let tDrB=0, tDrD=0, tDrH=0, tDrC=0, tDrChs=0, tDrT=0; 
@@ -289,7 +294,6 @@ function updateTableInline(index, value) {
 
 function downloadFixationStatementExcel() {
     if(calculatedStatements.length === 0){ alert("डेटा उपलब्ध नाही!"); return; }
-    
     let csv = "\uFEFFMonth,Actual Days,Present Days,D.A. %," +
               "DUE Basic,DUE D.A.,DUE H.R.A.,DUE CPS,DUE CHS,DUE Total," +
               "DRAWN Basic,DRAWN D.A.,DRAWN H.R.A.,DRAWN CPS,DRAWN CHS,DRAWN Total," +
