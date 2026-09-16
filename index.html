@@ -622,15 +622,23 @@ function recalculateAllRecords() {
         row.diffLwp = ((row.dueQ === "बिनपगारी रजा" ? row.calcDueR : 0) - (parseFloat(row.sbCustomLwp) || (row.sbQ === "बिनपगारी रजा" ? row.calcSbR : 0)));
 
         // तक्ता ४
+        // ==========================================
+        // ४. तक्ता ४: चालू ओळीचा ऑडिटर शेरा
+        // ==========================================
         let remList = [];
-        if (rowIsClosure) remList.push("🛑 सेवा समाप्ती.");
-        if (row.isDueContinuous) remList.push("सलग रजा.");
-        if (parseFloat(row.diffZ) > 0) remList.push(`या नोंदीत EL ${row.diffZ} जास्त जमा.`);
-        if (parseFloat(row.diffZ) < 0) remList.push(`या नोंदीत EL ${Math.abs(parseFloat(row.diffZ)).toFixed(2)} कमी नोंदली.`);
-        if (parseFloat(row.diffAA) > 0) remList.push(`या नोंदीत ML ${row.diffAA} जास्त जमा.`);
-        if (parseFloat(row.diffAA) < 0) remList.push(`या नोंदीत ML ${Math.abs(parseFloat(row.diffAA)).toFixed(2)} कमी नोंदली.`);
-        if (row.diffLwp !== 0) remList.push(`LWP मध्ये ${row.diffLwp} ची तफावत.`);
-        if (remList.length === 0) remList.push("नोंद तंतोतंत जुळते.");
+        let hasVariance = false;
+
+        if (parseFloat(row.diffZ) > 0) { remList.push(`या नोंदीत EL ${row.diffZ} जास्त जमा.`); hasVariance = true; }
+        if (parseFloat(row.diffZ) < 0) { remList.push(`या नोंदीत EL ${Math.abs(parseFloat(row.diffZ)).toFixed(2)} कमी नोंदली.`); hasVariance = true; }
+        if (parseFloat(row.diffAA) > 0) { remList.push(`या नोंदीत ML ${row.diffAA} जास्त जमा.`); hasVariance = true; }
+        if (parseFloat(row.diffAA) < 0) { remList.push(`या नोंदीत ML ${Math.abs(parseFloat(row.diffAA)).toFixed(2)} कमी नोंदली.`); hasVariance = true; }
+        if (row.diffLwp !== 0) { remList.push(`LWP मध्ये ${row.diffLwp} ची तफावत.`); hasVariance = true; }
+        
+        if (!hasVariance) { remList.push("नोंद तंतोतंत जुळते."); }
+
+        if (row.isDueContinuous) { remList.unshift("[सलग रजा]"); }
+        if (rowIsClosure) { remList.unshift("🛑 [सेवा समाप्ती]"); }
+
         row.systemRemark = remList.join(" ");
     });
 
