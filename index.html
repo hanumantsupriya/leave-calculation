@@ -140,7 +140,7 @@ th, td {
     text-align: center; 
 }
 
-/* इनपुटमधील Spinners लपवणे */
+/* इनपुटमधील बाण लपवणे */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none; 
@@ -174,7 +174,7 @@ tr:nth-child(even) { background-color: #fafafa; }
     color: #212121 !important;
 }
 .table-input-sb { background: #fffde7 !important; }
-.table-input-date { width: 70px !important; font-size: 9px !important; }
+.table-input-date { width: 75px !important; font-size: 9px !important; }
 .diff-alert { font-weight: bold; color: #b71c1c; background: #ffebee; }
 .remark-cell { text-align: left !important; padding: 4px 6px !important; font-size: 9px; line-height: 1.3; }
 .btn-row-del { background: #d32f2f; color: #ffffff; border: none; padding: 3px 6px; cursor: pointer; font-size: 9px; border-radius: 3px; }
@@ -188,18 +188,18 @@ tr:nth-child(even) { background-color: #fafafa; }
 <div class="setup-grid">
     <div>
         <label>कर्मचाऱ्याचे पूर्ण नाव:</label>
-        <input type="text" id="aud_emp_name" placeholder="उदा. हनुमंत रामचन्द्र आडागळे">
+        <input type="text" id="aud_emp_name" placeholder="उदा. हनुमंत रामचन्द्र आडागळे" oninput="saveHeaderInfo()">
     </div>
     <div>
         <label>कर्मचारी कोड / PF नंबर:</label>
-        <input type="text" id="aud_emp_pf" placeholder="उदा. PMC-9922">
+        <input type="text" id="aud_emp_pf" placeholder="उदा. PMC-9922" oninput="saveHeaderInfo()">
     </div>
     <div>
         <label>नोकरीत रुजू दिनांक (Joining Date):</label>
-        <input type="text" id="aud_join_date" placeholder="DD/MM/YYYY">
+        <input type="text" id="aud_join_date" placeholder="DD/MM/YYYY" onchange="onJoinDateManualChange(this.value)">
     </div>
 
-    <!-- सेवा समाप्ती पर्याय वरती उजव्या कोपऱ्यात -->
+    <!-- सेवा समाप्ती पर्याय उजव्या बाजूला -->
     <div class="closure-box">
         <input type="checkbox" id="global_closure_check" style="width:18px; height:18px; cursor:pointer;" onchange="handleGlobalClosureToggle(this.checked)">
         <label for="global_closure_check" style="color:#c62828; margin:0; cursor:pointer; font-weight:bold;">🛑 सेवा समाप्ती / हिशोब बंद?</label>
@@ -214,14 +214,14 @@ tr:nth-child(even) { background-color: #fafafa; }
     </div>
 </div>
 
-<h3 style="font-size: 13px; margin: 8px 0; color: #0d47a1;">📋 शेजारी-शेजारी ४ तक्त्यांचा तुलनात्मक ताळेबंद (अखंड तारीख साखळी व ऑटो-मिररिंग)</h3>
+<h3 style="font-size: 13px; margin: 8px 0; color: #0d47a1;">📋 शेजारी-शेजारी ४ तक्त्यांचा तुलनात्मक ताळेबंद (चालू ओळीपुरता फरक व शेरा)</h3>
 <div style="overflow-x: auto;">
 <table id="comparativeAuditTable">
 <thead>
     <tr>
         <th colspan="14" class="th-sb">तक्ता १: सेवा पुस्तकातील प्रत्यक्ष नोंद (AS RECORDED IN SERVICE BOOK - EDITABLE)</th>
         <th colspan="14" class="th-due">तक्ता २: नियमानुसार सुधारित बरोबर हिशोब (AS PER RULES / DUE)</th>
-        <th colspan="10" class="th-diff">तक्ता ३: सर्व रकान्यांमधील प्रत्यक्ष फरक (VARIANCE IN EACH COLUMN)</th>
+        <th colspan="10" class="th-diff">तक्ता ३: चालू ओळीतील प्रत्यक्ष फरक (ROW-WISE VARIANCE)</th>
         <th colspan="3" class="th-remark">तक्ता ४: ऑडिटर शेरा (AUDIT REMARKS)</th>
     </tr>
     <tr class="sub-header">
@@ -257,7 +257,7 @@ tr:nth-child(even) { background-color: #fafafa; }
         <th class="th-due">अंतिम ML (AA)</th>
         <th class="th-due">रजेतील LWP</th>
 
-        <!-- तक्ता ३: सर्व कॉलम फरक -->
+        <!-- तक्ता ३: सर्व कॉलम फरक (चालू ओळीपुरता) -->
         <th class="th-diff">F फरक</th>
         <th class="th-diff">E फरक</th>
         <th class="th-diff">G फरक</th>
@@ -265,12 +265,12 @@ tr:nth-child(even) { background-color: #fafafa; }
         <th class="th-diff">K फरक</th>
         <th class="th-diff">L फरक</th>
         <th class="th-diff">R फरक</th>
-        <th class="th-diff">Z फरक (EL)</th>
-        <th class="th-diff">AA फरक (ML)</th>
+        <th class="th-diff">चालू EL फरक</th>
+        <th class="th-diff">चालू ML फरक</th>
         <th class="th-diff">LWP फरक</th>
 
         <!-- तक्ता ४: शेरा -->
-        <th class="th-remark" style="width: 220px;">सिस्टीम निष्कर्ष</th>
+        <th class="th-remark" style="width: 220px;">सिस्टीम निष्कर्ष (चालू ओळ)</th>
         <th class="th-remark">ऑडिटर मॅन्युअल शेरा</th>
         <th class="th-remark">कृती</th>
     </tr>
@@ -282,33 +282,32 @@ tr:nth-child(even) { background-color: #fafafa; }
 </div>
 
 <div style="margin-top: 15px; font-size: 11px; line-height: 1.5; background: #ffffff; border: 1px solid #cfd8dc; padding: 10px; border-radius: 4px;">
-    <strong>अखंड तारीख साखळी व ऑटो-मिररिंग मार्गदर्शक:</strong><br>
-    • <strong>ऑटो-साखळी:</strong> शेवटचा हजर दिनांक (B) बदलताच रजेचा दिनांक (O) आपोआप त्याचा पुढचा दिवस येईल; रजा संपताच (P) पुढील ओळीचा हजर दिनांक (A) आपोआप येईल[cite: 1].<br>
-    • <strong>सलग रजा:</strong> सलग रजा टिक केल्यास हजर दिनांक <code>---</code> होईल, पण भरलेली रजा सुरक्षित राहील व मागील रजेच्या पुढील दिवसापासून सुरू होईल[cite: 1].<br>
-    • <strong>ऑटो-मिररिंग:</strong> तक्ता १ मध्ये तारीख किंवा प्रकार बदलताच तो आपोआप तक्ता २ मध्ये जाईल; त्यानंतर तक्ता २ मधील बदलांनुसार तक्ता ३ व ४ तत्काळ अपडेट होतील[cite: 1].
+    <strong>अद्ययावत कार्यपद्धती:</strong><br>
+    • <strong>स्मार्ट तारीख इनपुट:</strong> तारखेच्या बॉक्समध्ये <code>3/7/04</code> किंवा <code>3/7/4</code> जरी टाईप केले तरी ते आपोआप <code>03/07/2004</code> होईल.<br>
+    • <strong>कोरे इनपुट:</strong> शेवटचा हजर दिनांक (B) आणि रजा संपल्याचा दिनांक (P) युझरला सेवापुस्तकावरून भरण्यासाठी कोरा ठेवला आहे.<br>
+    • <strong>चालू ओळीपुरता फरक:</strong> तक्ता ३ व ४ मध्ये मागील संचित फरक न दाखवता केवळ त्या विशिष्ट ओळीत कारकुनाने केलेल्या चुकीचा फरक व शेरा येईल.
 </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 let auditEntries = [];
 let pageBreaks = [];
-const config = { dateFormat: "d/m/Y", allowInput: true };
-
-flatpickr("#aud_join_date", { ...config, defaultDate: "01/01/1990", onChange: function(selectedDates, dateStr) {
-    if (auditEntries.length === 0) return;
-    if (auditEntries[0].type !== "extra") {
-        auditEntries[0].sbA = dateStr;
-        auditEntries[0].dueA = dateStr;
-        rechainAllDates(0);
-    }
-    recalculateAllRecords();
-}});
 
 window.onload = function() {
-    let saved = localStorage.getItem("pmc_audit_4tables_chain_v7");
-    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v7");
-    let savedClosure = localStorage.getItem("pmc_audit_closure_v7");
+    // सेव्ह केलेले नाव व कोड लोड करणे
+    let savedName = localStorage.getItem("pmc_aud_emp_name");
+    let savedPf = localStorage.getItem("pmc_aud_emp_pf");
+    let savedJoin = localStorage.getItem("pmc_aud_join_date");
+
+    if (savedName) document.getElementById('aud_emp_name').value = savedName;
+    if (savedPf) document.getElementById('aud_emp_pf').value = savedPf;
+    if (savedJoin) document.getElementById('aud_join_date').value = savedJoin;
+    else document.getElementById('aud_join_date').value = "01/01/1990";
+
+    let saved = localStorage.getItem("pmc_audit_4tables_chain_v8");
+    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v8");
+    let savedClosure = localStorage.getItem("pmc_audit_closure_v8");
+
     if (saved) auditEntries = JSON.parse(saved);
     if (savedBreaks) pageBreaks = JSON.parse(savedBreaks);
     if (savedClosure === "true") {
@@ -317,11 +316,58 @@ window.onload = function() {
     renderComparativeTable();
 };
 
+function saveHeaderInfo() {
+    localStorage.setItem("pmc_aud_emp_name", document.getElementById('aud_emp_name').value);
+    localStorage.setItem("pmc_aud_emp_pf", document.getElementById('aud_emp_pf').value);
+    localStorage.setItem("pmc_aud_join_date", document.getElementById('aud_join_date').value);
+}
+
+function onJoinDateManualChange(val) {
+    let clean = normalizeDateStr(val);
+    document.getElementById('aud_join_date').value = clean;
+    saveHeaderInfo();
+    if (auditEntries.length > 0 && auditEntries[0].type !== "extra") {
+        auditEntries[0].sbA = clean;
+        auditEntries[0].dueA = clean;
+        rechainAllDates(0);
+    }
+    recalculateAllRecords();
+}
+
+// 🌟 स्मार्ट तारीख नॉर्मलायझेशन (उदा. 3/7/04 -> 03/07/2004) 🌟
+function normalizeDateStr(val) {
+    if (!val || val.trim() === "" || val === "---") return val;
+    let s = val.trim().replace(/[-.]/g, "/");
+    let parts = s.split("/");
+    if (parts.length === 3) {
+        let d = parseInt(parts[0], 10);
+        let m = parseInt(parts[1], 10);
+        let y = parseInt(parts[2], 10);
+
+        if (isNaN(d) || isNaN(m) || isNaN(y)) return val;
+
+        // २ अंकी किंवा १ अंकी वर्ष हाताळणे
+        if (y < 100) {
+            y = y > 40 ? 1900 + y : 2000 + y;
+        }
+
+        let dStr = String(d).padStart(2, '0');
+        let mStr = String(m).padStart(2, '0');
+        let yStr = String(y).padStart(4, '0');
+        return `${dStr}/${mStr}/${yStr}`;
+    }
+    return val;
+}
+
 function parseDMY(str) {
     if (!str || str === "---" || str.includes("रोखीकरण")) return null;
     let parts = str.split("/");
     if (parts.length < 3) return null;
-    return new Date(parts[2], parts[1] - 1, parts[0]);
+    let d = parseInt(parts[0], 10);
+    let m = parseInt(parts[1], 10);
+    let y = parseInt(parts[2], 10);
+    if (isNaN(d) || isNaN(m) || isNaN(y)) return null;
+    return new Date(y, m - 1, d);
 }
 
 function formatDMY(dateObj) {
@@ -342,13 +388,11 @@ function applyLimits(val, maxVal) {
     return base + (dec / 100);
 }
 
-// 🌟 अखंड तारीख साखळी (Date Chaining Logic) 🌟
 function rechainAllDates(startIdx) {
     for (let i = startIdx; i < auditEntries.length; i++) {
         let r = auditEntries[i];
         if (r.type === "extra") continue;
 
-        // मागील ओळीवरून सध्याच्या ओळीचा सुरुवातीचा दिनांक (A) घेणे
         if (i > 0) {
             let prev = auditEntries[i - 1];
             let prevEnd = parseDMY(prev.sbP);
@@ -361,7 +405,6 @@ function rechainAllDates(startIdx) {
             }
         }
 
-        // जर सलग रजा असेल
         if (r.isSbContinuous) {
             r.sbB = "---";
             if (i > 0) {
@@ -371,14 +414,12 @@ function rechainAllDates(startIdx) {
                 if (!r.isSbCustomO) r.sbO = r.sbA;
             }
         } else {
-            // हजर दिनांक (B) नंतर रजेचा दिनांक (O) आपोआप पुढचा दिवस
             let dB = parseDMY(r.sbB);
             if (dB && !r.isSbCustomO) {
                 r.sbO = formatDMY(nextDay(dB));
             }
         }
 
-        // तक्ता २ मध्ये समान तारीख ठेवणे (जोपर्यंत यूजर तक्ता २ मॅन्युअली एडिट करत नाही)
         if (!r.isDueCustomA) r.dueA = r.sbA;
         if (!r.isDueCustomB) r.dueB = r.sbB;
         if (!r.isDueCustomO) r.dueO = r.sbO;
@@ -396,37 +437,37 @@ function addNewAuditRow() {
 
     let joinDateStr = document.getElementById('aud_join_date').value || "01/01/1990";
     let nextA = joinDateStr;
-    let nextB = "30/06/1990";
-    let nextO = "01/07/1990";
-    let nextP = "05/07/1990";
 
     if (auditEntries.length > 0) {
         let last = auditEntries[auditEntries.length - 1];
         let pDate = parseDMY(last.sbP);
         if (pDate) {
-            let nA = nextDay(pDate);
-            let nB = new Date(nA); nB.setMonth(nB.getMonth() + 6);
-            let nO = nextDay(nB);
-            let nP = new Date(nO); nP.setDate(nP.getDate() + 4);
-
-            nextA = formatDMY(nA);
-            nextB = formatDMY(nB);
-            nextO = formatDMY(nO);
-            nextP = formatDMY(nP);
+            nextA = formatDMY(nextDay(pDate));
+        } else {
+            nextA = last.sbA;
         }
     }
 
     let newRow = {
         type: "regular",
         isSbContinuous: false,
-        sbA: nextA, sbB: nextB, sbE: 0, sbO: nextO, sbP: nextP, sbQ: "वैद्यकीय रजा",
+        sbA: nextA, 
+        sbB: "", // 🌟 युझरसाठी कोरा ठेवला 🌟
+        sbE: 0, 
+        sbO: "", 
+        sbP: "", // 🌟 युझरसाठी कोरा ठेवला 🌟
+        sbQ: "वैद्यकीय रजा",
         sbCustomF: null, sbCustomG: null, sbCustomH: null, sbCustomK: null, sbCustomL: null,
         sbCustomR: null, sbCustomZ: null, sbCustomAA: null, sbCustomLwp: null,
 
         isDueContinuous: false,
-        dueA: nextA, dueB: nextB, dueE: 0, dueO: nextO, dueP: nextP, dueQ: "वैद्यकीय रजा",
+        dueA: nextA, 
+        dueB: "", 
+        dueE: 0, 
+        dueO: "", 
+        dueP: "", 
+        dueQ: "वैद्यकीय रजा",
 
-        // मॅन्युअल ट्रॅकिंग फ्लॅग्ज (तक्ता १ वरून तक्ता २ मिररिंगसाठी)
         isDueCustomA: false, isDueCustomB: false, isDueCustomO: false, isDueCustomP: false, isDueCustomQ: false,
         isSbCustomA: false, isSbCustomO: false,
 
@@ -456,22 +497,21 @@ function addAnnualExtraLeavePrompt() {
 function addManualPageBreak() {
     if (auditEntries.length === 0) { alert("आधी नोंदी जोडा!"); return; }
     pageBreaks.push(auditEntries.length - 1);
-    localStorage.setItem("pmc_audit_pagebreaks_v7", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v8", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function removeManualPageBreak(idx) {
     pageBreaks = pageBreaks.filter(b => b !== idx);
-    localStorage.setItem("pmc_audit_pagebreaks_v7", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v8", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function handleGlobalClosureToggle(isChecked) {
-    localStorage.setItem("pmc_audit_closure_v7", isChecked ? "true" : "false");
+    localStorage.setItem("pmc_audit_closure_v8", isChecked ? "true" : "false");
     recalculateAllRecords();
 }
 
-// 🌟 सलग रजा टिक केल्यास आधीची भरलेली रजा कायम ठेवून फक्त हजर तारीख '---' करणे 🌟
 function toggleSbContinuous(idx, isChecked) {
     auditEntries[idx].isSbContinuous = isChecked;
     if (isChecked) {
@@ -483,14 +523,8 @@ function toggleSbContinuous(idx, isChecked) {
             if (!auditEntries[idx].isSbCustomO) auditEntries[idx].sbO = auditEntries[idx].sbA;
         }
     } else {
-        let dA = parseDMY(auditEntries[idx].sbA);
-        if (dA) {
-            let dB = new Date(dA); dB.setMonth(dB.getMonth() + 6);
-            auditEntries[idx].sbB = formatDMY(dB);
-            if (!auditEntries[idx].isSbCustomO) auditEntries[idx].sbO = formatDMY(nextDay(dB));
-        }
+        auditEntries[idx].sbB = "";
     }
-    // तक्ता २ मध्ये मिरर करणे
     auditEntries[idx].isDueContinuous = isChecked;
     auditEntries[idx].dueB = auditEntries[idx].sbB;
     auditEntries[idx].dueO = auditEntries[idx].sbO;
@@ -513,14 +547,13 @@ function toggleDueContinuous(idx, isChecked) {
     recalculateAllRecords();
 }
 
-// 🌟 तक्ता १ व २ चे परस्पर संपादन व मिररिंग हँडलर 🌟
-function updateSbField(idx, field, val) {
+function updateSbField(idx, field, rawVal) {
+    let val = (field === 'sbA' || field === 'sbB' || field === 'sbO' || field === 'sbP') ? normalizeDateStr(rawVal) : rawVal;
     auditEntries[idx][field] = val;
 
     if (field === 'sbA') auditEntries[idx].isSbCustomA = true;
     if (field === 'sbO') auditEntries[idx].isSbCustomO = true;
 
-    // तारीख साखळी अपडेट करणे
     if (field === 'sbB') {
         let dB = parseDMY(val);
         if (dB && !auditEntries[idx].isSbContinuous) {
@@ -528,7 +561,6 @@ function updateSbField(idx, field, val) {
         }
     }
 
-    // तक्ता १ मधील बदल तक्ता २ मध्ये आपोआप कॉपी करणे (Mirroring)
     if (field === 'sbA' && !auditEntries[idx].isDueCustomA) auditEntries[idx].dueA = val;
     if (field === 'sbB' && !auditEntries[idx].isDueCustomB) auditEntries[idx].dueB = val;
     if (field === 'sbO' && !auditEntries[idx].isDueCustomO) auditEntries[idx].dueO = val;
@@ -539,10 +571,10 @@ function updateSbField(idx, field, val) {
     recalculateAllRecords();
 }
 
-function updateDueField(idx, field, val) {
+function updateDueField(idx, field, rawVal) {
+    let val = (field === 'dueA' || field === 'dueB' || field === 'dueO' || field === 'dueP') ? normalizeDateStr(rawVal) : rawVal;
     auditEntries[idx][field] = val;
 
-    // युझरने तक्ता २ स्वतः एडिट केल्याचे नोंदवणे (Override)
     if (field === 'dueA') auditEntries[idx].isDueCustomA = true;
     if (field === 'dueB') auditEntries[idx].isDueCustomB = true;
     if (field === 'dueO') auditEntries[idx].isDueCustomO = true;
@@ -552,6 +584,7 @@ function updateDueField(idx, field, val) {
     recalculateAllRecords();
 }
 
+// 🌟 चालू ओळीपुरता (Row-Wise) फरक आणि ताळेबंद मोजणे 🌟
 function recalculateAllRecords() {
     let isGlobalClosure = document.getElementById('global_closure_check').checked;
     let curDueEL = 0.00;
@@ -562,6 +595,11 @@ function recalculateAllRecords() {
     auditEntries.forEach((row, idx) => {
         let isLastRow = (idx === auditEntries.length - 1);
         let rowIsClosure = (isGlobalClosure && isLastRow);
+
+        let prevDueEL = curDueEL;
+        let prevDueML = curDueML;
+        let prevSbEL = curSbEL;
+        let prevSbML = curSbML;
 
         if (row.type === "extra") {
             let z3_int = Math.floor(curDueEL), z3_mod = Math.round((curDueEL % 1) * 100);
@@ -574,14 +612,12 @@ function recalculateAllRecords() {
             row.calcSbFinalEL = curSbEL;
             row.calcSbFinalML = curSbML;
 
-            row.diffZ = (row.calcSbFinalEL - row.calcDueFinalEL).toFixed(2);
-            row.diffAA = (row.calcSbFinalML - row.calcDueFinalML).toFixed(2);
+            row.diffZ = 0; // अतिरिक्त रजेत चालू फरक शून्य
+            row.diffAA = 0;
             return;
         }
 
-        // ==========================================
         // १. तक्ता २: सुधारित बरोबर हिशोब (DUE)
-        // ==========================================
         let dueF = 0;
         if (rowIsClosure) {
             row.dueO = "---"; row.dueP = "---";
@@ -678,9 +714,7 @@ function recalculateAllRecords() {
         curDueEL = row.calcDueFinalEL;
         curDueML = row.calcDueFinalML;
 
-        // ==========================================
         // २. तक्ता १: सेवापुस्तकातील नोंद (SERVICE BOOK)
-        // ==========================================
         let autoSbF = 0;
         if (rowIsClosure) {
             row.sbO = "---"; row.sbP = "---";
@@ -741,7 +775,7 @@ function recalculateAllRecords() {
         curSbML = row.calcSbFinalML;
 
         // ==========================================
-        // ३. तक्ता ३: सर्व रकान्यांमधील फरक (Live Synced)
+        // ३. तक्ता ३: केवळ चालू ओळीपुरता (Row-Wise) फरक
         // ==========================================
         row.diffF = (row.calcSbF - row.calcDueF);
         row.diffE = ((parseFloat(row.sbE) || 0) - (parseFloat(row.dueE) || 0));
@@ -750,26 +784,34 @@ function recalculateAllRecords() {
         row.diffK = (row.calcSbK - row.calcDueK).toFixed(2);
         row.diffL = (row.calcSbL - row.calcDueL).toFixed(2);
         row.diffR = (row.calcSbR - row.calcDueR);
-        row.diffZ = (row.calcSbFinalEL - row.calcDueFinalEL).toFixed(2);
-        row.diffAA = (row.calcSbFinalML - row.calcDueFinalML).toFixed(2);
+
+        // 🌟 चालू ओळीतील निव्वळ बदल (Net Row Increment / Decrement) 🌟
+        let sbRowNetEL = row.calcSbFinalEL - prevSbEL;
+        let dueRowNetEL = row.calcDueFinalEL - prevDueEL;
+        row.diffZ = (sbRowNetEL - dueRowNetEL).toFixed(2);
+
+        let sbRowNetML = row.calcSbFinalML - prevSbML;
+        let dueRowNetML = row.calcDueFinalML - prevDueML;
+        row.diffAA = (sbRowNetML - dueRowNetML).toFixed(2);
+
         row.diffLwp = (row.calcDueAutoLwp - (parseFloat(row.sbCustomLwp) || 0));
 
         // ==========================================
-        // ४. तक्ता ४: शेरा (AUDIT REMARKS)
+        // ४. तक्ता ४: चालू ओळीचा ऑडिटर शेरा
         // ==========================================
         let remList = [];
         if (rowIsClosure) remList.push("🛑 सेवा समाप्ती (हिशोब बंद).");
         if (row.isDueContinuous) remList.push("सलग रजा अवधी लागू केला.");
-        if (parseFloat(row.diffZ) > 0) remList.push(`सेवापुस्तकात EL ${row.diffZ} जास्त जमा.`);
-        if (parseFloat(row.diffZ) < 0) remList.push(`सेवापुस्तकात EL ${Math.abs(row.diffZ)} कमी नोंदली.`);
-        if (parseFloat(row.diffAA) > 0) remList.push(`सेवापुस्तकात ML ${row.diffAA} जास्त जमा.`);
-        if (parseFloat(row.diffAA) < 0) remList.push(`सेवापुस्तकात ML ${Math.abs(row.diffAA)} कमी नोंदली.`);
+        if (parseFloat(row.diffZ) > 0) remList.push(`या नोंदीत EL ${row.diffZ} जास्त जमा झाली.`);
+        if (parseFloat(row.diffZ) < 0) remList.push(`या नोंदीत EL ${Math.abs(row.diffZ)} कमी नोंदली.`);
+        if (parseFloat(row.diffAA) > 0) remList.push(`या नोंदीत ML ${row.diffAA} जास्त जमा झाली.`);
+        if (parseFloat(row.diffAA) < 0) remList.push(`या नोंदीत ML ${Math.abs(row.diffAA)} कमी नोंदली.`);
         if (row.calcDueAutoLwp > 0) remList.push(`रजा संपल्याने ${row.calcDueAutoLwp} दिवस LWP आवश्यक.`);
-        if (remList.length === 0) remList.push("नोंद तंतोतंत जुळते.");
+        if (remList.length === 0) remList.push("या नोंदीत हिशोब तंतोतंत जुळतो.");
         row.systemRemark = remList.join(" ");
     });
 
-    localStorage.setItem("pmc_audit_4tables_chain_v7", JSON.stringify(auditEntries));
+    localStorage.setItem("pmc_audit_4tables_chain_v8", JSON.stringify(auditEntries));
     renderComparativeTable();
 }
 
@@ -796,8 +838,8 @@ function renderComparativeTable() {
                 <td colspan="14" style="text-align:left; padding-left:15px; color:#4a148c;">⭐ अत्यावश्यक सेवा अतिरिक्त रजा जमा वर्ष ${row.extraYear} (+${row.extraDays} दिवस EL)</td>
                 <td colspan="14" style="text-align:left; padding-left:15px; color:#4a148c;">⭐ अतिरिक्त रजा जमा (+${row.extraDays} दिवस EL)</td>
                 <td colspan="7">---</td>
-                <td><strong>${row.diffZ}</strong></td>
-                <td><strong>${row.diffAA}</strong></td>
+                <td><strong>0.00</strong></td>
+                <td><strong>0.00</strong></td>
                 <td>---</td>
                 <td class="remark-cell">${row.manualRemark}</td>
                 <td><input type="text" class="table-input" value="${row.manualRemark}" onchange="updateSbField(${idx}, 'manualRemark', this.value)"></td>
@@ -806,11 +848,11 @@ function renderComparativeTable() {
         } else {
             let tr = tbody.insertRow();
             tr.innerHTML = `
-                <!-- तक्ता १: सेवापुस्तक (सलग रजा व अखंड साखळीसह) -->
+                <!-- तक्ता १: सेवापुस्तक -->
                 <td><input type="checkbox" ${row.isSbContinuous ? "checked" : ""} onchange="toggleSbContinuous(${idx}, this.checked)"></td>
                 <td>
                     <input type="text" class="table-input table-input-sb table-input-date" value="${row.sbA}" onchange="updateSbField(${idx}, 'sbA', this.value)"> - 
-                    <input type="text" class="table-input table-input-sb table-input-date" ${row.isSbContinuous || rowIsClosure ? "disabled" : ""} value="${row.sbB}" onchange="updateSbField(${idx}, 'sbB', this.value)">
+                    <input type="text" class="table-input table-input-sb table-input-date" placeholder="DD/MM/YYYY" ${row.isSbContinuous || rowIsClosure ? "disabled" : ""} value="${row.sbB}" onchange="updateSbField(${idx}, 'sbB', this.value)">
                 </td>
                 <td><input type="number" class="table-input table-input-sb" style="width:48px !important;" value="${row.calcSbF}" onchange="updateSbField(${idx}, 'sbCustomF', this.value)"></td>
                 <td><input type="number" class="table-input table-input-sb" style="width:38px !important;" value="${row.sbE}" onchange="updateSbField(${idx}, 'sbE', this.value)"></td>
@@ -819,8 +861,8 @@ function renderComparativeTable() {
                 <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:62px !important;" value="${row.calcSbK.toFixed(2)}" onchange="updateSbField(${idx}, 'sbCustomK', this.value)"></td>
                 <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:62px !important;" value="${row.calcSbL.toFixed(2)}" onchange="updateSbField(${idx}, 'sbCustomL', this.value)"></td>
                 <td>
-                    <input type="text" class="table-input table-input-sb table-input-date" ${rowIsClosure ? "disabled" : ""} value="${row.sbO}" onchange="updateSbField(${idx}, 'sbO', this.value)"> - 
-                    <input type="text" class="table-input table-input-sb table-input-date" ${rowIsClosure ? "disabled" : ""} value="${row.sbP}" onchange="updateSbField(${idx}, 'sbP', this.value)">
+                    <input type="text" class="table-input table-input-sb table-input-date" placeholder="DD/MM/YYYY" ${rowIsClosure ? "disabled" : ""} value="${row.sbO}" onchange="updateSbField(${idx}, 'sbO', this.value)"> - 
+                    <input type="text" class="table-input table-input-sb table-input-date" placeholder="DD/MM/YYYY" ${rowIsClosure ? "disabled" : ""} value="${row.sbP}" onchange="updateSbField(${idx}, 'sbP', this.value)">
                 </td>
                 <td>
                     <select class="table-input table-input-sb" style="width:95px !important;" ${rowIsClosure ? "disabled" : ""} onchange="updateSbField(${idx}, 'sbQ', this.value)">
@@ -836,11 +878,11 @@ function renderComparativeTable() {
                 <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:65px !important; font-weight:bold;" value="${row.calcSbFinalML.toFixed(2)}" onchange="updateSbField(${idx}, 'sbCustomAA', this.value)"></td>
                 <td><input type="number" class="table-input table-input-sb" style="width:35px !important;" value="${row.sbCustomLwp || 0}" onchange="updateSbField(${idx}, 'sbCustomLwp', this.value)"></td>
 
-                <!-- तक्ता २: बरोबर हिशोब (थेट मिररिंग व स्वतंत्र संपादन) -->
+                <!-- तक्ता २: बरोबर हिशोब -->
                 <td><input type="checkbox" ${row.isDueContinuous ? "checked" : ""} onchange="toggleDueContinuous(${idx}, this.checked)"></td>
                 <td>
                     <input type="text" class="table-input table-input-date" value="${row.dueA}" onchange="updateDueField(${idx}, 'dueA', this.value)"> - 
-                    <input type="text" class="table-input table-input-date" ${row.isDueContinuous || rowIsClosure ? "disabled" : ""} value="${row.dueB}" onchange="updateDueField(${idx}, 'dueB', this.value)">
+                    <input type="text" class="table-input table-input-date" placeholder="DD/MM/YYYY" ${row.isDueContinuous || rowIsClosure ? "disabled" : ""} value="${row.dueB}" onchange="updateDueField(${idx}, 'dueB', this.value)">
                 </td>
                 <td><strong>${row.calcDueF}</strong></td>
                 <td><input type="number" class="table-input" style="width:35px !important;" value="${row.dueE}" onchange="updateDueField(${idx}, 'dueE', this.value)"></td>
@@ -849,8 +891,8 @@ function renderComparativeTable() {
                 <td>${row.calcDueK.toFixed(2)}</td>
                 <td>${row.calcDueL.toFixed(2)}</td>
                 <td>
-                    <input type="text" class="table-input table-input-date" ${rowIsClosure ? "disabled" : ""} value="${row.dueO}" onchange="updateDueField(${idx}, 'dueO', this.value)"> - 
-                    <input type="text" class="table-input table-input-date" ${rowIsClosure ? "disabled" : ""} value="${row.dueP}" onchange="updateDueField(${idx}, 'dueP', this.value)">
+                    <input type="text" class="table-input table-input-date" placeholder="DD/MM/YYYY" ${rowIsClosure ? "disabled" : ""} value="${row.dueO}" onchange="updateDueField(${idx}, 'dueO', this.value)"> - 
+                    <input type="text" class="table-input table-input-date" placeholder="DD/MM/YYYY" ${rowIsClosure ? "disabled" : ""} value="${row.dueP}" onchange="updateDueField(${idx}, 'dueP', this.value)">
                 </td>
                 <td>
                     <select class="table-input" style="width:95px !important;" ${rowIsClosure ? "disabled" : ""} onchange="updateDueField(${idx}, 'dueQ', this.value)">
@@ -866,7 +908,7 @@ function renderComparativeTable() {
                 <td style="background:#e8eaf6;"><strong>${row.calcDueFinalML.toFixed(2)}</strong></td>
                 <td style="font-weight:bold;">${row.calcDueAutoLwp > 0 ? row.calcDueAutoLwp : '0'}</td>
 
-                <!-- तक्ता ३: सर्व कॉलम फरक (Live Linked) -->
+                <!-- तक्ता ३: केवळ चालू ओळीतील फरक -->
                 <td class="${row.diffF !== 0 ? 'diff-alert' : ''}">${row.diffF}</td>
                 <td class="${row.diffE !== 0 ? 'diff-alert' : ''}">${row.diffE}</td>
                 <td class="${parseFloat(row.diffG) !== 0 ? 'diff-alert' : ''}">${row.diffG}</td>
@@ -878,14 +920,13 @@ function renderComparativeTable() {
                 <td class="${parseFloat(row.diffAA) !== 0 ? 'diff-alert' : ''}">${row.diffAA}</td>
                 <td class="${row.diffLwp !== 0 ? 'diff-alert' : ''}">${row.diffLwp}</td>
 
-                <!-- तक्ता ४: ऑडिटर शेरा (Live Linked) -->
+                <!-- तक्ता ४: केवळ चालू ओळीचा शेरा -->
                 <td class="remark-cell">${row.systemRemark}</td>
                 <td><input type="text" class="table-input" style="text-align:left !important; width:130px !important;" placeholder="शेरा टाइप करा..." value="${row.manualRemark || ''}" onchange="updateSbField(${idx}, 'manualRemark', this.value)"></td>
                 <td><button class="btn-row-del" onclick="deleteAuditRow(${idx})">रद्द</button></td>
             `;
         }
 
-        // मॅन्युअल पेज ब्रेक
         if (pageBreaks.includes(idx)) {
             let brkRow = tbody.insertRow();
             brkRow.className = "page-break-row";
@@ -904,7 +945,7 @@ function deleteAuditRow(idx) {
     if (confirm("तुम्हाला नक्की ही ओळ रद्द करायची आहे का?")) {
         auditEntries.splice(idx, 1);
         pageBreaks = pageBreaks.filter(b => b !== idx).map(b => b > idx ? b - 1 : b);
-        localStorage.setItem("pmc_audit_pagebreaks_v7", JSON.stringify(pageBreaks));
+        localStorage.setItem("pmc_audit_pagebreaks_v8", JSON.stringify(pageBreaks));
         rechainAllDates(idx > 0 ? idx - 1 : 0);
         recalculateAllRecords();
     }
@@ -921,13 +962,13 @@ function exportComparativeExcel() {
 
     csv += "सेवापुस्तक सलग?,सेवापुस्तक हजर कालावधी,सेवापुस्तक F,सेवापुस्तक LWP,साठलेली EL (G),साठलेली ML (H),एकूण EL (K),एकूण ML (L),सेवापुस्तक गैरहजर कालावधी,रजा प्रकार,रजा दिवस (R),सेवापुस्तक अंतिम EL (Z),सेवापुस्तक अंतिम ML (AA),सेवापुस्तक LWP,";
     csv += "सुधारित सलग?,सुधारित हजर कालावधी,सुधारित हजर दिवस (F),सुधारित LWP (E),सुधारित साठलेली EL (G),सुधारित साठलेली ML (H),सुधारित एकूण EL (K),सुधारित एकूण ML (L),सुधारित गैरहजर कालावधी,सुधारित रजा प्रकार,सुधारित रजा दिवस (R),सुधारित अंतिम EL (Z),सुधारित अंतिम ML (AA),रजेतील LWP,";
-    csv += "F फरक,E फरक,G फरक,H फरक,K फरक,L फरक,R फरक,EL अंतिम फरक (Z),ML अंतिम फरक (AA),LWP फरक,सिस्टीम निष्कर्ष,ऑडिटर शेरा\n";
+    csv += "F फरक,E फरक,G फरक,H फरक,K फरक,L फरक,R फरक,चालू EL फरक (Z),चालू ML फरक (AA),LWP फरक,सिस्टीम निष्कर्ष,ऑडिटर शेरा\n";
 
     auditEntries.forEach(r => {
         if (r.type === "extra") {
             csv += `नाही,"अतिरिक्त रजा (${r.extraYear})",0,0,0,0,${r.extraDays},0,"---","अतिरिक्त रजा",0,${r.calcSbFinalEL},${r.calcSbFinalML},0,`;
             csv += `नाही,"अतिरिक्त रजा (${r.extraYear})",0,0,0,0,${r.extraDays},0,"---","अतिरिक्त रजा",0,${r.calcDueFinalEL},${r.calcDueFinalML},0,`;
-            csv += `0,0,0,0,0,0,0,${r.diffZ},${r.diffAA},0,"अतिरिक्त रजा जमा","${r.manualRemark}"\n`;
+            csv += `0,0,0,0,0,0,0,0,0,0,"अतिरिक्त रजा जमा","${r.manualRemark}"\n`;
         } else {
             csv += [
                 (r.isSbContinuous ? "होय" : "नाही"), `"${r.sbA} - ${r.sbB}"`, r.calcSbF, r.sbE, r.calcSbG.toFixed(2), r.calcSbH.toFixed(2), r.calcSbK.toFixed(2), r.calcSbL.toFixed(2),
@@ -951,10 +992,16 @@ function clearAuditData() {
     if (confirm("सर्व तुलनात्मक ऑडिट नोंदी पुसल्या जातील. खात्री आहे का?")) {
         auditEntries = [];
         pageBreaks = [];
-        localStorage.removeItem("pmc_audit_4tables_chain_v7");
-        localStorage.removeItem("pmc_audit_pagebreaks_v7");
-        localStorage.removeItem("pmc_audit_closure_v7");
+        localStorage.removeItem("pmc_audit_4tables_chain_v8");
+        localStorage.removeItem("pmc_audit_pagebreaks_v8");
+        localStorage.removeItem("pmc_audit_closure_v8");
+        localStorage.removeItem("pmc_aud_emp_name");
+        localStorage.removeItem("pmc_aud_emp_pf");
+        localStorage.removeItem("pmc_aud_join_date");
         document.getElementById('global_closure_check').checked = false;
+        document.getElementById('aud_emp_name').value = "";
+        document.getElementById('aud_emp_pf').value = "";
+        document.getElementById('aud_join_date').value = "01/01/1990";
         renderComparativeTable();
     }
 }
