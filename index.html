@@ -283,7 +283,7 @@ tr:nth-child(even) { background-color: #fafafa; }
 
 <div style="margin-top: 15px; font-size: 11px; line-height: 1.5; background: #ffffff; border: 1px solid #cfd8dc; padding: 10px; border-radius: 4px;">
     <strong>अद्ययावत हिशोब मार्गदर्शक:</strong><br>
-    • <strong>राउंड-अप पद्धत:</strong> हक्काच्या रजेसाठी .१० च्या पुढे गेल्यास (.११ = १.००) आणि वैद्यकीय रजेसाठी .२९ च्या पुढे गेल्यास (.३० = १.००) अशी अचूक बेरीज-वजाबाकी होईल.<br>
+    • <strong>अचूक उणे (Negative) गणित:</strong> आता शिल्लक उणे (उदा. -0.03) गेली तरी सिस्टीम त्याला अचूकपणे हाताळेल. सलग रजेत उणे शिल्लक वाढणार नाही.<br>
     • <strong>स्वतंत्र रजा खर्च:</strong> प्रत्येक रजा स्वतंत्र असल्याने ML संपल्यावर EL मधून किंवा EL संपल्यावर LWP मध्ये परस्पर रजा वजा होणार नाही.<br>
     • <strong>चालू ओळीचा फरक:</strong> तक्ता ३ व ४ मध्ये मागील संचित फरक न दाखवता केवळ चालू ओळीतील निव्वळ फरक व अचूक शेरा दिसेल.
 </div>
@@ -303,9 +303,9 @@ window.onload = function() {
     if (savedJoin) document.getElementById('aud_join_date').value = savedJoin;
     else document.getElementById('aud_join_date').value = "01/01/1990";
 
-    let saved = localStorage.getItem("pmc_audit_4tables_exact_v9");
-    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v9");
-    let savedClosure = localStorage.getItem("pmc_audit_closure_v9");
+    let saved = localStorage.getItem("pmc_audit_4tables_perfect_v10");
+    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v10");
+    let savedClosure = localStorage.getItem("pmc_audit_closure_v10");
 
     if (saved) auditEntries = JSON.parse(saved);
     if (savedBreaks) pageBreaks = JSON.parse(savedBreaks);
@@ -377,58 +377,57 @@ function nextDay(dateObj) {
     return next;
 }
 
-// 🌟 Base-11 व Base-30 अचूक बेरीज व वजाबाकी फंक्शन्स 🌟
+// 🌟 नविन अचूक Base-11 आणि Base-30 युनिट्स प्रणाली 🌟
+
+// १. दशांश संख्येचे युनिट्समध्ये (Units) रूपांतर
+function toUnits(val, divisor) {
+    let absVal = Math.abs(val);
+    let intPart = Math.floor(absVal);
+    let modPart = Math.round((absVal % 1) * 100);
+    let totalUnits = (intPart * divisor) + modPart;
+    return val < 0 ? -totalUnits : totalUnits;
+}
+
+// २. युनिट्सचे पुन्हा दशांश (Decimal) मध्ये रूपांतर
+function fromUnits(units, divisor) {
+    let absUnits = Math.abs(units);
+    let intPart = Math.floor(absUnits / divisor);
+    let modPart = absUnits % divisor;
+    let res = intPart + (modPart / 100);
+    return units < 0 ? -res : res;
+}
+
+// ३. रजा जमा करणे
 function addLeaveBalance(bal, credit, divisor, maxLimit) {
-    let bInt = Math.floor(bal);
-    let bMod = Math.round((bal % 1) * 100);
-    let cInt = Math.floor(credit);
-    let cMod = Math.round((credit % 1) * 100);
-
-    let totalMod = bMod + cMod;
-    let carry = Math.floor(totalMod / divisor);
-    let remMod = totalMod % divisor;
-
-    let res = (bInt + cInt + carry) + (remMod / 100);
-    if (Math.floor(res) >= maxLimit) return maxLimit;
+    let u1 = toUnits(bal, divisor);
+    let u2 = toUnits(credit, divisor);
+    let res = fromUnits(u1 + u2, divisor);
+    if (res >= maxLimit) return maxLimit;
     return res;
 }
 
-function subtractLeaveDays(bal, daysToDeduct, divisor) {
-    let bInt = Math.floor(bal);
-    let bMod = Math.round((bal % 1) * 100);
-
-    let totalFractionUnits = (bInt * divisor) + bMod;
-    let deductUnits = daysToDeduct * divisor;
-
-    let remUnits = totalFractionUnits - deductUnits;
-    if (remUnits < 0) {
-        // ऋण शिल्लक हाताळणे
-        let absUnits = Math.abs(remUnits);
-        let negInt = Math.floor(absUnits / divisor);
-        let negMod = absUnits % divisor;
-        return -(negInt + (negMod / 100));
-    }
-    let resInt = Math.floor(remUnits / divisor);
-    let resMod = remUnits % divisor;
-    return resInt + (resMod / 100);
+// ४. रजा वजा करणे (खर्ची पाडणे)
+function deductLeaveDays(bal, daysToDeduct, divisor) {
+    let u1 = toUnits(bal, divisor);
+    let u2 = daysToDeduct * divisor; // दिवस असल्याने थेट गुणणे
+    return fromUnits(u1 - u2, divisor);
 }
 
-// 🌟 तक्ता ३ साठी दोन रजांमधील निव्वळ फरक Base-11 / Base-30 प्रमाणे काढणे 🌟
+// ५. चालू ओळीतील निव्वळ बदल काढणे (Current Balance - Prev Balance)
+function getNetChange(currentBal, prevBal, divisor) {
+    let u1 = toUnits(currentBal, divisor);
+    let u2 = toUnits(prevBal, divisor);
+    return fromUnits(u1 - u2, divisor);
+}
+
+// ६. तक्ता ३ मधील फरक (Service Book Net - Due Net)
 function diffLeaveUnits(valA, valB, divisor) {
-    let aInt = Math.floor(Math.abs(valA)), aMod = Math.round((Math.abs(valA) % 1) * 100);
-    let bInt = Math.floor(Math.abs(valB)), bMod = Math.round((Math.abs(valB) % 1) * 100);
-
-    let unitsA = (valA < 0 ? -1 : 1) * ((aInt * divisor) + aMod);
-    let unitsB = (valB < 0 ? -1 : 1) * ((bInt * divisor) + bMod);
-
-    let diff = unitsA - unitsB;
-    if (diff === 0) return "0.00";
-
-    let sign = diff < 0 ? "-" : "";
-    let absDiff = Math.abs(diff);
-    let resInt = Math.floor(absDiff / divisor);
-    let resMod = absDiff % divisor;
-    return `${sign}${resInt}.${String(resMod).padStart(2, '0')}`;
+    let u1 = toUnits(valA, divisor);
+    let u2 = toUnits(valB, divisor);
+    let diffUnits = u1 - u2;
+    if (diffUnits === 0) return "0.00";
+    let res = fromUnits(diffUnits, divisor);
+    return res.toFixed(2);
 }
 
 function rechainAllDates(startIdx) {
@@ -540,18 +539,18 @@ function addAnnualExtraLeavePrompt() {
 function addManualPageBreak() {
     if (auditEntries.length === 0) { alert("आधी नोंदी जोडा!"); return; }
     pageBreaks.push(auditEntries.length - 1);
-    localStorage.setItem("pmc_audit_pagebreaks_v9", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v10", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function removeManualPageBreak(idx) {
     pageBreaks = pageBreaks.filter(b => b !== idx);
-    localStorage.setItem("pmc_audit_pagebreaks_v9", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v10", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function handleGlobalClosureToggle(isChecked) {
-    localStorage.setItem("pmc_audit_closure_v9", isChecked ? "true" : "false");
+    localStorage.setItem("pmc_audit_closure_v10", isChecked ? "true" : "false");
     recalculateAllRecords();
 }
 
@@ -683,12 +682,9 @@ function recalculateAllRecords() {
         }
 
         row.calcDueF = dueF;
-        // ११ दिवसांसाठी १ EL (दशांश ० ते १०)
         row.calcDueG = Math.floor(dueF / 11) + ((dueF % 11) / 100);
-        // ३० दिवसांसाठी १ ML (दशांश ० ते २९)
         row.calcDueH = Math.floor(dueF / 30) + ((dueF % 30) / 100);
 
-        // एकूण साठलेली रजा (Base-11 व Base-30 प्रमाणे अचूक बेरीज)
         row.calcDueK = addLeaveBalance(curDueEL, row.calcDueG, 11, 365);
         row.calcDueL = addLeaveBalance(curDueML, row.calcDueH, 30, 120);
 
@@ -700,7 +696,7 @@ function recalculateAllRecords() {
         }
         row.calcDueR = dueR;
 
-        // 🌟 स्वतंत्र रजा वजावट (कोणतीही परस्पर वजावट नाही) 🌟
+        // 🌟 स्वतंत्र रजा वजावट 🌟
         if (rowIsClosure) {
             row.calcDueFinalEL = row.calcDueK;
             row.calcDueFinalML = row.calcDueL;
@@ -708,11 +704,11 @@ function recalculateAllRecords() {
             row.calcDueFinalEL = row.calcDueK;
             row.calcDueFinalML = row.calcDueL;
         } else if (row.dueQ === "हक्काची रजा" || row.dueQ === "सरेंडर रजा") {
-            row.calcDueFinalEL = subtractLeaveDays(row.calcDueK, dueR, 11);
+            row.calcDueFinalEL = deductLeaveDays(row.calcDueK, dueR, 11);
             row.calcDueFinalML = row.calcDueL;
         } else if (row.dueQ === "वैद्यकीय रजा") {
-            row.calcDueFinalML = subtractLeaveDays(row.calcDueL, dueR, 30);
-            row.calcDueFinalEL = row.calcDueK; // ML संपल्यास EL खर्च नाही
+            row.calcDueFinalML = deductLeaveDays(row.calcDueL, dueR, 30);
+            row.calcDueFinalEL = row.calcDueK;
         } else {
             row.calcDueFinalEL = row.calcDueK;
             row.calcDueFinalML = row.calcDueL;
@@ -773,9 +769,9 @@ function recalculateAllRecords() {
             autoSbFinalEL = row.calcSbK;
             autoSbFinalML = row.calcSbL;
         } else if (row.sbQ === "हक्काची रजा" || row.sbQ === "सरेंडर रजा") {
-            autoSbFinalEL = subtractLeaveDays(row.calcSbK, row.calcSbR, 11);
+            autoSbFinalEL = deductLeaveDays(row.calcSbK, row.calcSbR, 11);
         } else if (row.sbQ === "वैद्यकीय रजा") {
-            autoSbFinalML = subtractLeaveDays(row.calcSbL, row.calcSbR, 30);
+            autoSbFinalML = deductLeaveDays(row.calcSbL, row.calcSbR, 30);
         }
 
         row.calcSbFinalEL = (row.sbCustomZ !== null) ? parseFloat(row.sbCustomZ) : autoSbFinalEL;
@@ -795,13 +791,13 @@ function recalculateAllRecords() {
         row.diffL = diffLeaveUnits(row.calcSbL, row.calcDueL, 30);
         row.diffR = (row.calcSbR - row.calcDueR);
 
-        // 🌟 चालू ओळीतील निव्वळ बदल Base-11 व Base-30 प्रमाणे 🌟
-        let sbRowNetEL = subtractLeaveDays(row.calcSbFinalEL, prevSbEL, 11);
-        let dueRowNetEL = subtractLeaveDays(row.calcDueFinalEL, prevDueEL, 11);
+        // 🌟 चालू ओळीतील निव्वळ बदल 🌟
+        let sbRowNetEL = getNetChange(row.calcSbFinalEL, prevSbEL, 11);
+        let dueRowNetEL = getNetChange(row.calcDueFinalEL, prevDueEL, 11);
         row.diffZ = diffLeaveUnits(sbRowNetEL, dueRowNetEL, 11);
 
-        let sbRowNetML = subtractLeaveDays(row.calcSbFinalML, prevSbML, 30);
-        let dueRowNetML = subtractLeaveDays(row.calcDueFinalML, prevDueML, 30);
+        let sbRowNetML = getNetChange(row.calcSbFinalML, prevSbML, 30);
+        let dueRowNetML = getNetChange(row.calcDueFinalML, prevDueML, 30);
         row.diffAA = diffLeaveUnits(sbRowNetML, dueRowNetML, 30);
 
         row.diffLwp = ((row.dueQ === "बिनपगारी रजा" ? row.calcDueR : 0) - (parseFloat(row.sbCustomLwp) || (row.sbQ === "बिनपगारी रजा" ? row.calcSbR : 0)));
@@ -811,17 +807,17 @@ function recalculateAllRecords() {
         // ==========================================
         let remList = [];
         if (rowIsClosure) remList.push("🛑 सेवा समाप्ती (हिशोब बंद).");
-        if (row.isDueContinuous) remList.push("सलग रजा अवधी लागू केला.");
-        if (parseFloat(row.diffZ) > 0) remList.push(`या नोंदीत EL ${row.diffZ} दिवस जास्त जमा झाली.`);
-        if (parseFloat(row.diffZ) < 0) remList.push(`या नोंदीत EL ${Math.abs(parseFloat(row.diffZ)).toFixed(2)} दिवस कमी नोंदली.`);
-        if (parseFloat(row.diffAA) > 0) remList.push(`या नोंदीत ML ${row.diffAA} दिवस जास्त जमा झाली.`);
-        if (parseFloat(row.diffAA) < 0) remList.push(`या नोंदीत ML ${Math.abs(parseFloat(row.diffAA)).toFixed(2)} दिवस कमी नोंदली.`);
-        if (row.diffLwp !== 0) remList.push(`LWP मध्ये ${row.diffLwp} दिवसांची तफावत आहे.`);
-        if (remList.length === 0) remList.push("या नोंदीत हिशोब तंतोतंत जुळतो.");
+        if (row.isDueContinuous) remList.push("सलग रजा अवधी.");
+        if (parseFloat(row.diffZ) > 0) remList.push(`या नोंदीत EL ${row.diffZ} दिवस जास्त जमा.`);
+        if (parseFloat(row.diffZ) < 0) remList.push(`या नोंदीत EL ${Math.abs(parseFloat(row.diffZ)).toFixed(2)} दिवस कमी.`);
+        if (parseFloat(row.diffAA) > 0) remList.push(`या नोंदीत ML ${row.diffAA} दिवस जास्त जमा.`);
+        if (parseFloat(row.diffAA) < 0) remList.push(`या नोंदीत ML ${Math.abs(parseFloat(row.diffAA)).toFixed(2)} दिवस कमी.`);
+        if (row.diffLwp !== 0) remList.push(`LWP मध्ये ${row.diffLwp} दिवसांची तफावत.`);
+        if (remList.length === 0) remList.push("नोंद तंतोतंत जुळते.");
         row.systemRemark = remList.join(" ");
     });
 
-    localStorage.setItem("pmc_audit_4tables_exact_v9", JSON.stringify(auditEntries));
+    localStorage.setItem("pmc_audit_4tables_exact_v10", JSON.stringify(auditEntries));
     renderComparativeTable();
 }
 
@@ -955,7 +951,7 @@ function deleteAuditRow(idx) {
     if (confirm("तुम्हाला नक्की ही ओळ रद्द करायची आहे का?")) {
         auditEntries.splice(idx, 1);
         pageBreaks = pageBreaks.filter(b => b !== idx).map(b => b > idx ? b - 1 : b);
-        localStorage.setItem("pmc_audit_pagebreaks_v9", JSON.stringify(pageBreaks));
+        localStorage.setItem("pmc_audit_pagebreaks_v10", JSON.stringify(pageBreaks));
         rechainAllDates(idx > 0 ? idx - 1 : 0);
         recalculateAllRecords();
     }
@@ -984,7 +980,7 @@ function exportComparativeExcel() {
                 (r.isSbContinuous ? "होय" : "नाही"), `"${r.sbA} - ${r.sbB}"`, r.calcSbF, r.sbE, r.calcSbG.toFixed(2), r.calcSbH.toFixed(2), r.calcSbK.toFixed(2), r.calcSbL.toFixed(2),
                 `"${r.sbO} - ${r.sbP}"`, `"${r.sbQ}"`, r.calcSbR, r.calcSbFinalEL.toFixed(2), r.calcSbFinalML.toFixed(2), (r.sbCustomLwp || 0),
                 (r.isDueContinuous ? "होय" : "नाही"), `"${r.dueA} - ${r.dueB}"`, r.calcDueF, r.dueE, r.calcDueG.toFixed(2), r.calcDueH.toFixed(2), r.calcDueK.toFixed(2), r.calcDueL.toFixed(2),
-                `"${r.dueO} - ${r.dueP}"`, `"${r.dueQ}"`, r.calcDueR, r.calcDueFinalEL.toFixed(2), r.calcDueFinalML.toFixed(2), (r.dueQ === "बिनपगारी रजा" ? r.calcDueR : 0),
+                `"${r.dueO} - ${r.dueP}"`, `"${r.displayDueQ || r.dueQ}"`, r.calcDueR, r.calcDueFinalEL.toFixed(2), r.calcDueFinalML.toFixed(2), (r.dueQ === "बिनपगारी रजा" ? r.calcDueR : 0),
                 r.diffF, r.diffE, r.diffG, r.diffH, r.diffK, r.diffL, r.diffR, r.diffZ, r.diffAA, r.diffLwp,
                 `"${r.systemRemark}"`, `"${r.manualRemark || ''}"`
             ].join(",") + "\n";
@@ -1002,9 +998,9 @@ function clearAuditData() {
     if (confirm("सर्व तुलनात्मक ऑडिट नोंदी पुसल्या जातील. खात्री आहे का?")) {
         auditEntries = [];
         pageBreaks = [];
-        localStorage.removeItem("pmc_audit_4tables_exact_v9");
-        localStorage.removeItem("pmc_audit_pagebreaks_v9");
-        localStorage.removeItem("pmc_audit_closure_v9");
+        localStorage.removeItem("pmc_audit_4tables_exact_v10");
+        localStorage.removeItem("pmc_audit_pagebreaks_v10");
+        localStorage.removeItem("pmc_audit_closure_v10");
         localStorage.removeItem("pmc_aud_emp_name");
         localStorage.removeItem("pmc_aud_emp_pf");
         localStorage.removeItem("pmc_aud_join_date");
