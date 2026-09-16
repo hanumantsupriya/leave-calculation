@@ -2,7 +2,7 @@
 <html lang="mr">
 <head>
 <meta charset="UTF-8">
-<title>पुणे महानगरपालिका - तुलनात्मक रजा हिशोब व पडताळणी ताळेबंद (Audit Comparison Sheet)</title>
+<title>पुणे महानगरपालिका - तुलनात्मक रजा हिशोब व पडताळणी ताळेबंद</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
 body { 
@@ -12,7 +12,7 @@ body {
     padding: 10px; 
 }
 .container { 
-    max-width: 1950px; 
+    max-width: 2200px; 
     margin: auto; 
     background: #ffffff; 
     padding: 20px; 
@@ -102,14 +102,14 @@ th, td {
     padding: 4px 2px; 
     text-align: center; 
 }
-/* ४ स्वतंत्र तक्त्यांचे हेडर कलर्स (High Contrast Grayscale) */
-.th-sb { background-color: #424242 !important; color: #ffffff !important; } /* तक्ता १ */
-.th-due { background-color: #000000 !important; color: #ffffff !important; } /* तक्ता २ */
-.th-diff { background-color: #616161 !important; color: #ffffff !important; } /* तक्ता ३ */
-.th-remark { background-color: #212121 !important; color: #ffffff !important; } /* तक्ता ४ */
+/* ४ स्वतंत्र तक्त्यांचे हेडर कलर्स */
+.th-sb { background-color: #333333 !important; color: #ffffff !important; }
+.th-due { background-color: #000000 !important; color: #ffffff !important; }
+.th-diff { background-color: #555555 !important; color: #ffffff !important; }
+.th-remark { background-color: #222222 !important; color: #ffffff !important; }
 
 .sub-header th { font-weight: bold; font-size: 9px; padding: 4px 1px; }
-tr:nth-child(even) { background-color: #f7f7f7; }
+tr:nth-child(even) { background-color: #f8f8f8; }
 
 .table-input {
     width: 95% !important;
@@ -122,11 +122,11 @@ tr:nth-child(even) { background-color: #f7f7f7; }
     background: #ffffff !important;
     color: #000000 !important;
 }
-.table-input-sb { background: #fffde7 !important; } /* सेवापुस्तक इनपुट */
-.table-input-date { width: 70px !important; font-size: 9px !important; }
+.table-input-sb { background: #fffde7 !important; } /* सेवापुस्तक संपादन पिवळा रंग */
+.table-input-date { width: 68px !important; font-size: 9px !important; }
 .diff-alert { font-weight: bold; color: #000000; background: #e0e0e0; }
 .remark-cell { text-align: left !important; padding: 4px 6px !important; font-size: 9px; line-height: 1.3; }
-.btn-row-del { background: #000000; color: #ffffff; border: none; padding: 2px 5px; cursor: pointer; font-size: 9px; }
+.btn-row-del { background: #000000; color: #ffffff; border: none; padding: 2px 5px; cursor: pointer; font-size: 9px; border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -140,12 +140,16 @@ tr:nth-child(even) { background-color: #f7f7f7; }
         <input type="text" id="aud_emp_info" placeholder="उदा. हनुमंत आडागळे (PF-9922)">
     </div>
     <div>
-        <label>सुरुवातीची खरी शिल्लक EL (Z):</label>
-        <input type="number" step="0.01" id="init_due_el" value="0.00">
+        <label>नोकरीत रुजू दिनांक (Joining Date):</label>
+        <input type="text" id="aud_join_date" placeholder="DD/MM/YYYY">
     </div>
     <div>
-        <label>सुरुवातीची खरी शिल्लक ML (AA):</label>
-        <input type="number" step="0.01" id="init_due_ml" value="0.00">
+        <label>सुरुवातीची देय शिल्लक EL (Z):</label>
+        <input type="number" step="0.01" id="init_due_el" value="0.00" readonly style="background:#eee;">
+    </div>
+    <div>
+        <label>सुरुवातीची देय शिल्लक ML (AA):</label>
+        <input type="number" step="0.01" id="init_due_ml" value="0.00" readonly style="background:#eee;">
     </div>
     <div>
         <label>सेवापुस्तकातील सुरुवातीची शिल्लक EL:</label>
@@ -156,35 +160,39 @@ tr:nth-child(even) { background-color: #f7f7f7; }
         <input type="number" step="0.01" id="init_sb_ml" value="0.00">
     </div>
     <div style="grid-column: 1 / -1; display: flex; gap: 10px; justify-content: flex-end; margin-top: 5px;">
-        <button class="btn-calc" onclick="addNewAuditRow()">+ नवीन नोंद जोडा (Add Row)</button>
+        <button class="btn-calc" onclick="addNewAuditRow()">+ नवीन नोंद जोडा (Add Next Entry)</button>
         <button class="btn-excel" onclick="exportComparativeExcel()">Excel डाउनलोड करा</button>
         <button class="btn-clear" onclick="clearAuditData()">सर्व डेटा पुसा</button>
     </div>
 </div>
 
-<h3 style="font-size: 13px; margin: 5px 0;">📋 शेजारी-शेजारी ४ तक्त्यांचा तुलनात्मक ताळेबंद (Side-by-Side 4-Table Comparative View)</h3>
+<h3 style="font-size: 13px; margin: 5px 0;">📋 शेजारी-शेजारी ४ तक्त्यांचा तुलनात्मक ताळेबंद (Side-by-Side 4-Table Comparative Register)</h3>
 <div style="overflow-x: auto;">
 <table id="comparativeAuditTable">
 <thead>
-    <!-- मुख्य हेडर: ४ तक्ते -->
     <tr>
-        <th colspan="7" class="th-sb">तक्ता १: सेवा पुस्तकातील प्रत्यक्ष नोंद (AS RECORDED IN SERVICE BOOK)</th>
+        <th colspan="13" class="th-sb">तक्ता १: सेवा पुस्तकातील प्रत्यक्ष नोंद (AS RECORDED IN SERVICE BOOK - EDITABLE)</th>
         <th colspan="13" class="th-due">तक्ता २: नियमानुसार सुधारित बरोबर हिशोब (AS PER RULES / DUE)</th>
         <th colspan="3" class="th-diff">तक्ता ३: प्रत्यक्ष फरक (VARIANCE)</th>
-        <th colspan="2" class="th-remark">तक्ता ४: ऑडिटर शेरा (AUDIT REMARKS)</th>
+        <th colspan="3" class="th-remark">तक्ता ४: ऑडिटर शेरा (AUDIT REMARKS)</th>
     </tr>
-    <!-- सब-हेडर -->
     <tr class="sub-header">
-        <!-- तक्ता १ -->
+        <!-- तक्ता १: सेवापुस्तक -->
         <th class="th-sb">हजर दिनांक (A-B)</th>
         <th class="th-sb">F</th>
         <th class="th-sb">E</th>
+        <th class="th-sb">साठलेली EL (G)</th>
+        <th class="th-sb">साठलेली ML (H)</th>
+        <th class="th-sb">एकूण EL (K)</th>
+        <th class="th-sb">एकूण ML (L)</th>
         <th class="th-sb">गैरहजर (O-P)</th>
         <th class="th-sb">रजा (Q)</th>
-        <th class="th-sb">शिल्लक EL (Z)</th>
-        <th class="th-sb">शिल्लक ML (AA)</th>
+        <th class="th-sb">दिवस (R)</th>
+        <th class="th-sb">अंतिम EL (Z)</th>
+        <th class="th-sb">अंतिम ML (AA)</th>
+        <th class="th-sb">LWP</th>
 
-        <!-- तक्ता २ -->
+        <!-- तक्ता २: सुधारित बरोबर -->
         <th class="th-due">हजर दिनांक (A-B Edit)</th>
         <th class="th-due">हजर दिवस (F)</th>
         <th class="th-due">LWP (E)</th>
@@ -199,36 +207,45 @@ tr:nth-child(even) { background-color: #f7f7f7; }
         <th class="th-due">अंतिम ML (AA)</th>
         <th class="th-due">रजेतील LWP</th>
 
-        <!-- तक्ता ३ -->
+        <!-- तक्ता ३: फरक -->
         <th class="th-diff">EL फरक</th>
         <th class="th-diff">ML फरक</th>
         <th class="th-diff">LWP फरक</th>
 
-        <!-- तक्ता ४ -->
-        <th class="th-remark" style="width: 200px;">सिस्टीम निष्कर्ष</th>
+        <!-- तक्ता ४: शेरा -->
+        <th class="th-remark" style="width: 220px;">सिस्टीम निष्कर्ष</th>
         <th class="th-remark">ऑडिटर मॅन्युअल शेरा</th>
+        <th class="th-remark">कृती</th>
     </tr>
 </thead>
 <tbody>
-    <tr><td colspan="25" style="padding: 20px; text-align: center;">अजून कोणतीही नोंद जोडलेली नाही. '+ नवीन नोंद जोडा' बटणावर क्लिक करा.</td></tr>
+    <tr><td colspan="32" style="padding: 20px; text-align: center;">अजून कोणतीही नोंद जोडलेली नाही. रुजू दिनांक निवडून '+ नवीन नोंद जोडा' बटणावर क्लिक करा.</td></tr>
 </tbody>
 </table>
 </div>
 
 <div style="margin-top: 20px; font-size: 11px; line-height: 1.5; background: #ffffff; border: 1px solid #000000; padding: 10px;">
-    <strong>ऑडिट पडताळणी मार्गदर्शक (How to use):</strong><br>
-    • <strong>तक्ता १:</strong> सेवापुस्तकातील नोंद जशी आहे तशी टाईप करा (त्यात काही लॉजिक नसले तरी चालेल).<br>
-    • <strong>तक्ता २:</strong> 'हजर दिनांक' आणि 'रजा दिनांक' एडिट करा; मनपा नियमानुसार ११ व ३० दिवसांचे गुणोत्तर सिस्टीम आपोआप बरोबर लावेल.<br>
-    • <strong>तक्ता ३ व ४:</strong> दोन्ही नोंदींमधील फरक आणि कारकुनाने केलेली चूक (जादा रजा देणे, शिल्लक नसताना खर्ची पाडणे) सिस्टीम तत्काळ नमूद करेल.
+    <strong>ऑडिट पडताळणी मार्गदर्शक (Auditor Note):</strong><br>
+    • <strong>सुरुवातीची स्थिती:</strong> नोकरीत रुजू झाल्याच्या दिनांकापासून हिशोब सुरू होत असल्याने सुरुवातीची देय शिल्लक शून्य धरली आहे.<br>
+    • <strong>तक्ता १:</strong> सेवापुस्तकात जी नोंद केली आहे ती सर्व रकान्यांमध्ये आपोआप सूत्राने येईल; परंतु कारकुनाने चुकीचा आकडा टाकला असल्यास पिवळ्या रकान्यात थेट बदल करा.<br>
+    • <strong>तक्ता २:</strong> 'हजर दिनांक' आणि 'रजा दिनांक' मॅन्युअली एडिट करता येतील; मनपा नियमानुसार ११ व ३० दिवसांचे गुणोत्तर सिस्टीम आपोआप लावेल.<br>
+    • <strong>तक्ता ३ व ४:</strong> दोन्ही नोंदींमधील फरक (जादा रजा देणे, शिल्लक नसताना खर्ची पाडणे) सिस्टीम तत्काळ नमूद करेल.
 </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 let auditEntries = [];
+const config = { dateFormat: "d/m/Y", allowInput: true };
+flatpickr("#aud_join_date", { ...config, defaultDate: "01/01/1990", onChange: function(selectedDates, dateStr) {
+    if (auditEntries.length === 0) return;
+    auditEntries[0].dueA = dateStr;
+    auditEntries[0].sbA = dateStr;
+    recalculateAllRecords();
+}});
 
 window.onload = function() {
-    let saved = localStorage.getItem("pmc_comparative_audit_data");
+    let saved = localStorage.getItem("pmc_comparative_audit_data_v2");
     if (saved) {
         auditEntries = JSON.parse(saved);
         renderComparativeTable();
@@ -236,7 +253,7 @@ window.onload = function() {
 };
 
 function parseDMY(str) {
-    if (!str || str === "---") return null;
+    if (!str || str === "---" || str.includes("रोखीकरण")) return null;
     let parts = str.split("/");
     if (parts.length < 3) return null;
     return new Date(parts[2], parts[1] - 1, parts[0]);
@@ -254,164 +271,200 @@ function applyLimits(val, maxVal) {
     return base + (dec / 100);
 }
 
-// नवीन ओळ जोडणे
+// नवीन नोंद जोडणे
 function addNewAuditRow() {
-    let prevDueA = "01/01/2000";
-    let prevDueB = "30/06/2000";
-    let prevDueO = "01/07/2000";
-    let prevDueP = "10/07/2000";
+    let joinDateStr = document.getElementById('aud_join_date').value || "01/01/1990";
+    let nextDueA = joinDateStr;
+    let nextDueB = "30/06/1990";
+    let nextDueO = "01/07/1990";
+    let nextDueP = "05/07/1990";
 
     if (auditEntries.length > 0) {
         let last = auditEntries[auditEntries.length - 1];
         let pDate = parseDMY(last.dueP);
         if (pDate) {
-            let nextA = new Date(pDate);
-            nextA.setDate(nextA.getDate() + 1);
-            let nextB = new Date(nextA);
-            nextB.setMonth(nextB.getMonth() + 6);
-            let nextO = new Date(nextB);
-            nextO.setDate(nextO.getDate() + 1);
-            let nextP = new Date(nextO);
-            nextP.setDate(nextP.getDate() + 5);
+            let nA = new Date(pDate); nA.setDate(nA.getDate() + 1);
+            let nB = new Date(nA); nB.setMonth(nB.getMonth() + 6);
+            let nO = new Date(nB); nO.setDate(nO.getDate() + 1);
+            let nP = new Date(nO); nP.setDate(nP.getDate() + 4);
 
-            prevDueA = formatDMY(nextA);
-            prevDueB = formatDMY(nextB);
-            prevDueO = formatDMY(nextO);
-            prevDueP = formatDMY(nextP);
+            nextDueA = formatDMY(nA);
+            nextDueB = formatDMY(nB);
+            nextDueO = formatDMY(nO);
+            nextDueP = formatDMY(nP);
         }
     }
 
     let newRow = {
-        // तक्ता १: सेवापुस्तक नोंद (Editable Default)
-        sbDates: prevDueA + " - " + prevDueB,
-        sbF: 180,
-        sbE: 0,
-        sbLeaveDates: prevDueO + " - " + prevDueP,
-        sbQ: "वैद्यकीय रजा",
-        sbFinalEL: 15.00,
-        sbFinalML: 10.00,
+        // तक्ता १: सेवापुस्तक नोंद
+        sbA: nextDueA, sbB: nextDueB, sbE: 0, sbO: nextDueO, sbP: nextDueP, sbQ: "वैद्यकीय रजा",
+        sbCustomF: null, sbCustomG: null, sbCustomH: null, sbCustomK: null, sbCustomL: null,
+        sbCustomZ: null, sbCustomAA: null, sbCustomLwp: null,
 
-        // तक्ता २: बरोबर हिशोब (Editable Dates + Auto Formulas)
-        dueA: prevDueA,
-        dueB: prevDueB,
-        dueE: 0,
-        dueO: prevDueO,
-        dueP: prevDueP,
-        dueQ: "वैद्यकीय रजा",
+        // तक्ता २: सुधारित बरोबर नोंद
+        dueA: nextDueA, dueB: nextDueB, dueE: 0, dueO: nextDueO, dueP: nextDueP, dueQ: "वैद्यकीय रजा",
 
         // तक्ता ४: ऑडिटर मॅन्युअल शेरा
         manualRemark: ""
     };
 
     auditEntries.push(newRow);
-    recalculateAllDueRecords();
+    recalculateAllRecords();
 }
 
-// 🌟 तक्ता २ (Due Calculation) मधील संपूर्ण गणिते लूपमध्ये मोजणे 🌟
-function recalculateAllDueRecords() {
-    let curEL = parseFloat(document.getElementById('init_due_el').value) || 0;
-    let curML = parseFloat(document.getElementById('init_due_ml').value) || 0;
+// 🌟 तक्ता १ आणि तक्ता २ दोन्हीचे परस्पर ताळेबंद गणित लूपमध्ये चालवणे 🌟
+function recalculateAllRecords() {
+    let curDueEL = 0.00;
+    let curDueML = 0.00;
+    let curSbEL = parseFloat(document.getElementById('init_sb_el').value) || 0.00;
+    let curSbML = parseFloat(document.getElementById('init_sb_ml').value) || 0.00;
 
     auditEntries.forEach((row, idx) => {
-        // हजर दिवस (F)
+        // ==========================================
+        // १. तक्ता २: शासकीय नियमानुसार बरोबर हिशोब (DUE)
+        // ==========================================
         let dA = parseDMY(row.dueA);
         let dB = parseDMY(row.dueB);
-        let fDays = 0;
+        let dueF = 0;
         if (dA && dB && dB >= dA) {
             let tot = Math.round((dB.getTime() - dA.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-            fDays = Math.max(0, tot - (parseFloat(row.dueE) || 0));
+            dueF = Math.max(0, tot - (parseFloat(row.dueE) || 0));
         }
-        row.calcF = fDays;
+        row.calcDueF = dueF;
+        row.calcDueG = Math.floor(dueF / 11) + (dueF % 11) / 100;
+        row.calcDueH = Math.floor(dueF / 30) + (dueF % 30) / 100;
 
-        // साठलेली EL (G) व साठलेली ML (H)
-        row.calcG = Math.floor(fDays / 11) + (fDays % 11) / 100;
-        row.calcH = Math.floor(fDays / 30) + (fDays % 30) / 100;
+        let z3_int = Math.floor(curDueEL), z3_mod = Math.round((curDueEL % 1) * 100);
+        let g_int = Math.floor(row.calcDueG), g_mod = Math.round((row.calcDueG % 1) * 100);
+        row.calcDueK = applyLimits(z3_int + g_int + Math.floor((z3_mod + g_mod) / 11) + ((z3_mod + g_mod) % 11) / 100, 365);
 
-        // एकूण साठलेली EL (K)
-        let z3_int = Math.floor(curEL), z3_mod = Math.round((curEL % 1) * 100);
-        let g_int = Math.floor(row.calcG), g_mod = Math.round((row.calcG % 1) * 100);
-        row.calcK = applyLimits(z3_int + g_int + Math.floor((z3_mod + g_mod) / 11) + ((z3_mod + g_mod) % 11) / 100, 365);
+        let aa3_int = Math.floor(curDueML), aa3_mod = Math.round((curDueML % 1) * 100);
+        let h_int = Math.floor(row.calcDueH), h_mod = Math.round((row.calcDueH % 1) * 100) / 100;
+        row.calcDueL = applyLimits(aa3_int + h_int + Math.floor((aa3_mod + Math.round(h_mod * 100)) / 30) + ((aa3_mod + Math.round(h_mod * 100)) % 30) / 100, 120);
 
-        // एकूण साठलेली ML (L)
-        let aa3_int = Math.floor(curML), aa3_mod = Math.round((curML % 1) * 100);
-        let h_int = Math.floor(row.calcH), h_mod = Math.round((row.calcH % 1) * 100) / 100;
-        row.calcL = applyLimits(aa3_int + h_int + Math.floor((aa3_mod + Math.round(h_mod * 100)) / 30) + ((aa3_mod + Math.round(h_mod * 100)) % 30) / 100, 120);
-
-        // रजा दिवस (R)
         let dO = parseDMY(row.dueO);
         let dP = parseDMY(row.dueP);
-        let rDays = 0;
+        let dueR = 0;
         if (dO && dP && dP >= dO) {
-            rDays = Math.round((dP.getTime() - dO.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+            dueR = Math.round((dP.getTime() - dO.getTime()) / (1000 * 60 * 60 * 24)) + 1;
         }
-        row.calcR = rDays;
+        row.calcDueR = dueR;
 
-        // खर्च व अंतिम शिल्लक (Z व AA)
-        let kBase = Math.floor(row.calcK), kDec = Math.round((row.calcK % 1) * 100) / 100;
-        let lBase = Math.floor(row.calcL), lDec = Math.round((row.calcL % 1) * 100) / 100;
+        let kBase = Math.floor(row.calcDueK), kDec = Math.round((row.calcDueK % 1) * 100) / 100;
+        let lBase = Math.floor(row.calcDueL), lDec = Math.round((row.calcDueL % 1) * 100) / 100;
 
         let autoLwp = 0;
         let spentEL = 0, spentML = 0;
+        let finalDueQName = row.dueQ;
 
         if (row.dueQ.includes("हक्काची रजा")) {
-            if (rDays <= kBase) {
-                spentEL = rDays;
+            if (dueR <= kBase) {
+                spentEL = dueR;
             } else {
                 spentEL = kBase;
-                autoLwp = rDays - kBase;
+                autoLwp = dueR - kBase;
             }
-            row.calcFinalEL = (kBase - spentEL) + kDec;
-            row.calcFinalML = row.calcL;
+            row.calcDueFinalEL = (kBase - spentEL) + kDec;
+            row.calcDueFinalML = row.calcDueL;
         } else if (row.dueQ.includes("वैद्यकीय रजा")) {
-            if (rDays <= lBase) {
-                spentML = rDays;
-                row.calcFinalML = (lBase - spentML) + lDec;
-                row.calcFinalEL = row.calcK;
+            if (dueR <= lBase) {
+                spentML = dueR;
+                row.calcDueFinalML = (lBase - spentML) + lDec;
+                row.calcDueFinalEL = row.calcDueK;
             } else {
                 spentML = lBase;
-                let rem = rDays - lBase;
+                let rem = dueR - lBase;
                 if (rem <= kBase) {
                     spentEL = rem;
-                    row.dueQ = `वैद्यकीय रजा (हक्काची ${spentEL} दि.)`;
+                    finalDueQName = `वैद्यकीय रजा (हक्काची रजा ${spentEL} दिवस)`;
                 } else {
                     spentEL = kBase;
                     autoLwp = rem - kBase;
-                    row.dueQ = `वैद्यकीय (हक्काची ${spentEL} + LWP ${autoLwp})`;
+                    finalDueQName = `वैद्यकीय (हक्काची ${spentEL} दि. + LWP ${autoLwp} दि.)`;
                 }
-                row.calcFinalML = 0 + lDec;
-                row.calcFinalEL = (kBase - spentEL) + kDec;
+                row.calcDueFinalML = 0 + lDec;
+                row.calcDueFinalEL = (kBase - spentEL) + kDec;
             }
         } else {
-            row.calcFinalEL = row.calcK;
-            row.calcFinalML = row.calcL;
+            row.calcDueFinalEL = row.calcDueK;
+            row.calcDueFinalML = row.calcDueL;
         }
 
-        row.calcFinalEL = applyLimits(row.calcFinalEL, 365);
-        row.calcFinalML = applyLimits(row.calcFinalML, 120);
-        row.calcAutoLwp = autoLwp;
+        row.calcDueFinalEL = applyLimits(row.calcDueFinalEL, 365);
+        row.calcDueFinalML = applyLimits(row.calcDueFinalML, 120);
+        row.calcDueAutoLwp = autoLwp;
+        row.displayDueQ = finalDueQName;
 
-        curEL = row.calcFinalEL;
-        curML = row.calcFinalML;
+        curDueEL = row.calcDueFinalEL;
+        curDueML = row.calcDueFinalML;
 
-        // तक्ता ३: फरक (Variance)
-        let sbEl = parseFloat(row.sbFinalEL) || 0;
-        let sbMl = parseFloat(row.sbFinalML) || 0;
-        row.diffEL = (sbEl - row.calcFinalEL).toFixed(2);
-        row.diffML = (sbMl - row.calcFinalML).toFixed(2);
-        row.diffLwp = autoLwp;
+        // ==========================================
+        // २. तक्ता १: सेवापुस्तकातील नोंद (SERVICE BOOK)
+        // ==========================================
+        let dSbA = parseDMY(row.sbA);
+        let dSbB = parseDMY(row.sbB);
+        let autoSbF = 0;
+        if (dSbA && dSbB && dSbB >= dSbA) {
+            let totSb = Math.round((dSbB.getTime() - dSbA.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+            autoSbF = Math.max(0, totSb - (parseFloat(row.sbE) || 0));
+        }
+        row.calcSbF = (row.sbCustomF !== null) ? parseFloat(row.sbCustomF) : autoSbF;
+        row.calcSbG = (row.sbCustomG !== null) ? parseFloat(row.sbCustomG) : (Math.floor(row.calcSbF / 11) + (row.calcSbF % 11) / 100);
+        row.calcSbH = (row.sbCustomH !== null) ? parseFloat(row.sbCustomH) : (Math.floor(row.calcSbF / 30) + (row.calcSbF % 30) / 100);
 
-        // तक्ता ४: सिस्टीम ऑडिट निष्कर्ष
-        let remarks = [];
-        if (parseFloat(row.diffEL) > 0) remarks.push(`सेवापुस्तकात EL ${row.diffEL} जास्त दाखवली.`);
-        if (parseFloat(row.diffEL) < 0) remarks.push(`सेवापुस्तकात EL ${Math.abs(row.diffEL)} कमी दाखवली.`);
-        if (parseFloat(row.diffML) > 0) remarks.push(`सेवापुस्तकात ML ${row.diffML} जास्त दाखवली.`);
-        if (parseFloat(row.diffML) < 0) remarks.push(`सेवापुस्तकात ML ${Math.abs(row.diffML)} कमी दाखवली.`);
-        if (autoLwp > 0) remarks.push(`रजा शिल्लक नसल्याने ${autoLwp} दिवस LWP (बिनपगारी) आवश्यक.`);
-        if (remarks.length === 0) remarks.push("नोंद तंतोतंत बरोबर आहे.");
-        row.systemRemark = remarks.join(" ");
+        let sbZ_int = Math.floor(curSbEL), sbZ_mod = Math.round((curSbEL % 1) * 100);
+        let sbG_int = Math.floor(row.calcSbG), sbG_mod = Math.round((row.calcSbG % 1) * 100);
+        let autoSbK = applyLimits(sbZ_int + sbG_int + Math.floor((sbZ_mod + sbG_mod) / 11) + ((sbZ_mod + sbG_mod) % 11) / 100, 365);
+        row.calcSbK = (row.sbCustomK !== null) ? parseFloat(row.sbCustomK) : autoSbK;
+
+        let sbAA_int = Math.floor(curSbML), sbAA_mod = Math.round((curSbML % 1) * 100);
+        let sbH_int = Math.floor(row.calcSbH), sbH_mod = Math.round((row.calcSbH % 1) * 100) / 100;
+        let autoSbL = applyLimits(sbAA_int + sbH_int + Math.floor((sbAA_mod + Math.round(sbH_mod * 100)) / 30) + ((sbAA_mod + Math.round(sbH_mod * 100)) % 30) / 100, 120);
+        row.calcSbL = (row.sbCustomL !== null) ? parseFloat(row.sbCustomL) : autoSbL;
+
+        let dSbO = parseDMY(row.sbO);
+        let dSbP = parseDMY(row.sbP);
+        let sbR = 0;
+        if (dSbO && dSbP && dSbP >= dSbO) {
+            sbR = Math.round((dSbP.getTime() - dSbO.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+        }
+        row.calcSbR = sbR;
+
+        // सेवापुस्तकातील अंतिम शिल्लक (जर मॅन्युअल बदलली नसेल तर सूत्रानुसार)
+        let autoSbFinalEL = row.calcSbK;
+        let autoSbFinalML = row.calcSbL;
+        if (row.sbQ.includes("हक्काची रजा")) {
+            autoSbFinalEL = Math.max(0, Math.floor(row.calcSbK) - sbR) + (Math.round((row.calcSbK % 1) * 100) / 100);
+        } else if (row.sbQ.includes("वैद्यकीय रजा")) {
+            autoSbFinalML = Math.max(0, Math.floor(row.calcSbL) - sbR) + (Math.round((row.calcSbL % 1) * 100) / 100);
+        }
+        row.calcSbFinalEL = (row.sbCustomZ !== null) ? parseFloat(row.sbCustomZ) : autoSbFinalEL;
+        row.calcSbFinalML = (row.sbCustomAA !== null) ? parseFloat(row.sbCustomAA) : autoSbFinalML;
+
+        curSbEL = row.calcSbFinalEL;
+        curSbML = row.calcSbFinalML;
+
+        // ==========================================
+        // ३. तक्ता ३: प्रत्यक्ष फरक (VARIANCE)
+        // ==========================================
+        row.diffEL = (row.calcSbFinalEL - row.calcDueFinalEL).toFixed(2);
+        row.diffML = (row.calcSbFinalML - row.calcDueFinalML).toFixed(2);
+        row.diffLwp = row.calcDueAutoLwp - (parseFloat(row.sbCustomLwp) || 0);
+
+        // ==========================================
+        // ४. तक्ता ४: ऑडिटर शेरा (AUDIT REMARKS)
+        // ==========================================
+        let remList = [];
+        if (parseFloat(row.diffEL) > 0) remList.push(`सेवापुस्तकात EL ${row.diffEL} जास्त दाखवली.`);
+        if (parseFloat(row.diffEL) < 0) remList.push(`सेवापुस्तकात EL ${Math.abs(row.diffEL)} कमी दाखवली.`);
+        if (parseFloat(row.diffML) > 0) remList.push(`सेवापुस्तकात ML ${row.diffML} जास्त दाखवली.`);
+        if (parseFloat(row.diffML) < 0) remList.push(`सेवापुस्तकात ML ${Math.abs(row.diffML)} कमी दाखवली.`);
+        if (row.calcDueAutoLwp > 0) remList.push(`रजा शिल्लक नसल्याने ${row.calcDueAutoLwp} दिवस LWP (बिनपगारी) आवश्यक.`);
+        if (remList.length === 0) remList.push("नोंद अचूक जुळते (No Discrepancy).");
+        row.systemRemark = remList.join(" ");
     });
 
-    localStorage.setItem("pmc_comparative_audit_data", JSON.stringify(auditEntries));
+    localStorage.setItem("pmc_comparative_audit_data_v2", JSON.stringify(auditEntries));
     renderComparativeTable();
 }
 
@@ -420,76 +473,91 @@ function renderComparativeTable() {
     tbody.innerHTML = "";
 
     if (auditEntries.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="25" style="padding: 20px; text-align: center;">अजून कोणतीही नोंद जोडलेली नाही. '+ नवीन नोंद जोडा' बटणावर क्लिक करा.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="32" style="padding: 20px; text-align: center;">अजून कोणतीही नोंद जोडलेली नाही. रुजू दिनांक निवडून '+ नवीन नोंद जोडा' बटणावर क्लिक करा.</td></tr>`;
         return;
     }
 
     auditEntries.forEach((row, idx) => {
         let tr = tbody.insertRow();
         tr.innerHTML = `
-            <!-- तक्ता १: सेवापुस्तक -->
-            <td><input type="text" class="table-input table-input-sb" value="${row.sbDates}" onchange="updateRowField(${idx}, 'sbDates', this.value)"></td>
-            <td><input type="number" class="table-input table-input-sb" style="width:35px !important;" value="${row.sbF}" onchange="updateRowField(${idx}, 'sbF', this.value)"></td>
-            <td><input type="number" class="table-input table-input-sb" style="width:35px !important;" value="${row.sbE}" onchange="updateRowField(${idx}, 'sbE', this.value)"></td>
-            <td><input type="text" class="table-input table-input-sb" value="${row.sbLeaveDates}" onchange="updateRowField(${idx}, 'sbLeaveDates', this.value)"></td>
-            <td><input type="text" class="table-input table-input-sb" value="${row.sbQ}" onchange="updateRowField(${idx}, 'sbQ', this.value)"></td>
-            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:45px !important;" value="${row.sbFinalEL}" onchange="updateRowField(${idx}, 'sbFinalEL', this.value)"></td>
-            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:45px !important;" value="${row.sbFinalML}" onchange="updateRowField(${idx}, 'sbFinalML', this.value)"></td>
+            <!-- तक्ता १: सेवापुस्तक (Editable Fields) -->
+            <td>
+                <input type="text" class="table-input table-input-sb table-input-date" value="${row.sbA}" onchange="updateAuditField(${idx}, 'sbA', this.value)"> - 
+                <input type="text" class="table-input table-input-sb table-input-date" value="${row.sbB}" onchange="updateAuditField(${idx}, 'sbB', this.value)">
+            </td>
+            <td><input type="number" class="table-input table-input-sb" style="width:35px !important;" value="${row.calcSbF}" onchange="updateAuditField(${idx}, 'sbCustomF', this.value)"></td>
+            <td><input type="number" class="table-input table-input-sb" style="width:30px !important;" value="${row.sbE}" onchange="updateAuditField(${idx}, 'sbE', this.value)"></td>
+            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:38px !important;" value="${row.calcSbG.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomG', this.value)"></td>
+            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:38px !important;" value="${row.calcSbH.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomH', this.value)"></td>
+            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:42px !important;" value="${row.calcSbK.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomK', this.value)"></td>
+            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:42px !important;" value="${row.calcSbL.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomL', this.value)"></td>
+            <td>
+                <input type="text" class="table-input table-input-sb table-input-date" value="${row.sbO}" onchange="updateAuditField(${idx}, 'sbO', this.value)"> - 
+                <input type="text" class="table-input table-input-sb table-input-date" value="${row.sbP}" onchange="updateAuditField(${idx}, 'sbP', this.value)">
+            </td>
+            <td><input type="text" class="table-input table-input-sb" style="width:75px !important;" value="${row.sbQ}" onchange="updateAuditField(${idx}, 'sbQ', this.value)"></td>
+            <td><strong>${row.calcSbR}</strong></td>
+            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:45px !important; font-weight:bold;" value="${row.calcSbFinalEL.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomZ', this.value)"></td>
+            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:45px !important; font-weight:bold;" value="${row.calcSbFinalML.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomAA', this.value)"></td>
+            <td><input type="number" class="table-input table-input-sb" style="width:30px !important;" value="${row.sbCustomLwp || 0}" onchange="updateAuditField(${idx}, 'sbCustomLwp', this.value)"></td>
 
-            <!-- तक्ता २: सुधारित बरोबर हिशोब -->
+            <!-- तक्ता २: नियमानुसार सुधारित बरोबर हिशोब -->
             <td>
-                <input type="text" class="table-input table-input-date" value="${row.dueA}" onchange="updateRowField(${idx}, 'dueA', this.value)"> - 
-                <input type="text" class="table-input table-input-date" value="${row.dueB}" onchange="updateRowField(${idx}, 'dueB', this.value)">
+                <input type="text" class="table-input table-input-date" value="${row.dueA}" onchange="updateAuditField(${idx}, 'dueA', this.value)"> - 
+                <input type="text" class="table-input table-input-date" value="${row.dueB}" onchange="updateAuditField(${idx}, 'dueB', this.value)">
             </td>
-            <td><strong>${row.calcF}</strong></td>
-            <td><input type="number" class="table-input" style="width:35px !important;" value="${row.dueE}" onchange="updateRowField(${idx}, 'dueE', this.value)"></td>
-            <td>${row.calcG.toFixed(2)}</td>
-            <td>${row.calcH.toFixed(2)}</td>
-            <td>${row.calcK.toFixed(2)}</td>
-            <td>${row.calcL.toFixed(2)}</td>
+            <td><strong>${row.calcDueF}</strong></td>
+            <td><input type="number" class="table-input" style="width:30px !important;" value="${row.dueE}" onchange="updateAuditField(${idx}, 'dueE', this.value)"></td>
+            <td>${row.calcDueG.toFixed(2)}</td>
+            <td>${row.calcDueH.toFixed(2)}</td>
+            <td>${row.calcDueK.toFixed(2)}</td>
+            <td>${row.calcDueL.toFixed(2)}</td>
             <td>
-                <input type="text" class="table-input table-input-date" value="${row.dueO}" onchange="updateRowField(${idx}, 'dueO', this.value)"> - 
-                <input type="text" class="table-input table-input-date" value="${row.dueP}" onchange="updateRowField(${idx}, 'dueP', this.value)">
+                <input type="text" class="table-input table-input-date" value="${row.dueO}" onchange="updateAuditField(${idx}, 'dueO', this.value)"> - 
+                <input type="text" class="table-input table-input-date" value="${row.dueP}" onchange="updateAuditField(${idx}, 'dueP', this.value)">
             </td>
-            <td>
-                <select class="table-input" style="width:90px !important;" onchange="updateRowField(${idx}, 'dueQ', this.value)">
-                    <option value="हक्काची रजा" ${row.dueQ.includes("हक्काची") ? "selected" : ""}>हक्काची रजा</option>
-                    <option value="वैद्यकीय रजा" ${row.dueQ.includes("वैद्यकीय") ? "selected" : ""}>वैद्यकीय रजा</option>
-                    <option value="विशेष रजा" ${row.dueQ.includes("विशेष") ? "selected" : ""}>विशेष रजा</option>
-                </select>
-            </td>
-            <td><strong>${row.calcR}</strong></td>
-            <td style="background:#e0e0e0;"><strong>${row.calcFinalEL.toFixed(2)}</strong></td>
-            <td style="background:#e0e0e0;"><strong>${row.calcFinalML.toFixed(2)}</strong></td>
-            <td style="color:#000000; font-weight:bold;">${row.calcAutoLwp > 0 ? row.calcAutoLwp + ' दि.' : '0'}</td>
+            <td style="font-weight:bold; white-space:nowrap;">${row.displayDueQ}</td>
+            <td><strong>${row.calcDueR}</strong></td>
+            <td style="background:#e0e0e0;"><strong>${row.calcDueFinalEL.toFixed(2)}</strong></td>
+            <td style="background:#e0e0e0;"><strong>${row.calcDueFinalML.toFixed(2)}</strong></td>
+            <td style="font-weight:bold;">${row.calcDueAutoLwp > 0 ? row.calcDueAutoLwp : '0'}</td>
 
-            <!-- तक्ता ३: फरक -->
+            <!-- तक्ता ३: फरक (Variance) -->
             <td class="${parseFloat(row.diffEL) !== 0 ? 'diff-alert' : ''}">${row.diffEL}</td>
             <td class="${parseFloat(row.diffML) !== 0 ? 'diff-alert' : ''}">${row.diffML}</td>
             <td class="${row.diffLwp > 0 ? 'diff-alert' : ''}">${row.diffLwp}</td>
 
             <!-- तक्ता ४: ऑडिटर शेरा -->
             <td class="remark-cell">${row.systemRemark}</td>
-            <td><input type="text" class="table-input" style="text-align:left !important;" placeholder="ऑडिटर शेरा टाइप करा..." value="${row.manualRemark || ''}" onchange="updateRowField(${idx}, 'manualRemark', this.value)"></td>
+            <td><input type="text" class="table-input" style="text-align:left !important; width:130px !important;" placeholder="शेरा टाइप करा..." value="${row.manualRemark || ''}" onchange="updateAuditField(${idx}, 'manualRemark', this.value)"></td>
+            <td><button class="btn-row-del" onclick="deleteAuditRow(${idx})">रद्द</button></td>
         `;
     });
 }
 
-function updateRowField(idx, field, val) {
+function updateAuditField(idx, field, val) {
     auditEntries[idx][field] = val;
-    recalculateAllDueRecords();
+    recalculateAllRecords();
+}
+
+function deleteAuditRow(idx) {
+    if (confirm("तुम्हाला नक्की ही ओळ रद्द करायची आहे का?")) {
+        auditEntries.splice(idx, 1);
+        recalculateAllRecords();
+    }
 }
 
 function exportComparativeExcel() {
     if (auditEntries.length === 0) { alert("कोणतीही नोंद उपलब्ध नाही!"); return; }
     let csv = "\uFEFF";
-    csv += "सेवापुस्तक हजर कालावधी,सेवापुस्तक F,सेवापुस्तक LWP,सेवापुस्तक रजा कालावधी,सेवापुस्तक रजा प्रकार,सेवापुस्तक अंतिम EL,सेवापुस्तक अंतिम ML,सुधारित हजर पासून,सुधारित हजर पर्यंत,सुधारित F,सुधारित LWP,साठलेली EL (G),साठलेली ML (H),एकूण EL (K),एकूण ML (L),सुधारित रजा पासून,सुधारित रजा पर्यंत,सुधारित रजा प्रकार,रजा दिवस (R),सुधारित अंतिम EL (Z),सुधारित अंतिम ML (AA),रजेतील LWP,EL फरक,ML फरक,LWP फरक,सिस्टीम निष्कर्ष,ऑडिटर शेरा\n";
+    csv += "सेवापुस्तक हजर कालावधी,सेवापुस्तक F,सेवापुस्तक LWP,साठलेली EL (G),साठलेली ML (H),एकूण EL (K),एकूण ML (L),सेवापुस्तक रजा कालावधी,रजा प्रकार,रजा दिवस,सेवापुस्तक अंतिम EL (Z),सेवापुस्तक अंतिम ML (AA),सेवापुस्तक LWP,सुधारित हजर कालावधी,सुधारित हजर दिवस (F),सुधारित LWP (E),सुधारित साठलेली EL (G),सुधारित साठलेली ML (H),सुधारित एकूण EL (K),सुधारित एकूण ML (L),सुधारित गैरहजर कालावधी,सुधारित रजा प्रकार (Q),सुधारित रजा दिवस (R),सुधारित अंतिम EL (Z),सुधारित अंतिम ML (AA),रजेतील LWP,EL फरक,ML फरक,LWP फरक,सिस्टीम निष्कर्ष,ऑडिटर शेरा\n";
 
     auditEntries.forEach(r => {
         csv += [
-            `"${r.sbDates}"`, r.sbF, r.sbE, `"${r.sbLeaveDates}"`, `"${r.sbQ}"`, r.sbFinalEL, r.sbFinalML,
-            r.dueA, r.dueB, r.calcF, r.dueE, r.calcG.toFixed(2), r.calcH.toFixed(2), r.calcK.toFixed(2), r.calcL.toFixed(2),
-            r.dueO, r.dueP, `"${r.dueQ}"`, r.calcR, r.calcFinalEL.toFixed(2), r.calcFinalML.toFixed(2), r.calcAutoLwp,
+            `"${r.sbA} - ${r.sbB}"`, r.calcSbF, r.sbE, r.calcSbG.toFixed(2), r.calcSbH.toFixed(2), r.calcSbK.toFixed(2), r.calcSbL.toFixed(2),
+            `"${r.sbO} - ${r.sbP}"`, `"${r.sbQ}"`, r.calcSbR, r.calcSbFinalEL.toFixed(2), r.calcSbFinalML.toFixed(2), (r.sbCustomLwp || 0),
+            `"${r.dueA} - ${r.dueB}"`, r.calcDueF, r.dueE, r.calcDueG.toFixed(2), r.calcDueH.toFixed(2), r.calcDueK.toFixed(2), r.calcDueL.toFixed(2),
+            `"${r.dueO} - ${r.dueP}"`, `"${r.displayDueQ}"`, r.calcDueR, r.calcDueFinalEL.toFixed(2), r.calcDueFinalML.toFixed(2), r.calcDueAutoLwp,
             r.diffEL, r.diffML, r.diffLwp, `"${r.systemRemark}"`, `"${r.manualRemark || ''}"`
         ].join(",") + "\n";
     });
@@ -497,14 +565,14 @@ function exportComparativeExcel() {
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "PMC_Comparative_Leave_Audit_Register.csv";
+    link.download = "PMC_Comparative_Leave_Audit_Full_Register.csv";
     link.click();
 }
 
 function clearAuditData() {
     if (confirm("सर्व तुलनात्मक ऑडिट नोंदी पुसल्या जातील. खात्री आहे का?")) {
         auditEntries = [];
-        localStorage.removeItem("pmc_comparative_audit_data");
+        localStorage.removeItem("pmc_comparative_audit_data_v2");
         renderComparativeTable();
     }
 }
