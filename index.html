@@ -41,24 +41,8 @@ h2 {
     flex-wrap: wrap;
 }
 .setup-grid > div { flex: 1; min-width: 170px; }
-label { 
-    font-weight: bold; 
-    font-size: 12px; 
-    display: block; 
-    margin-bottom: 4px; 
-    color: #37474f; 
-}
-input, select { 
-    width: 100%; 
-    padding: 6px 8px; 
-    border: 1px solid #b0bec5; 
-    border-radius: 4px; 
-    box-sizing: border-box; 
-    font-size: 12px; 
-    background-color: #ffffff; 
-    color: #212121; 
-    height: 36px; 
-}
+label { font-weight: bold; font-size: 12px; display: block; margin-bottom: 4px; color: #37474f; }
+input, select { width: 100%; padding: 6px 8px; border: 1px solid #b0bec5; border-radius: 4px; box-sizing: border-box; font-size: 12px; background-color: #ffffff; color: #212121; height: 36px; }
 input:focus, select:focus { outline: 2px solid #1976d2; }
 .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
 .btn-calc { background-color: #1565c0; color: #ffffff; padding: 0 14px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; height: 36px; }
@@ -74,12 +58,12 @@ th, td { border: 1px solid #cfd8dc; padding: 4px 2px; text-align: center; }
 input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 input[type=number] { -moz-appearance: textfield; }
 
-/* ४ स्वतंत्र तक्त्यांचे हेडर कलर्स */
 .th-sb { background-color: #b26a00 !important; color: #ffffff !important; }
 .th-due { background-color: #0d47a1 !important; color: #ffffff !important; }
 .th-diff { background-color: #b71c1c !important; color: #ffffff !important; }
 .th-remark { background-color: #1b5e20 !important; color: #ffffff !important; }
-.th-report-blue { background-color: #1565c0 !important; color: #ffffff !important; font-size: 11px; padding: 6px; }
+.th-report-sb { background-color: #e65100 !important; color: #ffffff !important; font-size: 11px; padding: 6px; }
+.th-report-due { background-color: #0d47a1 !important; color: #ffffff !important; font-size: 11px; padding: 6px; }
 
 .sub-header th { font-weight: bold; font-size: 9px; padding: 5px 1px; }
 tr:nth-child(even) { background-color: #fafafa; }
@@ -147,7 +131,6 @@ h3.report-title { font-size: 15px; margin-top: 25px; margin-bottom: 8px; color: 
 </table>
 </div>
 
-<!-- 🌟 बटणे आता मार्गदर्शक ओळीच्या वर शिफ्ट केली आहेत 🌟 -->
 <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
     <button class="btn-calc" onclick="addNewAuditRow()">+ नवीन नोंद जोडा</button>
     <button class="btn-extra" onclick="addAnnualExtraLeavePrompt()">+ अतिरिक्त रजा जमा</button>
@@ -161,20 +144,41 @@ h3.report-title { font-size: 15px; margin-top: 25px; margin-bottom: 8px; color: 
     • <strong>स्वतंत्र रजा खर्च:</strong> प्रत्येक रजा स्वतंत्र असल्याने ML संपल्यावर EL मधून किंवा EL संपल्यावर LWP मध्ये परस्पर रजा वजा होणार नाही.
 </div>
 
-<!-- 🌟 ३ नवीन रिपोर्ट टेबल्स 🌟 -->
-<h3 class="report-title">४. प्रत्येक मॅन्युअल पानावरील एकत्रित चार्ट (Page-wise Grand Summary Chart)</h3>
+<!-- 🌟 नवीन स्वतंत्र रिपोर्ट्स 🌟 -->
+<h3 class="report-title">४अ. तक्ता १: सेवापुस्तकावरील मॅन्युअल पानांची ढोबळ गोळाबेरीज (Service Book Raw Summary)</h3>
 <div style="overflow-x: auto;">
-<table id="summaryChartTable">
+<table id="sbRawSummaryTable">
     <thead>
         <tr>
-            <th class="th-report-blue">पान नंबर व अवधी (Page No & Period)</th>
-            <th class="th-report-blue">एकूण हजर दिवस (Total F)</th>
-            <th class="th-report-blue">एकूण साठलेली EL (Total G)</th>
-            <th class="th-report-blue">एकूण साठलेली ML (Total H)</th>
-            <th class="th-report-blue">उपभोगलेली EL (Spent EL)</th>
-            <th class="th-report-blue">उपभोगलेली ML (Spent ML)</th>
-            <th class="th-report-blue">विशेष रजा (Special)</th>
-            <th class="th-report-blue">एकूण LWP (Total E)</th>
+            <th class="th-report-sb">पान नंबर व अवधी (Page No & Period)</th>
+            <th class="th-report-sb">एकूण हजर दिवस (F)</th>
+            <th class="th-report-sb">साठलेली EL (G)</th>
+            <th class="th-report-sb">साठलेली ML (H)</th>
+            <th class="th-report-sb">उपभोगलेली EL (Spent)</th>
+            <th class="th-report-sb">उपभोगलेली ML (Spent)</th>
+            <th class="th-report-sb">LWP (E)</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+</div>
+
+<h3 class="report-title">४ब. तक्ता २: नियमानुसार सुधारित हिशोबाचा सलग ताळेबंद (Cumulative Due Ledger)</h3>
+<div style="overflow-x: auto;">
+<table id="dueCumulativeChartTable">
+    <thead>
+        <tr>
+            <th rowspan="2" class="th-report-due" style="vertical-align:middle;">पान क्र. व अवधी</th>
+            <th colspan="2" class="th-report-due" style="background-color:#002171 !important;">सुरुवातीची शिल्लक (Opening)</th>
+            <th colspan="3" class="th-report-due" style="background-color:#1565c0 !important;">पानावरील जमा (Earned)</th>
+            <th colspan="4" class="th-report-due" style="background-color:#002171 !important;">पानावरील खर्च (Spent)</th>
+            <th colspan="2" class="th-report-due" style="background-color:#1565c0 !important;">अंतिम शिल्लक (Closing)</th>
+        </tr>
+        <tr class="sub-header">
+            <th class="th-due">EL</th><th class="th-due">ML</th>
+            <th class="th-due">हजर (F)</th><th class="th-due">जमा EL</th><th class="th-due">जमा ML</th>
+            <th class="th-due">खर्च EL</th><th class="th-due">खर्च ML</th><th class="th-due">विशेष</th><th class="th-due">LWP</th>
+            <th class="th-due">EL</th><th class="th-due">ML</th>
         </tr>
     </thead>
     <tbody></tbody>
@@ -185,11 +189,7 @@ h3.report-title { font-size: 15px; margin-top: 25px; margin-bottom: 8px; color: 
 <div style="overflow-x: auto;">
 <table id="lwpMonthlyTable">
     <thead>
-        <tr>
-            <th class="th-report-blue">कॅलेंडर महिना (Calendar Month)</th>
-            <th class="th-report-blue">बिनपगारी रजा दिवस (LWP Days)</th>
-            <th class="th-report-blue">स्थिती</th>
-        </tr>
+        <tr><th class="th-report-due">कॅलेंडर महिना (Calendar Month)</th><th class="th-report-due">बिनपगारी रजा दिवस (LWP Days)</th><th class="th-report-due">स्थिती</th></tr>
     </thead>
     <tbody></tbody>
 </table>
@@ -199,14 +199,7 @@ h3.report-title { font-size: 15px; margin-top: 25px; margin-bottom: 8px; color: 
 <div style="overflow-x: auto;">
 <table id="allLeavesMonthlyTable">
     <thead>
-        <tr>
-            <th class="th-report-blue">कॅलेंडर महिना (Calendar Month)</th>
-            <th class="th-report-blue">हक्काची रजा (EL)</th>
-            <th class="th-report-blue">वैद्यकीय रजा (ML)</th>
-            <th class="th-report-blue">विशेष रजा</th>
-            <th class="th-report-blue">बिनपगारी रजा (LWP)</th>
-            <th class="th-report-blue">स्थिती</th>
-        </tr>
+        <tr><th class="th-report-due">कॅलेंडर महिना (Calendar Month)</th><th class="th-report-due">हक्काची रजा (EL)</th><th class="th-report-due">वैद्यकीय रजा (ML)</th><th class="th-report-due">विशेष रजा</th><th class="th-report-due">बिनपगारी रजा (LWP)</th><th class="th-report-due">स्थिती</th></tr>
     </thead>
     <tbody></tbody>
 </table>
@@ -249,9 +242,9 @@ window.onload = function() {
         document.getElementById('aud_join_date').value = "01/01/1990";
     }
 
-    let saved = localStorage.getItem("pmc_audit_4tables_exact_v12"); 
-    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v12");
-    let savedClosure = localStorage.getItem("pmc_audit_closure_v12");
+    let saved = localStorage.getItem("pmc_audit_4tables_exact_v13"); 
+    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v13");
+    let savedClosure = localStorage.getItem("pmc_audit_closure_v13");
 
     if (saved) { try { auditEntries = JSON.parse(saved); } catch(e) { auditEntries = []; } }
     if (savedBreaks) { try { pageBreaks = JSON.parse(savedBreaks); } catch(e) { pageBreaks = []; } }
@@ -420,18 +413,18 @@ function addAnnualExtraLeavePrompt() {
 function addManualPageBreak() {
     if (auditEntries.length === 0) { alert("आधी नोंदी जोडा!"); return; }
     pageBreaks.push(auditEntries.length - 1);
-    localStorage.setItem("pmc_audit_pagebreaks_v12", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v13", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function removeManualPageBreak(idx) {
     pageBreaks = pageBreaks.filter(b => b !== idx);
-    localStorage.setItem("pmc_audit_pagebreaks_v12", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v13", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function handleGlobalClosureToggle(isChecked) {
-    localStorage.setItem("pmc_audit_closure_v12", isChecked ? "true" : "false");
+    localStorage.setItem("pmc_audit_closure_v13", isChecked ? "true" : "false");
     recalculateAllRecords();
 }
 
@@ -593,6 +586,11 @@ function recalculateAllRecords() {
         let autoSbR = (dSbO && dSbP && dSbP >= dSbO && !rowIsClosure) ? Math.round((dSbP.getTime() - dSbO.getTime()) / 86400000) + 1 : 0;
         row.calcSbR = (row.sbCustomR !== null) ? parseFloat(row.sbCustomR) : autoSbR;
 
+        // SB Reports tracking
+        row.actualSbSpentEL = 0; row.actualSbSpentML = 0;
+        if (row.sbQ === "हक्काची रजा" || row.sbQ === "सरेंडर रजा") row.actualSbSpentEL = row.calcSbR;
+        else if (row.sbQ === "वैद्यकीय रजा") row.actualSbSpentML = row.calcSbR;
+
         let autoSbFinalEL = row.calcSbK, autoSbFinalML = row.calcSbL;
         if (row.sbQ === "हक्काची रजा" || row.sbQ === "सरेंडर रजा") autoSbFinalEL = deductLeaveDays(row.calcSbK, row.calcSbR, 11);
         else if (row.sbQ === "वैद्यकीय रजा") autoSbFinalML = deductLeaveDays(row.calcSbL, row.calcSbR, 30);
@@ -622,12 +620,8 @@ function recalculateAllRecords() {
         row.diffLwp = ((row.dueQ === "बिनपगारी रजा" ? row.calcDueR : 0) - (parseFloat(row.sbCustomLwp) || (row.sbQ === "बिनपगारी रजा" ? row.calcSbR : 0)));
 
         // तक्ता ४
-        // ==========================================
-        // ४. तक्ता ४: चालू ओळीचा ऑडिटर शेरा
-        // ==========================================
         let remList = [];
         let hasVariance = false;
-
         if (parseFloat(row.diffZ) > 0) { remList.push(`या नोंदीत EL ${row.diffZ} जास्त जमा.`); hasVariance = true; }
         if (parseFloat(row.diffZ) < 0) { remList.push(`या नोंदीत EL ${Math.abs(parseFloat(row.diffZ)).toFixed(2)} कमी नोंदली.`); hasVariance = true; }
         if (parseFloat(row.diffAA) > 0) { remList.push(`या नोंदीत ML ${row.diffAA} जास्त जमा.`); hasVariance = true; }
@@ -635,14 +629,13 @@ function recalculateAllRecords() {
         if (row.diffLwp !== 0) { remList.push(`LWP मध्ये ${row.diffLwp} ची तफावत.`); hasVariance = true; }
         
         if (!hasVariance) { remList.push("नोंद तंतोतंत जुळते."); }
-
         if (row.isDueContinuous) { remList.unshift("[सलग रजा]"); }
         if (rowIsClosure) { remList.unshift("🛑 [सेवा समाप्ती]"); }
 
         row.systemRemark = remList.join(" ");
     });
 
-    localStorage.setItem("pmc_audit_4tables_exact_v12", JSON.stringify(auditEntries));
+    localStorage.setItem("pmc_audit_4tables_exact_v13", JSON.stringify(auditEntries));
     renderComparativeTable();
 }
 
@@ -657,6 +650,7 @@ function renderComparativeTable() {
     }
 
     let isGlobalClosure = document.getElementById('global_closure_check').checked;
+    let pageNum = 1;
 
     auditEntries.forEach((row, idx) => {
         let isLastRow = (idx === auditEntries.length - 1);
@@ -757,62 +751,108 @@ function renderComparativeTable() {
                 <td><button class="btn-row-del" onclick="deleteAuditRow(${idx})">रद्द</button></td>
             `;
         }
+
+        if (pageBreaks.includes(idx)) {
+            let brkRow = tbody.insertRow();
+            brkRow.className = "page-break-row";
+            brkRow.innerHTML = `<td colspan="14">[मॅन्युअल सेवापुस्तक पान क्र. ${pageNum} समाप्त]</td><td colspan="14">[सुधारित पान क्र. ${pageNum} ताळेबंद]</td><td colspan="10">--- CF ---</td><td colspan="3"><button style="background:#d32f2f; color:white; border:none; padding:2px 8px; border-radius:3px; cursor:pointer; font-weight:bold; font-size:10px;" onclick="removeManualPageBreak(${idx})">❌ हा ब्रेक हटवा</button></td>`;
+            pageNum++;
+        }
     });
     
     renderReports();
 }
 
-// 🌟 ३ नवीन रिपोर्ट टेबल्स भरण्याचे फंक्शन 🌟
+// 🌟 सर्व नवीन रिपोर्ट टेबल्स 🌟
 function renderReports() {
-    let sumTbody = document.querySelector("#summaryChartTable tbody");
+    let sbTbody = document.querySelector("#sbRawSummaryTable tbody");
+    let dueTbody = document.querySelector("#dueCumulativeChartTable tbody");
     let lwpTbody = document.querySelector("#lwpMonthlyTable tbody");
     let allLeaveTbody = document.querySelector("#allLeavesMonthlyTable tbody");
 
-    sumTbody.innerHTML = ""; lwpTbody.innerHTML = ""; allLeaveTbody.innerHTML = "";
+    if(!sbTbody || !dueTbody || !lwpTbody || !allLeaveTbody) return;
+
+    sbTbody.innerHTML = ""; dueTbody.innerHTML = ""; lwpTbody.innerHTML = ""; allLeaveTbody.innerHTML = "";
 
     if (auditEntries.length === 0) {
-        sumTbody.innerHTML = `<tr><td colspan="8">अजून कोणतीही नोंद नाही.</td></tr>`;
-        lwpTbody.innerHTML = `<tr><td colspan="3">अजून कोणतीही नोंद नाही.</td></tr>`;
-        allLeaveTbody.innerHTML = `<tr><td colspan="6">अजून कोणतीही नोंद नाही.</td></tr>`;
+        sbTbody.innerHTML = `<tr><td colspan="7">अजून कोणतीही नोंद नाही.</td></tr>`;
+        dueTbody.innerHTML = `<tr><td colspan="12">अजून कोणतीही नोंद नाही.</td></tr>`;
         return;
     }
 
-    // १. मॅन्युअल पानावरील एकत्रित चार्ट (Summary)
-    let pgF = 0, pgG = 0, pgH = 0, pgEL = 0, pgML = 0, pgSpl = 0, pgLWP = 0;
-    let gF = 0, gG = 0, gH = 0, gEL = 0, gML = 0, gSpl = 0, gLWP = 0;
+    // Report 4A Variables (Table 1 Raw Totals)
+    let pgSbF = 0, pgSbG = 0, pgSbH = 0, pgSbSpentEL = 0, pgSbSpentML = 0, pgSbLwp = 0;
+    
+    // Report 4B Variables (Table 2 Cumulative Ledger)
+    let pgDueF = 0, pgDueEarnEL = 0, pgDueEarnML = 0;
+    let pgDueSpentEL = 0, pgDueSpentML = 0, pgDueSpentSpl = 0, pgDueLwp = 0;
+    
     let pageNum = 1;
     let pageStartStr = auditEntries[0].type === "extra" ? `वर्ष ${auditEntries[0].extraYear}` : (auditEntries[0].dueA || "");
+    
+    let isFirstRowOfPage = true;
+    let pageOpenEL = 0.00, pageOpenML = 0.00;
 
     auditEntries.forEach((row, idx) => {
-        if (row.type === "extra") {
-            pgG = toUnits(row.extraDays, 11); gG = toUnits(row.extraDays, 11);
-        } else {
-            pgF += row.calcDueF;
-            pgG += toUnits(row.calcDueG, 11); pgH += toUnits(row.calcDueH, 30);
-            pgEL += (row.actualSpentEL || 0); pgML += (row.actualSpentML || 0); pgSpl += (row.actualSpentSpl || 0);
-            pgLWP += (parseFloat(row.dueE) || 0) + (row.actualAutoLwp || 0);
+        // Table 2 Opening Balance logic
+        if (isFirstRowOfPage) {
+            pageStartStr = row.type === "extra" ? `वर्ष ${row.extraYear}` : (row.dueA || "");
+            pageOpenEL = idx === 0 ? 0.00 : auditEntries[idx-1].calcDueFinalEL;
+            pageOpenML = idx === 0 ? 0.00 : auditEntries[idx-1].calcDueFinalML;
+            isFirstRowOfPage = false;
+        }
 
-            gF += row.calcDueF; gG += toUnits(row.calcDueG, 11); gH += toUnits(row.calcDueH, 30);
-            gEL += (row.actualSpentEL || 0); gML += (row.actualSpentML || 0); gSpl += (row.actualSpentSpl || 0);
-            gLWP += (parseFloat(row.dueE) || 0) + (row.actualAutoLwp || 0);
+        if (row.type === "extra") {
+            pgSbG += toUnits(row.extraDays, 11);
+            pgDueEarnEL += toUnits(row.extraDays, 11);
+        } else {
+            // Table 1 tracking
+            pgSbF += row.calcSbF;
+            pgSbG += toUnits(row.calcSbG, 11); pgSbH += toUnits(row.calcSbH, 30);
+            pgSbSpentEL += (row.actualSbSpentEL || 0); pgSbSpentML += (row.actualSbSpentML || 0);
+            pgSbLwp += (parseFloat(row.sbE) || 0) + (parseFloat(row.sbCustomLwp) || 0);
+
+            // Table 2 tracking
+            pgDueF += row.calcDueF;
+            pgDueEarnEL += toUnits(row.calcDueG, 11); pgDueEarnML += toUnits(row.calcDueH, 30);
+            pgDueSpentEL += (row.actualSpentEL || 0); pgDueSpentML += (row.actualSpentML || 0);
+            pgDueSpentSpl += (row.actualSpentSpl || 0); pgDueLwp += (parseFloat(row.dueE) || 0) + (row.actualAutoLwp || 0);
         }
 
         if (pageBreaks.includes(idx) || idx === auditEntries.length - 1) {
             let pageEndStr = row.dueP && row.dueP !== "---" ? row.dueP : (row.dueB && row.dueB !== "---" ? row.dueB : "");
             let period = `${pageStartStr} ते ${pageEndStr}`;
             
-            let tr = sumTbody.insertRow();
-            tr.innerHTML = `<td>पान नंबर ${pageNum} (${period})</td><td>${pgF}</td><td>${fromUnits(pgG, 11).toFixed(2)}</td><td>${fromUnits(pgH, 30).toFixed(2)}</td><td>${pgEL}</td><td>${pgML}</td><td>${pgSpl}</td><td style="color:#d32f2f; font-weight:bold;">${pgLWP}</td>`;
+            // 4A: Service Book Raw Row
+            let trSb = sbTbody.insertRow();
+            trSb.innerHTML = `<td>पान नंबर ${pageNum} (${period})</td><td>${pgSbF}</td><td>${fromUnits(pgSbG, 11).toFixed(2)}</td><td>${fromUnits(pgSbH, 30).toFixed(2)}</td><td>${pgSbSpentEL}</td><td>${pgSbSpentML}</td><td style="color:#d32f2f; font-weight:bold;">${pgSbLwp}</td>`;
+            
+            // 4B: Due Cumulative Row
+            let trDue = dueTbody.insertRow();
+            trDue.innerHTML = `
+                <td>पान नंबर ${pageNum} (${period})</td>
+                <td style="background:#e8eaf6;"><strong>${pageOpenEL.toFixed(2)}</strong></td>
+                <td style="background:#e8eaf6;"><strong>${pageOpenML.toFixed(2)}</strong></td>
+                <td>${pgDueF}</td>
+                <td>${fromUnits(pgDueEarnEL, 11).toFixed(2)}</td>
+                <td>${fromUnits(pgDueEarnML, 30).toFixed(2)}</td>
+                <td style="color:#e65100;">${pgDueSpentEL}</td>
+                <td style="color:#e65100;">${pgDueSpentML}</td>
+                <td style="color:#e65100;">${pgDueSpentSpl}</td>
+                <td style="color:#d32f2f; font-weight:bold;">${pgDueLwp}</td>
+                <td style="background:#c5cae9; color:#002171;"><strong>${row.calcDueFinalEL.toFixed(2)}</strong></td>
+                <td style="background:#c5cae9; color:#002171;"><strong>${row.calcDueFinalML.toFixed(2)}</strong></td>
+            `;
+
             pageNum++;
-            pgF = 0; pgG = 0; pgH = 0; pgEL = 0; pgML = 0; pgSpl = 0; pgLWP = 0;
-            if (idx + 1 < auditEntries.length) pageStartStr = auditEntries[idx+1].dueA || "";
+            isFirstRowOfPage = true;
+            
+            pgSbF = 0; pgSbG = 0; pgSbH = 0; pgSbSpentEL = 0; pgSbSpentML = 0; pgSbLwp = 0;
+            pgDueF = 0; pgDueEarnEL = 0; pgDueEarnML = 0; pgDueSpentEL = 0; pgDueSpentML = 0; pgDueSpentSpl = 0; pgDueLwp = 0;
         }
     });
 
-    let trG = sumTbody.insertRow(); trG.style.backgroundColor = "#e8eaf6"; trG.style.fontWeight = "bold";
-    trG.innerHTML = `<td>ग्रँड एकूण संख्या (Grand Total)</td><td>${gF}</td><td>${fromUnits(gG, 11).toFixed(2)}</td><td>${fromUnits(gH, 30).toFixed(2)}</td><td>${gEL}</td><td>${gML}</td><td>${gSpl}</td><td style="color:#b71c1c;">${gLWP}</td>`;
-
-    // २. महिनावार अहवाल (LWP व सर्व रजा)
+    // 🌟 महिनावार अहवाल (LWP व सर्व रजा) 🌟
     let leaveMap = {}; let lwpMap = {};
     auditEntries.forEach((row) => {
         if (row.type === "extra") return;
@@ -884,7 +924,7 @@ function deleteAuditRow(idx) {
     if (confirm("तुम्हाला नक्की ही ओळ रद्द करायची आहे का?")) {
         auditEntries.splice(idx, 1);
         pageBreaks = pageBreaks.filter(b => b !== idx).map(b => b > idx ? b - 1 : b);
-        localStorage.setItem("pmc_audit_pagebreaks_v12", JSON.stringify(pageBreaks));
+        localStorage.setItem("pmc_audit_pagebreaks_v13", JSON.stringify(pageBreaks));
         rechainAllDates(idx > 0 ? idx - 1 : 0);
         recalculateAllRecords();
     }
@@ -913,7 +953,7 @@ function exportComparativeExcel() {
 function clearAuditData() {
     if (confirm("सर्व तुलनात्मक ऑडिट नोंदी पुसल्या जातील. खात्री आहे का?")) {
         auditEntries = []; pageBreaks = [];
-        localStorage.removeItem("pmc_audit_4tables_exact_v12"); localStorage.removeItem("pmc_audit_pagebreaks_v12"); localStorage.removeItem("pmc_audit_closure_v12"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
+        localStorage.removeItem("pmc_audit_4tables_exact_v13"); localStorage.removeItem("pmc_audit_pagebreaks_v13"); localStorage.removeItem("pmc_audit_closure_v13"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
         document.getElementById('global_closure_check').checked = false; document.getElementById('aud_emp_name').value = ""; document.getElementById('aud_emp_pf').value = ""; document.getElementById('aud_join_date').value = "01/01/1990";
         renderComparativeTable();
     }
