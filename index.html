@@ -12,6 +12,15 @@ body {
     padding: 12px; 
     margin: 0;
 }
+    /* नंबर इनपुटमधील वर-खाली जाणारे बाण (Spinners) लपवण्यासाठी */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox साठी */
+}
 .container { 
     max-width: 2500px; 
     margin: auto; 
@@ -480,12 +489,12 @@ function renderComparativeTable() {
                 <input type="text" class="table-input table-input-sb table-input-date" value="${row.sbA}" onchange="updateAuditField(${idx}, 'sbA', this.value)"> - 
                 <input type="text" class="table-input table-input-sb table-input-date" value="${row.sbB}" onchange="updateAuditField(${idx}, 'sbB', this.value)">
             </td>
-            <td><input type="number" class="table-input table-input-sb" style="width:35px !important;" value="${row.calcSbF}" onchange="updateAuditField(${idx}, 'sbCustomF', this.value)"></td>
-            <td><input type="number" class="table-input table-input-sb" style="width:30px !important;" value="${row.sbE}" onchange="updateAuditField(${idx}, 'sbE', this.value)"></td>
-            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:38px !important;" value="${row.calcSbG.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomG', this.value)"></td>
-            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:38px !important;" value="${row.calcSbH.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomH', this.value)"></td>
-            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:42px !important;" value="${row.calcSbK.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomK', this.value)"></td>
-            <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:42px !important;" value="${row.calcSbL.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomL', this.value)"></td>
+            <td><input type="number" class="table-input table-input-sb" style="width:48px !important;" value="${row.calcSbF}" onchange="updateAuditField(${idx}, 'sbCustomF', this.value)"></td>
+<td><input type="number" class="table-input table-input-sb" style="width:38px !important;" value="${row.sbE}" onchange="updateAuditField(${idx}, 'sbE', this.value)"></td>
+<td><input type="number" step="0.01" class="table-input table-input-sb" style="width:58px !important;" value="${row.calcSbG.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomG', this.value)"></td>
+<td><input type="number" step="0.01" class="table-input table-input-sb" style="width:58px !important;" value="${row.calcSbH.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomH', this.value)"></td>
+<td><input type="number" step="0.01" class="table-input table-input-sb" style="width:62px !important;" value="${row.calcSbK.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomK', this.value)"></td>
+<td><input type="number" step="0.01" class="table-input table-input-sb" style="width:62px !important;" value="${row.calcSbL.toFixed(2)}" onchange="updateAuditField(${idx}, 'sbCustomL', this.value)"></td>
             <td>
                 <input type="text" class="table-input table-input-sb table-input-date" value="${row.sbO}" onchange="updateAuditField(${idx}, 'sbO', this.value)"> - 
                 <input type="text" class="table-input table-input-sb table-input-date" value="${row.sbP}" onchange="updateAuditField(${idx}, 'sbP', this.value)">
