@@ -108,13 +108,6 @@ h3.report-title { font-size: 15px; margin-top: 25px; margin-bottom: 8px; color: 
     <button class="btn-pagebreak" onclick="addManualPageBreak()">🛑 पेज ब्रेक करा (शेवटच्या ओळीवर)</button>
 </div>
 
-<div style="margin-top: 15px; font-size: 11px; line-height: 1.5; background: #ffffff; border: 1px solid #cfd8dc; padding: 10px; border-radius: 4px;">
-    <strong>अद्ययावत हिशोब मार्गदर्शक:</strong><br>
-    • <strong>एकूण LWP ची अचूक बेरीज:</strong> आता कॉलम E (हजर काळातील LWP) आणि रजा कॉलम मधील बिनपगारी रजा (Q) या दोन्ही LWP ची थेट बेरीज होऊन ती सर्व तक्त्यांमध्ये ऑटोमॅटिक भरली जाईल.<br>
-    • <strong>पानावरील बेरीज:</strong> पेज ब्रेक देताच त्या मॅन्युअल पानाची 'एकूण' त्याच निळ्या पट्टीवर स्पष्ट दिसेल.<br>
-    • <strong>अचूक उणे (Negative) गणित:</strong> शिल्लक उणे गेली तरी सिस्टीम बेस-३० व बेस-११ च्या नियमानुसारच गणित करेल.
-</div>
-
 <!-- 🌟 रिपोर्ट टेबल्स 🌟 -->
 <h3 class="report-title">४अ. तक्ता १: सेवापुस्तकावरील मॅन्युअल पानांची ढोबळ गोळाबेरीज (Service Book Raw Summary)</h3>
 <div style="overflow-x: auto;">
@@ -188,7 +181,7 @@ let auditEntries = [];
 let pageBreaks = [];
 let isAppReady = false; 
 
-// 🌟 Safe Parse Function to prevent NaN 🌟
+// 🌟 Safe Parse Function to strictly prevent NaN or undefined 🌟
 function safeParse(val, fallback) {
     if (val === null || val === undefined || val === "" || isNaN(parseFloat(val))) return fallback;
     return parseFloat(val);
@@ -223,29 +216,27 @@ window.onload = function() {
         document.getElementById('aud_join_date').value = "01/01/1990";
     }
 
-    let saved = localStorage.getItem("pmc_audit_4tables_exact_v17") || 
+    let saved = localStorage.getItem("pmc_audit_4tables_exact_v18") || 
+                localStorage.getItem("pmc_audit_4tables_exact_v17") || 
                 localStorage.getItem("pmc_audit_4tables_exact_v16") || 
-                localStorage.getItem("pmc_audit_4tables_exact_v15") || 
-                localStorage.getItem("pmc_audit_4tables_exact_v14") || 
-                localStorage.getItem("pmc_audit_4tables_exact_v13");
+                localStorage.getItem("pmc_audit_4tables_exact_v15");
 
-    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v17") || 
+    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v18") || 
+                      localStorage.getItem("pmc_audit_pagebreaks_v17") || 
                       localStorage.getItem("pmc_audit_pagebreaks_v16") || 
-                      localStorage.getItem("pmc_audit_pagebreaks_v15") || 
-                      localStorage.getItem("pmc_audit_pagebreaks_v14") || 
-                      localStorage.getItem("pmc_audit_pagebreaks_v13");
+                      localStorage.getItem("pmc_audit_pagebreaks_v15");
 
-    let savedClosure = localStorage.getItem("pmc_audit_closure_v17") || 
+    let savedClosure = localStorage.getItem("pmc_audit_closure_v18") || 
+                       localStorage.getItem("pmc_audit_closure_v17") || 
                        localStorage.getItem("pmc_audit_closure_v16") || 
-                       localStorage.getItem("pmc_audit_closure_v15") || 
-                       localStorage.getItem("pmc_audit_closure_v14") || 
-                       localStorage.getItem("pmc_audit_closure_v13");
+                       localStorage.getItem("pmc_audit_closure_v15");
 
     if (saved) { try { auditEntries = JSON.parse(saved); } catch(e) { auditEntries = []; } }
     if (savedBreaks) { try { pageBreaks = JSON.parse(savedBreaks); } catch(e) { pageBreaks = []; } }
     if (savedClosure === "true") { document.getElementById('global_closure_check').checked = true; }
     
-    renderComparativeTable();
+    // 🌟 अत्यंत महत्त्वाची दुरुस्ती: पेज लोड झाल्यावर लगेच सर्व कॅल्क्युलेशन रिफ्रेश करा म्हणजे undefined निघून जाईल 🌟
+    recalculateAllRecords(); 
     isAppReady = true; 
 };
 
@@ -282,9 +273,9 @@ function restoreBackup() {
                 let entStr = typeof content.entries === "object" ? JSON.stringify(content.entries) : content.entries;
                 let brkStr = typeof content.breaks === "object" ? JSON.stringify(content.breaks) : content.breaks;
                 
-                if(entStr) localStorage.setItem("pmc_audit_4tables_exact_v17", entStr);
-                if(brkStr) localStorage.setItem("pmc_audit_pagebreaks_v17", brkStr);
-                if(content.closure) localStorage.setItem("pmc_audit_closure_v17", content.closure);
+                if(entStr) localStorage.setItem("pmc_audit_4tables_exact_v18", entStr);
+                if(brkStr) localStorage.setItem("pmc_audit_pagebreaks_v18", brkStr);
+                if(content.closure) localStorage.setItem("pmc_audit_closure_v18", content.closure);
                 if(content.empName) localStorage.setItem("pmc_aud_emp_name", content.empName);
                 if(content.empPf) localStorage.setItem("pmc_aud_emp_pf", content.empPf);
                 if(content.joinDate) localStorage.setItem("pmc_aud_join_date", content.joinDate);
@@ -439,7 +430,8 @@ function addNewAuditRow() {
         isDueContinuous: false,
         dueA: nextA, dueB: "", dueE: 0, dueO: "", dueP: "", dueQ: "वैद्यकीय रजा",
         isDueCustomA: false, isDueCustomB: false, isDueCustomO: false, isDueCustomP: false, isDueCustomQ: false,
-        isSbCustomA: false, isSbCustomO: false, manualRemark: ""
+        isSbCustomA: false, isSbCustomO: false, manualRemark: "",
+        actualSbLwp: 0, actualDueLwp: 0 
     };
 
     auditEntries.push(newRow);
@@ -449,7 +441,7 @@ function addNewAuditRow() {
 function addAnnualExtraLeavePrompt() {
     let year = prompt("ज्या वर्षाची अतिरिक्त रजा जमा करायची आहे ते वर्ष टाका (उदा. 1990 किंवा 1995):");
     if (!year || isNaN(year)) return;
-    auditEntries.push({ type: "extra", extraYear: year, extraDays: (parseInt(year) < 1990 ? 10 : 15), manualRemark: `अत्यावश्यक सेवा अतिरिक्त रजा (${year}) जमा` });
+    auditEntries.push({ type: "extra", extraYear: year, extraDays: (parseInt(year) < 1990 ? 10 : 15), manualRemark: `अत्यावश्यक सेवा अतिरिक्त रजा (${year}) जमा`, actualSbLwp: 0, actualDueLwp: 0 });
     recalculateAllRecords();
 }
 
@@ -457,7 +449,7 @@ function insertPageBreakAt(idx) {
     if (!pageBreaks.includes(idx)) {
         pageBreaks.push(idx);
         pageBreaks.sort((a, b) => a - b);
-        localStorage.setItem("pmc_audit_pagebreaks_v17", JSON.stringify(pageBreaks));
+        localStorage.setItem("pmc_audit_pagebreaks_v18", JSON.stringify(pageBreaks));
         renderComparativeTable();
     } else {
         alert("या ओळीवर आधीच पेज ब्रेक दिलेला आहे!");
@@ -471,12 +463,12 @@ function addManualPageBreak() {
 
 function removeManualPageBreak(idx) {
     pageBreaks = pageBreaks.filter(b => b !== idx);
-    localStorage.setItem("pmc_audit_pagebreaks_v17", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v18", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function handleGlobalClosureToggle(isChecked) {
-    localStorage.setItem("pmc_audit_closure_v17", isChecked ? "true" : "false");
+    localStorage.setItem("pmc_audit_closure_v18", isChecked ? "true" : "false");
     recalculateAllRecords();
 }
 
@@ -588,14 +580,12 @@ function recalculateAllRecords() {
         let dueR = (dO && dP && dP >= dO && !rowIsClosure) ? Math.round((dP.getTime() - dO.getTime()) / 86400000) + 1 : 0;
         row.calcDueR = dueR;
 
-        // 🌟 LWP Auto calculation formula applied here 🌟
-        row.actualDueLwp = safeParse(row.dueE, 0) + (row.dueQ === "बिनपगारी रजा" ? row.calcDueR : 0);
-
-        row.actualSpentEL = 0; row.actualSpentML = 0; row.actualSpentSpl = 0;
+        row.actualSpentEL = 0; row.actualSpentML = 0; row.actualSpentSpl = 0; row.actualAutoLwp = 0;
 
         if (rowIsClosure) {
             row.calcDueFinalEL = row.calcDueK; row.calcDueFinalML = row.calcDueL;
         } else if (row.dueQ === "बिनपगारी रजा") {
+            row.actualAutoLwp = dueR;
             row.calcDueFinalEL = row.calcDueK; row.calcDueFinalML = row.calcDueL;
         } else if (row.dueQ === "विशेष रजा") {
             row.actualSpentSpl = dueR;
@@ -638,9 +628,6 @@ function recalculateAllRecords() {
         let autoSbR = (dSbO && dSbP && dSbP >= dSbO && !rowIsClosure) ? Math.round((dSbP.getTime() - dSbO.getTime()) / 86400000) + 1 : 0;
         row.calcSbR = safeParse(row.sbCustomR, autoSbR);
 
-        // 🌟 LWP Auto calculation formula applied here 🌟
-        row.actualSbLwp = safeParse(row.sbE, 0) + (row.sbQ === "बिनपगारी रजा" ? row.calcSbR : 0);
-
         row.actualSbSpentEL = 0; row.actualSbSpentML = 0;
         if (row.sbQ === "हक्काची रजा" || row.sbQ === "सरेंडर रजा") row.actualSbSpentEL = row.calcSbR;
         else if (row.sbQ === "वैद्यकीय रजा") row.actualSbSpentML = row.calcSbR;
@@ -653,6 +640,10 @@ function recalculateAllRecords() {
         row.calcSbFinalML = safeParse(row.sbCustomAA, autoSbFinalML);
 
         curSbEL = row.calcSbFinalEL; curSbML = row.calcSbFinalML;
+
+        // 🌟 LWP Auto calculation safely applied 🌟
+        row.actualSbLwp = safeParse(row.sbE, 0) + (row.sbQ === "बिनपगारी रजा" ? safeParse(row.calcSbR, 0) : 0);
+        row.actualDueLwp = safeParse(row.dueE, 0) + safeParse(row.actualAutoLwp, 0);
 
         row.diffF = row.calcSbF - row.calcDueF;
         row.diffE = safeParse(row.sbE, 0) - safeParse(row.dueE, 0);
@@ -678,7 +669,7 @@ function recalculateAllRecords() {
         if (parseFloat(row.diffZ) < 0) { remList.push(`या नोंदीत EL ${Math.abs(parseFloat(row.diffZ)).toFixed(2)} कमी नोंदली.`); hasVariance = true; }
         if (parseFloat(row.diffAA) > 0) { remList.push(`या नोंदीत ML ${row.diffAA} जास्त जमा.`); hasVariance = true; }
         if (parseFloat(row.diffAA) < 0) { remList.push(`या नोंदीत ML ${Math.abs(parseFloat(row.diffAA)).toFixed(2)} कमी नोंदली.`); hasVariance = true; }
-        if (row.diffLwp !== 0) { remList.push(`एकूण LWP मध्ये ${Math.abs(row.diffLwp)} दिवसांची तफावत.`); hasVariance = true; }
+        if (row.diffLwp !== 0) { remList.push(`LWP मध्ये ${row.diffLwp} ची तफावत.`); hasVariance = true; }
         
         if (!hasVariance) { remList.push("नोंद तंतोतंत जुळते."); }
         if (row.isDueContinuous) { remList.unshift("[सलग रजा]"); }
@@ -687,7 +678,7 @@ function recalculateAllRecords() {
         row.systemRemark = remList.join(" ");
     });
 
-    localStorage.setItem("pmc_audit_4tables_exact_v17", JSON.stringify(auditEntries));
+    localStorage.setItem("pmc_audit_4tables_exact_v18", JSON.stringify(auditEntries));
     renderComparativeTable();
 }
 
@@ -774,7 +765,7 @@ function renderComparativeTable() {
                 <td><input type="number" class="table-input table-input-sb" style="width:40px !important;" value="${row.calcSbR}" onchange="updateSbField(${idx}, 'sbCustomR', this.value)"></td>
                 <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:65px !important; font-weight:bold;" value="${row.calcSbFinalEL.toFixed(2)}" onchange="updateSbField(${idx}, 'sbCustomZ', this.value)"></td>
                 <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:65px !important; font-weight:bold;" value="${row.calcSbFinalML.toFixed(2)}" onchange="updateSbField(${idx}, 'sbCustomAA', this.value)"></td>
-                <td style="background:#fffde7; font-weight:bold; color:#d32f2f;">${row.actualSbLwp}</td>
+                <td style="background:#fffde7; font-weight:bold; color:#d32f2f;">${safeParse(row.actualSbLwp, 0)}</td>
 
                 <!-- तक्ता २ -->
                 <td><input type="checkbox" ${row.isDueContinuous ? "checked" : ""} onchange="toggleDueContinuous(${idx}, this.checked)"></td>
@@ -804,7 +795,7 @@ function renderComparativeTable() {
                 <td><strong>${row.calcDueR}</strong></td>
                 <td style="background:#e8eaf6;"><strong>${row.calcDueFinalEL.toFixed(2)}</strong></td>
                 <td style="background:#e8eaf6;"><strong>${row.calcDueFinalML.toFixed(2)}</strong></td>
-                <td style="background:#ffebee; font-weight:bold; color:#d32f2f;">${row.actualDueLwp}</td>
+                <td style="background:#ffebee; font-weight:bold; color:#d32f2f;">${safeParse(row.actualDueLwp, 0)}</td>
 
                 <!-- तक्ता ३ -->
                 <td class="${row.diffF !== 0 ? 'diff-alert' : ''}">${row.diffF}</td>
@@ -883,10 +874,10 @@ function renderReports() {
     auditEntries.forEach((row, idx) => {
         if (isFirstRowOfPage) {
             pageStartStr = row.type === "extra" ? `वर्ष ${row.extraYear}` : (row.dueA || "");
-            pageOpenEL = idx === 0 ? 0.00 : auditEntries[idx-1].calcDueFinalEL;
-            pageOpenML = idx === 0 ? 0.00 : auditEntries[idx-1].calcDueFinalML;
-            pgSbOpenEL = idx === 0 ? 0.00 : auditEntries[idx-1].calcSbFinalEL;
-            pgSbOpenML = idx === 0 ? 0.00 : auditEntries[idx-1].calcSbFinalML;
+            pageOpenEL = idx === 0 ? 0.00 : safeParse(auditEntries[idx-1].calcDueFinalEL, 0);
+            pageOpenML = idx === 0 ? 0.00 : safeParse(auditEntries[idx-1].calcDueFinalML, 0);
+            pgSbOpenEL = idx === 0 ? 0.00 : safeParse(auditEntries[idx-1].calcSbFinalEL, 0);
+            pgSbOpenML = idx === 0 ? 0.00 : safeParse(auditEntries[idx-1].calcSbFinalML, 0);
             isFirstRowOfPage = false;
         }
 
@@ -1037,7 +1028,7 @@ function exportComparativeExcel() {
 function clearAuditData() {
     if (confirm("सर्व तुलनात्मक ऑडिट नोंदी पुसल्या जातील. खात्री आहे का?")) {
         auditEntries = []; pageBreaks = [];
-        localStorage.removeItem("pmc_audit_4tables_exact_v17"); localStorage.removeItem("pmc_audit_pagebreaks_v17"); localStorage.removeItem("pmc_audit_closure_v17"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
+        localStorage.removeItem("pmc_audit_4tables_exact_v18"); localStorage.removeItem("pmc_audit_pagebreaks_v18"); localStorage.removeItem("pmc_audit_closure_v18"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
         document.getElementById('global_closure_check').checked = false; document.getElementById('aud_emp_name').value = ""; document.getElementById('aud_emp_pf').value = ""; document.getElementById('aud_join_date').value = "01/01/1990";
         renderComparativeTable();
     }
