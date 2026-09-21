@@ -79,7 +79,7 @@ h3.report-title { font-size: 15px; margin-top: 25px; margin-bottom: 8px; color: 
     </div>
 </div>
 
-<h3 style="font-size: 13px; margin: 8px 0; color: #0d47a1;">📋 शेजारी-शेजारी ४ तक्त्यांचा तुलनात्मक ताळेबंद</h3>
+<h3 style="font-size: 13px; margin: 8px 0; color: #0d47a1;">📋 शेजारी-शेजारी ४ तक्त्यांचा तुलनात्मक ताळेबंद (Base-11 व Base-30 शुद्ध हिशोब)</h3>
 <div style="overflow-x: auto;">
 <table id="comparativeAuditTable">
 <thead>
@@ -110,12 +110,11 @@ h3.report-title { font-size: 15px; margin-top: 25px; margin-bottom: 8px; color: 
 
 <div style="margin-top: 15px; font-size: 11px; line-height: 1.5; background: #ffffff; border: 1px solid #cfd8dc; padding: 10px; border-radius: 4px;">
     <strong>अद्ययावत हिशोब मार्गदर्शक:</strong><br>
-    • <strong>एकूण LWP ची बेरीज:</strong> आता कॉलम E (हजर काळातील LWP) आणि रजा कॉलम मधील बिनपगारी रजा (Q) या दोन्ही LWP ची एकत्रित बेरीज अहवाल व पेज ब्रेक मध्ये दिसेल.<br>
-    • <strong>पानावरील बेरीज:</strong> पेज ब्रेक देताच त्या मॅन्युअल पानाची 'एकूण' त्याच निळ्या पट्टीवर स्पष्ट दिसेल.<br>
-    • <strong>अचूक उणे (Negative) गणित:</strong> शिल्लक उणे गेली तरी सिस्टीम बेस-३० व बेस-११ च्या नियमानुसारच गणित करेल.
+    • <strong>अचूक उणे (Negative) गणित:</strong> शिल्लक उणे गेली तरी सिस्टीम बेस-३० व बेस-११ च्या नियमानुसारच गणित करेल.<br>
+    • <strong>सुरक्षित रकाने (NaN Protection):</strong> एखादा आकडा पुसला तरी आता बेरीज गायब होणार नाही, सिस्टीम आपोआप 'शून्य' समजेल.
 </div>
 
-<!-- 🌟 रिपोर्ट टेबल्स 🌟 -->
+<!-- 🌟 ३ नवीन रिपोर्ट टेबल्स 🌟 -->
 <h3 class="report-title">४अ. तक्ता १: सेवापुस्तकावरील मॅन्युअल पानांची ढोबळ गोळाबेरीज (Service Book Raw Summary)</h3>
 <div style="overflow-x: auto;">
 <table id="sbRawSummaryTable">
@@ -188,6 +187,12 @@ let auditEntries = [];
 let pageBreaks = [];
 let isAppReady = false; 
 
+// 🌟 NaN Protection Function 🌟
+function safeParse(val, fallback) {
+    if (val === null || val === undefined || val === "" || isNaN(parseFloat(val))) return fallback;
+    return parseFloat(val);
+}
+
 const config = { dateFormat: "d/m/Y", allowInput: true };
 let joinDateFp = flatpickr("#aud_join_date", { 
     ...config, 
@@ -217,17 +222,9 @@ window.onload = function() {
         document.getElementById('aud_join_date').value = "01/01/1990";
     }
 
-    let saved = localStorage.getItem("pmc_audit_4tables_exact_v15") || 
-                localStorage.getItem("pmc_audit_4tables_exact_v14") || 
-                localStorage.getItem("pmc_audit_4tables_exact_v13");
-
-    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v15") || 
-                      localStorage.getItem("pmc_audit_pagebreaks_v14") || 
-                      localStorage.getItem("pmc_audit_pagebreaks_v13");
-
-    let savedClosure = localStorage.getItem("pmc_audit_closure_v15") || 
-                       localStorage.getItem("pmc_audit_closure_v14") || 
-                       localStorage.getItem("pmc_audit_closure_v13");
+    let saved = localStorage.getItem("pmc_audit_4tables_exact_v16") || localStorage.getItem("pmc_audit_4tables_exact_v15") || localStorage.getItem("pmc_audit_4tables_exact_v14") || localStorage.getItem("pmc_audit_4tables_exact_v13");
+    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v16") || localStorage.getItem("pmc_audit_pagebreaks_v15") || localStorage.getItem("pmc_audit_pagebreaks_v14") || localStorage.getItem("pmc_audit_pagebreaks_v13");
+    let savedClosure = localStorage.getItem("pmc_audit_closure_v16") || localStorage.getItem("pmc_audit_closure_v15") || localStorage.getItem("pmc_audit_closure_v14") || localStorage.getItem("pmc_audit_closure_v13");
 
     if (saved) { try { auditEntries = JSON.parse(saved); } catch(e) { auditEntries = []; } }
     if (savedBreaks) { try { pageBreaks = JSON.parse(savedBreaks); } catch(e) { pageBreaks = []; } }
@@ -270,9 +267,9 @@ function restoreBackup() {
                 let entStr = typeof content.entries === "object" ? JSON.stringify(content.entries) : content.entries;
                 let brkStr = typeof content.breaks === "object" ? JSON.stringify(content.breaks) : content.breaks;
                 
-                if(entStr) localStorage.setItem("pmc_audit_4tables_exact_v15", entStr);
-                if(brkStr) localStorage.setItem("pmc_audit_pagebreaks_v15", brkStr);
-                if(content.closure) localStorage.setItem("pmc_audit_closure_v15", content.closure);
+                if(entStr) localStorage.setItem("pmc_audit_4tables_exact_v16", entStr);
+                if(brkStr) localStorage.setItem("pmc_audit_pagebreaks_v16", brkStr);
+                if(content.closure) localStorage.setItem("pmc_audit_closure_v16", content.closure);
                 if(content.empName) localStorage.setItem("pmc_aud_emp_name", content.empName);
                 if(content.empPf) localStorage.setItem("pmc_aud_emp_pf", content.empPf);
                 if(content.joinDate) localStorage.setItem("pmc_aud_join_date", content.joinDate);
@@ -337,7 +334,7 @@ function nextDay(dateObj) {
 }
 
 function toUnits(val, divisor) {
-    let absVal = Math.abs(val);
+    let absVal = Math.abs(safeParse(val, 0));
     let intPart = Math.floor(absVal);
     let modPart = Math.round((absVal % 1) * 100);
     let totalUnits = (intPart * divisor) + modPart;
@@ -359,7 +356,7 @@ function addLeaveBalance(bal, credit, divisor, maxLimit) {
 }
 
 function deductLeaveDays(bal, daysToDeduct, divisor) {
-    return fromUnits(toUnits(bal, divisor) - (daysToDeduct * divisor), divisor);
+    return fromUnits(toUnits(bal, divisor) - (safeParse(daysToDeduct, 0) * divisor), divisor);
 }
 
 function getNetChange(currentBal, prevBal, divisor) {
@@ -427,8 +424,7 @@ function addNewAuditRow() {
         isDueContinuous: false,
         dueA: nextA, dueB: "", dueE: 0, dueO: "", dueP: "", dueQ: "वैद्यकीय रजा",
         isDueCustomA: false, isDueCustomB: false, isDueCustomO: false, isDueCustomP: false, isDueCustomQ: false,
-        isSbCustomA: false, isSbCustomO: false, manualRemark: "",
-        actualSbLwp: 0, actualDueLwp: 0 
+        isSbCustomA: false, isSbCustomO: false, manualRemark: ""
     };
 
     auditEntries.push(newRow);
@@ -438,7 +434,7 @@ function addNewAuditRow() {
 function addAnnualExtraLeavePrompt() {
     let year = prompt("ज्या वर्षाची अतिरिक्त रजा जमा करायची आहे ते वर्ष टाका (उदा. 1990 किंवा 1995):");
     if (!year || isNaN(year)) return;
-    auditEntries.push({ type: "extra", extraYear: year, extraDays: (parseInt(year) < 1990 ? 10 : 15), manualRemark: `अत्यावश्यक सेवा अतिरिक्त रजा (${year}) जमा`, actualSbLwp: 0, actualDueLwp: 0 });
+    auditEntries.push({ type: "extra", extraYear: year, extraDays: (parseInt(year) < 1990 ? 10 : 15), manualRemark: `अत्यावश्यक सेवा अतिरिक्त रजा (${year}) जमा` });
     recalculateAllRecords();
 }
 
@@ -446,7 +442,7 @@ function insertPageBreakAt(idx) {
     if (!pageBreaks.includes(idx)) {
         pageBreaks.push(idx);
         pageBreaks.sort((a, b) => a - b);
-        localStorage.setItem("pmc_audit_pagebreaks_v15", JSON.stringify(pageBreaks));
+        localStorage.setItem("pmc_audit_pagebreaks_v16", JSON.stringify(pageBreaks));
         renderComparativeTable();
     } else {
         alert("या ओळीवर आधीच पेज ब्रेक दिलेला आहे!");
@@ -460,12 +456,12 @@ function addManualPageBreak() {
 
 function removeManualPageBreak(idx) {
     pageBreaks = pageBreaks.filter(b => b !== idx);
-    localStorage.setItem("pmc_audit_pagebreaks_v15", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v16", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function handleGlobalClosureToggle(isChecked) {
-    localStorage.setItem("pmc_audit_closure_v15", isChecked ? "true" : "false");
+    localStorage.setItem("pmc_audit_closure_v16", isChecked ? "true" : "false");
     recalculateAllRecords();
 }
 
@@ -564,7 +560,7 @@ function recalculateAllRecords() {
         }
         if (!row.isDueContinuous) {
             let dA = parseDMY(row.dueA), dB = parseDMY(row.dueB);
-            if (dA && dB && dB >= dA) dueF = Math.max(0, Math.round((dB.getTime() - dA.getTime()) / 86400000) + 1 - (parseFloat(row.dueE) || 0));
+            if (dA && dB && dB >= dA) dueF = Math.max(0, Math.round((dB.getTime() - dA.getTime()) / 86400000) + 1 - safeParse(row.dueE, 0));
         }
 
         row.calcDueF = dueF;
@@ -600,9 +596,8 @@ function recalculateAllRecords() {
         if (row.calcDueFinalEL > 365) row.calcDueFinalEL = 365.00;
         if (row.calcDueFinalML > 120) row.calcDueFinalML = 120.00;
         if (!rowIsClosure) row.displayDueQ = row.dueQ;
-        curDueEL = row.calcDueFinalEL; curDueML = row.calcDueFinalML;
 
-        row.actualDueLwp = (parseFloat(row.dueE) || 0) + (row.actualAutoLwp || 0);
+        curDueEL = row.calcDueFinalEL; curDueML = row.calcDueFinalML;
 
         let autoSbF = 0;
         if (rowIsClosure) {
@@ -612,19 +607,19 @@ function recalculateAllRecords() {
         }
         if (!row.isSbContinuous) {
             let dSbA = parseDMY(row.sbA), dSbB = parseDMY(row.sbB);
-            if (dSbA && dSbB && dSbB >= dSbA) autoSbF = Math.max(0, Math.round((dSbB.getTime() - dSbA.getTime()) / 86400000) + 1 - (parseFloat(row.sbE) || 0));
+            if (dSbA && dSbB && dSbB >= dSbA) autoSbF = Math.max(0, Math.round((dSbB.getTime() - dSbA.getTime()) / 86400000) + 1 - safeParse(row.sbE, 0));
         }
 
-        row.calcSbF = (row.sbCustomF !== null) ? parseFloat(row.sbCustomF) : autoSbF;
-        row.calcSbG = (row.sbCustomG !== null) ? parseFloat(row.sbCustomG) : (Math.floor(row.calcSbF / 11) + ((row.calcSbF % 11) / 100));
-        row.calcSbH = (row.sbCustomH !== null) ? parseFloat(row.sbCustomH) : (Math.floor(row.calcSbF / 30) + ((row.calcSbF % 30) / 100));
+        row.calcSbF = safeParse(row.sbCustomF, autoSbF);
+        row.calcSbG = safeParse(row.sbCustomG, Math.floor(row.calcSbF / 11) + ((row.calcSbF % 11) / 100));
+        row.calcSbH = safeParse(row.sbCustomH, Math.floor(row.calcSbF / 30) + ((row.calcSbF % 30) / 100));
 
-        row.calcSbK = (row.sbCustomK !== null) ? parseFloat(row.sbCustomK) : addLeaveBalance(curSbEL, row.calcSbG, 11, 365);
-        row.calcSbL = (row.sbCustomL !== null) ? parseFloat(row.sbCustomL) : addLeaveBalance(curSbML, row.calcSbH, 30, 120);
+        row.calcSbK = safeParse(row.sbCustomK, addLeaveBalance(curSbEL, row.calcSbG, 11, 365));
+        row.calcSbL = safeParse(row.sbCustomL, addLeaveBalance(curSbML, row.calcSbH, 30, 120));
 
         let dSbO = parseDMY(row.sbO), dSbP = parseDMY(row.sbP);
         let autoSbR = (dSbO && dSbP && dSbP >= dSbO && !rowIsClosure) ? Math.round((dSbP.getTime() - dSbO.getTime()) / 86400000) + 1 : 0;
-        row.calcSbR = (row.sbCustomR !== null) ? parseFloat(row.sbCustomR) : autoSbR;
+        row.calcSbR = safeParse(row.sbCustomR, autoSbR);
 
         row.actualSbSpentEL = 0; row.actualSbSpentML = 0;
         if (row.sbQ === "हक्काची रजा" || row.sbQ === "सरेंडर रजा") row.actualSbSpentEL = row.calcSbR;
@@ -634,14 +629,17 @@ function recalculateAllRecords() {
         if (row.sbQ === "हक्काची रजा" || row.sbQ === "सरेंडर रजा") autoSbFinalEL = deductLeaveDays(row.calcSbK, row.calcSbR, 11);
         else if (row.sbQ === "वैद्यकीय रजा") autoSbFinalML = deductLeaveDays(row.calcSbL, row.calcSbR, 30);
         
-        row.calcSbFinalEL = (row.sbCustomZ !== null) ? parseFloat(row.sbCustomZ) : autoSbFinalEL;
-        row.calcSbFinalML = (row.sbCustomAA !== null) ? parseFloat(row.sbCustomAA) : autoSbFinalML;
+        row.calcSbFinalEL = safeParse(row.sbCustomZ, autoSbFinalEL);
+        row.calcSbFinalML = safeParse(row.sbCustomAA, autoSbFinalML);
+
         curSbEL = row.calcSbFinalEL; curSbML = row.calcSbFinalML;
 
-        row.actualSbLwp = (parseFloat(row.sbE) || 0) + (row.sbQ === "बिनपगारी रजा" ? row.calcSbR : (parseFloat(row.sbCustomLwp) || 0));
+        // 🌟 Safe LWP calculations 🌟
+        row.actualSbLwp = safeParse(row.sbE, 0) + (row.sbQ === "बिनपगारी रजा" ? row.calcSbR : safeParse(row.sbCustomLwp, 0));
+        row.actualDueLwp = safeParse(row.dueE, 0) + safeParse(row.actualAutoLwp, 0);
 
         row.diffF = row.calcSbF - row.calcDueF;
-        row.diffE = (parseFloat(row.sbE) || 0) - (parseFloat(row.dueE) || 0);
+        row.diffE = safeParse(row.sbE, 0) - safeParse(row.dueE, 0);
         row.diffG = diffLeaveUnits(row.calcSbG, row.calcDueG, 11);
         row.diffH = diffLeaveUnits(row.calcSbH, row.calcDueH, 30);
         row.diffK = diffLeaveUnits(row.calcSbK, row.calcDueK, 11);
@@ -664,7 +662,7 @@ function recalculateAllRecords() {
         if (parseFloat(row.diffZ) < 0) { remList.push(`या नोंदीत EL ${Math.abs(parseFloat(row.diffZ)).toFixed(2)} कमी नोंदली.`); hasVariance = true; }
         if (parseFloat(row.diffAA) > 0) { remList.push(`या नोंदीत ML ${row.diffAA} जास्त जमा.`); hasVariance = true; }
         if (parseFloat(row.diffAA) < 0) { remList.push(`या नोंदीत ML ${Math.abs(parseFloat(row.diffAA)).toFixed(2)} कमी नोंदली.`); hasVariance = true; }
-        if (row.diffLwp !== 0) { remList.push(`एकूण LWP मध्ये ${Math.abs(row.diffLwp)} दिवसांची तफावत.`); hasVariance = true; }
+        if (row.diffLwp !== 0) { remList.push(`LWP मध्ये ${row.diffLwp} ची तफावत.`); hasVariance = true; }
         
         if (!hasVariance) { remList.push("नोंद तंतोतंत जुळते."); }
         if (row.isDueContinuous) { remList.unshift("[सलग रजा]"); }
@@ -673,7 +671,7 @@ function recalculateAllRecords() {
         row.systemRemark = remList.join(" ");
     });
 
-    localStorage.setItem("pmc_audit_4tables_exact_v15", JSON.stringify(auditEntries));
+    localStorage.setItem("pmc_audit_4tables_exact_v16", JSON.stringify(auditEntries));
     renderComparativeTable();
 }
 
@@ -720,15 +718,16 @@ function renderComparativeTable() {
                 </td>
             `;
         } else {
-            pgSbF += row.calcSbF;
-            pgSbG += toUnits(row.calcSbG, 11); pgSbH += toUnits(row.calcSbH, 30);
-            pgSbSpentEL += (row.actualSbSpentEL || 0); pgSbSpentML += (row.actualSbSpentML || 0);
-            pgSbLwp += row.actualSbLwp;
+            // 🌟 Safe Fallbacks for running totals 🌟
+            pgSbF += safeParse(row.calcSbF, 0);
+            pgSbG += toUnits(safeParse(row.calcSbG, 0), 11); pgSbH += toUnits(safeParse(row.calcSbH, 0), 30);
+            pgSbSpentEL += safeParse(row.actualSbSpentEL, 0); pgSbSpentML += safeParse(row.actualSbSpentML, 0);
+            pgSbLwp += safeParse(row.actualSbLwp, 0);
 
-            pgDueF += row.calcDueF;
-            pgDueEarnEL += toUnits(row.calcDueG, 11); pgDueEarnML += toUnits(row.calcDueH, 30);
-            pgDueSpentEL += (row.actualSpentEL || 0); pgDueSpentML += (row.actualSpentML || 0);
-            pgDueLwp += row.actualDueLwp;
+            pgDueF += safeParse(row.calcDueF, 0);
+            pgDueEarnEL += toUnits(safeParse(row.calcDueG, 0), 11); pgDueEarnML += toUnits(safeParse(row.calcDueH, 0), 30);
+            pgDueSpentEL += safeParse(row.actualSpentEL, 0); pgDueSpentML += safeParse(row.actualSpentML, 0);
+            pgDueLwp += safeParse(row.actualDueLwp, 0);
 
             let tr = tbody.insertRow();
             tr.innerHTML = `
@@ -880,15 +879,15 @@ function renderReports() {
             pgSbG += toUnits(row.extraDays, 11);
             pgDueEarnEL += toUnits(row.extraDays, 11);
         } else {
-            pgSbF += row.calcSbF;
-            pgSbG += toUnits(row.calcSbG, 11); pgSbH += toUnits(row.calcSbH, 30);
-            pgSbSpentEL += (row.actualSbSpentEL || 0); pgSbSpentML += (row.actualSbSpentML || 0);
-            pgSbLwp += row.actualSbLwp;
+            pgSbF += safeParse(row.calcSbF, 0);
+            pgSbG += toUnits(safeParse(row.calcSbG, 0), 11); pgSbH += toUnits(safeParse(row.calcSbH, 0), 30);
+            pgSbSpentEL += safeParse(row.actualSbSpentEL, 0); pgSbSpentML += safeParse(row.actualSbSpentML, 0);
+            pgSbLwp += safeParse(row.actualSbLwp, 0);
 
-            pgDueF += row.calcDueF;
-            pgDueEarnEL += toUnits(row.calcDueG, 11); pgDueEarnML += toUnits(row.calcDueH, 30);
-            pgDueSpentEL += (row.actualSpentEL || 0); pgDueSpentML += (row.actualSpentML || 0);
-            pgDueSpentSpl += (row.actualSpentSpl || 0); pgDueLwp += row.actualDueLwp;
+            pgDueF += safeParse(row.calcDueF, 0);
+            pgDueEarnEL += toUnits(safeParse(row.calcDueG, 0), 11); pgDueEarnML += toUnits(safeParse(row.calcDueH, 0), 30);
+            pgDueSpentEL += safeParse(row.actualSpentEL, 0); pgDueSpentML += safeParse(row.actualSpentML, 0);
+            pgDueSpentSpl += safeParse(row.actualSpentSpl, 0); pgDueLwp += safeParse(row.actualDueLwp, 0);
         }
 
         if (pageBreaks.includes(idx) || idx === auditEntries.length - 1) {
@@ -898,23 +897,23 @@ function renderReports() {
             let trSb = sbTbody.insertRow();
             trSb.innerHTML = `
                 <td>पान नंबर ${pageNum} (${period})</td>
-                <td style="background:#fffde7;"><strong>${pgSbOpenEL.toFixed(2)}</strong></td>
-                <td style="background:#fffde7;"><strong>${pgSbOpenML.toFixed(2)}</strong></td>
+                <td style="background:#fffde7;"><strong>${safeParse(pgSbOpenEL, 0).toFixed(2)}</strong></td>
+                <td style="background:#fffde7;"><strong>${safeParse(pgSbOpenML, 0).toFixed(2)}</strong></td>
                 <td>${pgSbF}</td>
                 <td>${fromUnits(pgSbG, 11).toFixed(2)}</td>
                 <td>${fromUnits(pgSbH, 30).toFixed(2)}</td>
                 <td style="color:#e65100;">${pgSbSpentEL}</td>
                 <td style="color:#e65100;">${pgSbSpentML}</td>
                 <td style="color:#d32f2f; font-weight:bold;">${pgSbLwp}</td>
-                <td style="background:#ffe0b2; color:#bf360c;"><strong>${row.calcSbFinalEL.toFixed(2)}</strong></td>
-                <td style="background:#ffe0b2; color:#bf360c;"><strong>${row.calcSbFinalML.toFixed(2)}</strong></td>
+                <td style="background:#ffe0b2; color:#bf360c;"><strong>${safeParse(row.calcSbFinalEL, 0).toFixed(2)}</strong></td>
+                <td style="background:#ffe0b2; color:#bf360c;"><strong>${safeParse(row.calcSbFinalML, 0).toFixed(2)}</strong></td>
             `;
             
             let trDue = dueTbody.insertRow();
             trDue.innerHTML = `
                 <td>पान नंबर ${pageNum} (${period})</td>
-                <td style="background:#e8eaf6;"><strong>${pageOpenEL.toFixed(2)}</strong></td>
-                <td style="background:#e8eaf6;"><strong>${pageOpenML.toFixed(2)}</strong></td>
+                <td style="background:#e8eaf6;"><strong>${safeParse(pageOpenEL, 0).toFixed(2)}</strong></td>
+                <td style="background:#e8eaf6;"><strong>${safeParse(pageOpenML, 0).toFixed(2)}</strong></td>
                 <td>${pgDueF}</td>
                 <td>${fromUnits(pgDueEarnEL, 11).toFixed(2)}</td>
                 <td>${fromUnits(pgDueEarnML, 30).toFixed(2)}</td>
@@ -922,8 +921,8 @@ function renderReports() {
                 <td style="color:#e65100;">${pgDueSpentML}</td>
                 <td style="color:#e65100;">${pgDueSpentSpl}</td>
                 <td style="color:#d32f2f; font-weight:bold;">${pgDueLwp}</td>
-                <td style="background:#c5cae9; color:#002171;"><strong>${row.calcDueFinalEL.toFixed(2)}</strong></td>
-                <td style="background:#c5cae9; color:#002171;"><strong>${row.calcDueFinalML.toFixed(2)}</strong></td>
+                <td style="background:#c5cae9; color:#002171;"><strong>${safeParse(row.calcDueFinalEL, 0).toFixed(2)}</strong></td>
+                <td style="background:#c5cae9; color:#002171;"><strong>${safeParse(row.calcDueFinalML, 0).toFixed(2)}</strong></td>
             `;
 
             pageNum++;
@@ -937,7 +936,7 @@ function renderReports() {
     auditEntries.forEach((row) => {
         if (row.type === "extra") return;
 
-        let dueE = parseFloat(row.dueE) || 0;
+        let dueE = safeParse(row.dueE, 0);
         if (dueE > 0 && row.dueA && row.dueA !== "---") {
             let dA = parseDMY(row.dueA);
             if (dA) {
@@ -951,7 +950,7 @@ function renderReports() {
         let dO = parseDMY(row.dueO); let dP = parseDMY(row.dueP);
         if (dO && dP && dP >= dO && !document.getElementById('global_closure_check').checked) {
             let curr = new Date(dO), end = new Date(dP), dayCount = 1;
-            let spEL = row.actualSpentEL || 0, spML = row.actualSpentML || 0;
+            let spEL = safeParse(row.actualSpentEL, 0), spML = safeParse(row.actualSpentML, 0);
 
             while (curr <= end) {
                 let k = `${String(curr.getMonth()+1).padStart(2,'0')}/${curr.getFullYear()}`;
@@ -1023,7 +1022,7 @@ function exportComparativeExcel() {
 function clearAuditData() {
     if (confirm("सर्व तुलनात्मक ऑडिट नोंदी पुसल्या जातील. खात्री आहे का?")) {
         auditEntries = []; pageBreaks = [];
-        localStorage.removeItem("pmc_audit_4tables_exact_v15"); localStorage.removeItem("pmc_audit_pagebreaks_v15"); localStorage.removeItem("pmc_audit_closure_v15"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
+        localStorage.removeItem("pmc_audit_4tables_exact_v16"); localStorage.removeItem("pmc_audit_pagebreaks_v16"); localStorage.removeItem("pmc_audit_closure_v16"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
         document.getElementById('global_closure_check').checked = false; document.getElementById('aud_emp_name').value = ""; document.getElementById('aud_emp_pf').value = ""; document.getElementById('aud_join_date').value = "01/01/1990";
         renderComparativeTable();
     }
