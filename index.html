@@ -90,8 +90,8 @@ h3.report-title { font-size: 15px; margin-top: 25px; margin-bottom: 8px; color: 
         <th colspan="3" class="th-remark">तक्ता ४: ऑडिटर शेरा (AUDIT REMARKS)</th>
     </tr>
     <tr class="sub-header">
-        <th class="th-sb">सलग?</th><th class="th-sb">हजर दिनांक (A-B)</th><th class="th-sb">F</th><th class="th-sb">E</th><th class="th-sb">साठलेली EL (G)</th><th class="th-sb">साठलेली ML (H)</th><th class="th-sb">एकूण EL (K)</th><th class="th-sb">एकूण ML (L)</th><th class="th-sb">गैरहजर (O-P)</th><th class="th-sb">रजा (Q)</th><th class="th-sb">दिवस (R)</th><th class="th-sb">अंतिम EL (Z)</th><th class="th-sb">अंतिम ML (AA)</th><th class="th-sb">LWP</th>
-        <th class="th-due">सलग?</th><th class="th-due">हजर दिनांक (A-B Edit)</th><th class="th-due">हजर दिवस (F)</th><th class="th-due">LWP (E)</th><th class="th-due">साठलेली EL (G)</th><th class="th-due">साठलेली ML (H)</th><th class="th-due">एकूण EL (K)</th><th class="th-due">एकूण ML (L)</th><th class="th-due">गैरहजर (O-P Edit)</th><th class="th-due">प्रकार (Q)</th><th class="th-due">दिवस (R)</th><th class="th-due">अंतिम EL (Z)</th><th class="th-due">अंतिम ML (AA)</th><th class="th-due">रजेतील LWP</th>
+        <th class="th-sb">सलग?</th><th class="th-sb">हजर दिनांक (A-B)</th><th class="th-sb">F</th><th class="th-sb">E</th><th class="th-sb">साठलेली EL (G)</th><th class="th-sb">साठलेली ML (H)</th><th class="th-sb">एकूण EL (K)</th><th class="th-sb">एकूण ML (L)</th><th class="th-sb">गैरहजर (O-P)</th><th class="th-sb">रजा (Q)</th><th class="th-sb">दिवस (R)</th><th class="th-sb">अंतिम EL (Z)</th><th class="th-sb">अंतिम ML (AA)</th><th class="th-sb">एकूण LWP</th>
+        <th class="th-due">सलग?</th><th class="th-due">हजर दिनांक (A-B Edit)</th><th class="th-due">हजर दिवस (F)</th><th class="th-due">LWP (E)</th><th class="th-due">साठलेली EL (G)</th><th class="th-due">साठलेली ML (H)</th><th class="th-due">एकूण EL (K)</th><th class="th-due">एकूण ML (L)</th><th class="th-due">गैरहजर (O-P Edit)</th><th class="th-due">प्रकार (Q)</th><th class="th-due">दिवस (R)</th><th class="th-due">अंतिम EL (Z)</th><th class="th-due">अंतिम ML (AA)</th><th class="th-due">एकूण LWP</th>
         <th class="th-diff">F फरक</th><th class="th-diff">E फरक</th><th class="th-diff">G फरक</th><th class="th-diff">H फरक</th><th class="th-diff">K फरक</th><th class="th-diff">L फरक</th><th class="th-diff">R फरक</th><th class="th-diff">चालू EL फरक</th><th class="th-diff">चालू ML फरक</th><th class="th-diff">LWP फरक</th>
         <th class="th-remark" style="width: 220px;">सिस्टीम निष्कर्ष (चालू ओळ)</th><th class="th-remark">ऑडिटर मॅन्युअल शेरा</th><th class="th-remark">कृती</th>
     </tr>
@@ -110,11 +110,12 @@ h3.report-title { font-size: 15px; margin-top: 25px; margin-bottom: 8px; color: 
 
 <div style="margin-top: 15px; font-size: 11px; line-height: 1.5; background: #ffffff; border: 1px solid #cfd8dc; padding: 10px; border-radius: 4px;">
     <strong>अद्ययावत हिशोब मार्गदर्शक:</strong><br>
-    • <strong>अचूक उणे (Negative) गणित:</strong> शिल्लक उणे गेली तरी सिस्टीम बेस-३० व बेस-११ च्या नियमानुसारच गणित करेल.<br>
-    • <strong>सुरक्षित रकाने (NaN Protection):</strong> एखादा आकडा पुसला तरी आता बेरीज गायब होणार नाही, सिस्टीम आपोआप 'शून्य' समजेल.
+    • <strong>एकूण LWP ची अचूक बेरीज:</strong> आता कॉलम E (हजर काळातील LWP) आणि रजा कॉलम मधील बिनपगारी रजा (Q) या दोन्ही LWP ची थेट बेरीज होऊन ती सर्व तक्त्यांमध्ये ऑटोमॅटिक भरली जाईल.<br>
+    • <strong>पानावरील बेरीज:</strong> पेज ब्रेक देताच त्या मॅन्युअल पानाची 'एकूण' त्याच निळ्या पट्टीवर स्पष्ट दिसेल.<br>
+    • <strong>अचूक उणे (Negative) गणित:</strong> शिल्लक उणे गेली तरी सिस्टीम बेस-३० व बेस-११ च्या नियमानुसारच गणित करेल.
 </div>
 
-<!-- 🌟 ३ नवीन रिपोर्ट टेबल्स 🌟 -->
+<!-- 🌟 रिपोर्ट टेबल्स 🌟 -->
 <h3 class="report-title">४अ. तक्ता १: सेवापुस्तकावरील मॅन्युअल पानांची ढोबळ गोळाबेरीज (Service Book Raw Summary)</h3>
 <div style="overflow-x: auto;">
 <table id="sbRawSummaryTable">
@@ -187,7 +188,7 @@ let auditEntries = [];
 let pageBreaks = [];
 let isAppReady = false; 
 
-// 🌟 NaN Protection Function 🌟
+// 🌟 Safe Parse Function to prevent NaN 🌟
 function safeParse(val, fallback) {
     if (val === null || val === undefined || val === "" || isNaN(parseFloat(val))) return fallback;
     return parseFloat(val);
@@ -222,9 +223,23 @@ window.onload = function() {
         document.getElementById('aud_join_date').value = "01/01/1990";
     }
 
-    let saved = localStorage.getItem("pmc_audit_4tables_exact_v16") || localStorage.getItem("pmc_audit_4tables_exact_v15") || localStorage.getItem("pmc_audit_4tables_exact_v14") || localStorage.getItem("pmc_audit_4tables_exact_v13");
-    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v16") || localStorage.getItem("pmc_audit_pagebreaks_v15") || localStorage.getItem("pmc_audit_pagebreaks_v14") || localStorage.getItem("pmc_audit_pagebreaks_v13");
-    let savedClosure = localStorage.getItem("pmc_audit_closure_v16") || localStorage.getItem("pmc_audit_closure_v15") || localStorage.getItem("pmc_audit_closure_v14") || localStorage.getItem("pmc_audit_closure_v13");
+    let saved = localStorage.getItem("pmc_audit_4tables_exact_v17") || 
+                localStorage.getItem("pmc_audit_4tables_exact_v16") || 
+                localStorage.getItem("pmc_audit_4tables_exact_v15") || 
+                localStorage.getItem("pmc_audit_4tables_exact_v14") || 
+                localStorage.getItem("pmc_audit_4tables_exact_v13");
+
+    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v17") || 
+                      localStorage.getItem("pmc_audit_pagebreaks_v16") || 
+                      localStorage.getItem("pmc_audit_pagebreaks_v15") || 
+                      localStorage.getItem("pmc_audit_pagebreaks_v14") || 
+                      localStorage.getItem("pmc_audit_pagebreaks_v13");
+
+    let savedClosure = localStorage.getItem("pmc_audit_closure_v17") || 
+                       localStorage.getItem("pmc_audit_closure_v16") || 
+                       localStorage.getItem("pmc_audit_closure_v15") || 
+                       localStorage.getItem("pmc_audit_closure_v14") || 
+                       localStorage.getItem("pmc_audit_closure_v13");
 
     if (saved) { try { auditEntries = JSON.parse(saved); } catch(e) { auditEntries = []; } }
     if (savedBreaks) { try { pageBreaks = JSON.parse(savedBreaks); } catch(e) { pageBreaks = []; } }
@@ -267,9 +282,9 @@ function restoreBackup() {
                 let entStr = typeof content.entries === "object" ? JSON.stringify(content.entries) : content.entries;
                 let brkStr = typeof content.breaks === "object" ? JSON.stringify(content.breaks) : content.breaks;
                 
-                if(entStr) localStorage.setItem("pmc_audit_4tables_exact_v16", entStr);
-                if(brkStr) localStorage.setItem("pmc_audit_pagebreaks_v16", brkStr);
-                if(content.closure) localStorage.setItem("pmc_audit_closure_v16", content.closure);
+                if(entStr) localStorage.setItem("pmc_audit_4tables_exact_v17", entStr);
+                if(brkStr) localStorage.setItem("pmc_audit_pagebreaks_v17", brkStr);
+                if(content.closure) localStorage.setItem("pmc_audit_closure_v17", content.closure);
                 if(content.empName) localStorage.setItem("pmc_aud_emp_name", content.empName);
                 if(content.empPf) localStorage.setItem("pmc_aud_emp_pf", content.empPf);
                 if(content.joinDate) localStorage.setItem("pmc_aud_join_date", content.joinDate);
@@ -420,7 +435,7 @@ function addNewAuditRow() {
     let newRow = {
         type: "regular", isSbContinuous: false,
         sbA: nextA, sbB: "", sbE: 0, sbO: "", sbP: "", sbQ: "वैद्यकीय रजा",
-        sbCustomF: null, sbCustomG: null, sbCustomH: null, sbCustomK: null, sbCustomL: null, sbCustomR: null, sbCustomZ: null, sbCustomAA: null, sbCustomLwp: null,
+        sbCustomF: null, sbCustomG: null, sbCustomH: null, sbCustomK: null, sbCustomL: null, sbCustomR: null, sbCustomZ: null, sbCustomAA: null,
         isDueContinuous: false,
         dueA: nextA, dueB: "", dueE: 0, dueO: "", dueP: "", dueQ: "वैद्यकीय रजा",
         isDueCustomA: false, isDueCustomB: false, isDueCustomO: false, isDueCustomP: false, isDueCustomQ: false,
@@ -442,7 +457,7 @@ function insertPageBreakAt(idx) {
     if (!pageBreaks.includes(idx)) {
         pageBreaks.push(idx);
         pageBreaks.sort((a, b) => a - b);
-        localStorage.setItem("pmc_audit_pagebreaks_v16", JSON.stringify(pageBreaks));
+        localStorage.setItem("pmc_audit_pagebreaks_v17", JSON.stringify(pageBreaks));
         renderComparativeTable();
     } else {
         alert("या ओळीवर आधीच पेज ब्रेक दिलेला आहे!");
@@ -456,12 +471,12 @@ function addManualPageBreak() {
 
 function removeManualPageBreak(idx) {
     pageBreaks = pageBreaks.filter(b => b !== idx);
-    localStorage.setItem("pmc_audit_pagebreaks_v16", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v17", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function handleGlobalClosureToggle(isChecked) {
-    localStorage.setItem("pmc_audit_closure_v16", isChecked ? "true" : "false");
+    localStorage.setItem("pmc_audit_closure_v17", isChecked ? "true" : "false");
     recalculateAllRecords();
 }
 
@@ -573,12 +588,14 @@ function recalculateAllRecords() {
         let dueR = (dO && dP && dP >= dO && !rowIsClosure) ? Math.round((dP.getTime() - dO.getTime()) / 86400000) + 1 : 0;
         row.calcDueR = dueR;
 
-        row.actualSpentEL = 0; row.actualSpentML = 0; row.actualSpentSpl = 0; row.actualAutoLwp = 0;
+        // 🌟 LWP Auto calculation formula applied here 🌟
+        row.actualDueLwp = safeParse(row.dueE, 0) + (row.dueQ === "बिनपगारी रजा" ? row.calcDueR : 0);
+
+        row.actualSpentEL = 0; row.actualSpentML = 0; row.actualSpentSpl = 0;
 
         if (rowIsClosure) {
             row.calcDueFinalEL = row.calcDueK; row.calcDueFinalML = row.calcDueL;
         } else if (row.dueQ === "बिनपगारी रजा") {
-            row.actualAutoLwp = dueR;
             row.calcDueFinalEL = row.calcDueK; row.calcDueFinalML = row.calcDueL;
         } else if (row.dueQ === "विशेष रजा") {
             row.actualSpentSpl = dueR;
@@ -621,6 +638,9 @@ function recalculateAllRecords() {
         let autoSbR = (dSbO && dSbP && dSbP >= dSbO && !rowIsClosure) ? Math.round((dSbP.getTime() - dSbO.getTime()) / 86400000) + 1 : 0;
         row.calcSbR = safeParse(row.sbCustomR, autoSbR);
 
+        // 🌟 LWP Auto calculation formula applied here 🌟
+        row.actualSbLwp = safeParse(row.sbE, 0) + (row.sbQ === "बिनपगारी रजा" ? row.calcSbR : 0);
+
         row.actualSbSpentEL = 0; row.actualSbSpentML = 0;
         if (row.sbQ === "हक्काची रजा" || row.sbQ === "सरेंडर रजा") row.actualSbSpentEL = row.calcSbR;
         else if (row.sbQ === "वैद्यकीय रजा") row.actualSbSpentML = row.calcSbR;
@@ -633,10 +653,6 @@ function recalculateAllRecords() {
         row.calcSbFinalML = safeParse(row.sbCustomAA, autoSbFinalML);
 
         curSbEL = row.calcSbFinalEL; curSbML = row.calcSbFinalML;
-
-        // 🌟 Safe LWP calculations 🌟
-        row.actualSbLwp = safeParse(row.sbE, 0) + (row.sbQ === "बिनपगारी रजा" ? row.calcSbR : safeParse(row.sbCustomLwp, 0));
-        row.actualDueLwp = safeParse(row.dueE, 0) + safeParse(row.actualAutoLwp, 0);
 
         row.diffF = row.calcSbF - row.calcDueF;
         row.diffE = safeParse(row.sbE, 0) - safeParse(row.dueE, 0);
@@ -662,7 +678,7 @@ function recalculateAllRecords() {
         if (parseFloat(row.diffZ) < 0) { remList.push(`या नोंदीत EL ${Math.abs(parseFloat(row.diffZ)).toFixed(2)} कमी नोंदली.`); hasVariance = true; }
         if (parseFloat(row.diffAA) > 0) { remList.push(`या नोंदीत ML ${row.diffAA} जास्त जमा.`); hasVariance = true; }
         if (parseFloat(row.diffAA) < 0) { remList.push(`या नोंदीत ML ${Math.abs(parseFloat(row.diffAA)).toFixed(2)} कमी नोंदली.`); hasVariance = true; }
-        if (row.diffLwp !== 0) { remList.push(`LWP मध्ये ${row.diffLwp} ची तफावत.`); hasVariance = true; }
+        if (row.diffLwp !== 0) { remList.push(`एकूण LWP मध्ये ${Math.abs(row.diffLwp)} दिवसांची तफावत.`); hasVariance = true; }
         
         if (!hasVariance) { remList.push("नोंद तंतोतंत जुळते."); }
         if (row.isDueContinuous) { remList.unshift("[सलग रजा]"); }
@@ -671,7 +687,7 @@ function recalculateAllRecords() {
         row.systemRemark = remList.join(" ");
     });
 
-    localStorage.setItem("pmc_audit_4tables_exact_v16", JSON.stringify(auditEntries));
+    localStorage.setItem("pmc_audit_4tables_exact_v17", JSON.stringify(auditEntries));
     renderComparativeTable();
 }
 
@@ -718,7 +734,6 @@ function renderComparativeTable() {
                 </td>
             `;
         } else {
-            // 🌟 Safe Fallbacks for running totals 🌟
             pgSbF += safeParse(row.calcSbF, 0);
             pgSbG += toUnits(safeParse(row.calcSbG, 0), 11); pgSbH += toUnits(safeParse(row.calcSbH, 0), 30);
             pgSbSpentEL += safeParse(row.actualSbSpentEL, 0); pgSbSpentML += safeParse(row.actualSbSpentML, 0);
@@ -759,7 +774,7 @@ function renderComparativeTable() {
                 <td><input type="number" class="table-input table-input-sb" style="width:40px !important;" value="${row.calcSbR}" onchange="updateSbField(${idx}, 'sbCustomR', this.value)"></td>
                 <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:65px !important; font-weight:bold;" value="${row.calcSbFinalEL.toFixed(2)}" onchange="updateSbField(${idx}, 'sbCustomZ', this.value)"></td>
                 <td><input type="number" step="0.01" class="table-input table-input-sb" style="width:65px !important; font-weight:bold;" value="${row.calcSbFinalML.toFixed(2)}" onchange="updateSbField(${idx}, 'sbCustomAA', this.value)"></td>
-                <td><input type="number" class="table-input table-input-sb" style="width:35px !important;" value="${row.sbCustomLwp || 0}" onchange="updateSbField(${idx}, 'sbCustomLwp', this.value)"></td>
+                <td style="background:#fffde7; font-weight:bold; color:#d32f2f;">${row.actualSbLwp}</td>
 
                 <!-- तक्ता २ -->
                 <td><input type="checkbox" ${row.isDueContinuous ? "checked" : ""} onchange="toggleDueContinuous(${idx}, this.checked)"></td>
@@ -789,7 +804,7 @@ function renderComparativeTable() {
                 <td><strong>${row.calcDueR}</strong></td>
                 <td style="background:#e8eaf6;"><strong>${row.calcDueFinalEL.toFixed(2)}</strong></td>
                 <td style="background:#e8eaf6;"><strong>${row.calcDueFinalML.toFixed(2)}</strong></td>
-                <td style="font-weight:bold;">${row.dueQ === "बिनपगारी रजा" ? row.calcDueR : '0'}</td>
+                <td style="background:#ffebee; font-weight:bold; color:#d32f2f;">${row.actualDueLwp}</td>
 
                 <!-- तक्ता ३ -->
                 <td class="${row.diffF !== 0 ? 'diff-alert' : ''}">${row.diffF}</td>
@@ -819,8 +834,8 @@ function renderComparativeTable() {
             let brkRow = tbody.insertRow();
             brkRow.className = "page-break-row";
             
-            let sbSummary = `<strong>पान ${pageNum} एकूण ➔</strong> हजर: ${pgSbF} | जमा EL: ${fromUnits(pgSbG, 11).toFixed(2)}, ML: ${fromUnits(pgSbH, 30).toFixed(2)} | खर्ची EL: ${pgSbSpentEL}, ML: ${pgSbSpentML} | एकूण LWP: ${pgSbLwp}`;
-            let dueSummary = `<strong>पान ${pageNum} एकूण ➔</strong> हजर: ${pgDueF} | जमा EL: ${fromUnits(pgDueEarnEL, 11).toFixed(2)}, ML: ${fromUnits(pgDueEarnML, 30).toFixed(2)} | खर्ची EL: ${pgDueSpentEL}, ML: ${pgDueSpentML} | एकूण LWP: ${pgDueLwp}`;
+            let sbSummary = `<strong>पान ${pageNum} एकूण ➔</strong> हजर: ${pgSbF} | जमा EL: ${fromUnits(pgSbG, 11).toFixed(2)}, ML: ${fromUnits(pgSbH, 30).toFixed(2)} | खर्ची EL: ${pgSbSpentEL}, ML: ${pgSbSpentML} | एकूण LWP: <span style="color:#ffeb3b; font-size:12px;">${pgSbLwp}</span>`;
+            let dueSummary = `<strong>पान ${pageNum} एकूण ➔</strong> हजर: ${pgDueF} | जमा EL: ${fromUnits(pgDueEarnEL, 11).toFixed(2)}, ML: ${fromUnits(pgDueEarnML, 30).toFixed(2)} | खर्ची EL: ${pgDueSpentEL}, ML: ${pgDueSpentML} | एकूण LWP: <span style="color:#ffeb3b; font-size:12px;">${pgDueLwp}</span>`;
 
             brkRow.innerHTML = `
                 <td colspan="14" style="text-align:right; padding-right:15px; color:#fffde7;">${sbSummary}</td>
@@ -1005,7 +1020,7 @@ function exportComparativeExcel() {
     let empPf = document.getElementById('aud_emp_pf').value || "";
 
     let csv = "\uFEFFपुणे महानगरपालिका - तुलनात्मक रजा हिशोब पडताळणी ताळेबंद\nकर्मचाऱ्याचे नाव: " + empName + ", PF नंबर: " + empPf + "\n\n";
-    csv += "सेवापुस्तक सलग?,सेवापुस्तक हजर कालावधी,सेवापुस्तक F,सेवापुस्तक LWP,साठलेली EL (G),साठलेली ML (H),एकूण EL (K),एकूण ML (L),सेवापुस्तक गैरहजर कालावधी,रजा प्रकार,रजा दिवस (R),सेवापुस्तक अंतिम EL (Z),सेवापुस्तक अंतिम ML (AA),सेवापुस्तक LWP,सुधारित सलग?,सुधारित हजर कालावधी,सुधारित हजर दिवस (F),सुधारित LWP (E),सुधारित साठलेली EL (G),सुधारित साठलेली ML (H),सुधारित एकूण EL (K),सुधारित एकूण ML (L),सुधारित गैरहजर कालावधी,सुधारित रजा प्रकार,सुधारित रजा दिवस (R),सुधारित अंतिम EL (Z),सुधारित अंतिम ML (AA),रजेतील LWP,F फरक,E फरक,G फरक,H फरक,K फरक,L फरक,R फरक,चालू EL फरक (Z),चालू ML फरक (AA),LWP फरक,सिस्टीम निष्कर्ष,ऑडिटर शेरा\n";
+    csv += "सेवापुस्तक सलग?,सेवापुस्तक हजर कालावधी,सेवापुस्तक F,सेवापुस्तक LWP,साठलेली EL (G),साठलेली ML (H),एकूण EL (K),एकूण ML (L),सेवापुस्तक गैरहजर कालावधी,रजा प्रकार,रजा दिवस (R),सेवापुस्तक अंतिम EL (Z),सेवापुस्तक अंतिम ML (AA),एकूण LWP,सुधारित सलग?,सुधारित हजर कालावधी,सुधारित हजर दिवस (F),सुधारित LWP (E),सुधारित साठलेली EL (G),सुधारित साठलेली ML (H),सुधारित एकूण EL (K),सुधारित एकूण ML (L),सुधारित गैरहजर कालावधी,सुधारित रजा प्रकार,सुधारित रजा दिवस (R),सुधारित अंतिम EL (Z),सुधारित अंतिम ML (AA),एकूण LWP,F फरक,E फरक,G फरक,H फरक,K फरक,L फरक,R फरक,चालू EL फरक (Z),चालू ML फरक (AA),LWP फरक,सिस्टीम निष्कर्ष,ऑडिटर शेरा\n";
 
     auditEntries.forEach(r => {
         if (r.type === "extra") {
@@ -1022,7 +1037,7 @@ function exportComparativeExcel() {
 function clearAuditData() {
     if (confirm("सर्व तुलनात्मक ऑडिट नोंदी पुसल्या जातील. खात्री आहे का?")) {
         auditEntries = []; pageBreaks = [];
-        localStorage.removeItem("pmc_audit_4tables_exact_v16"); localStorage.removeItem("pmc_audit_pagebreaks_v16"); localStorage.removeItem("pmc_audit_closure_v16"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
+        localStorage.removeItem("pmc_audit_4tables_exact_v17"); localStorage.removeItem("pmc_audit_pagebreaks_v17"); localStorage.removeItem("pmc_audit_closure_v17"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
         document.getElementById('global_closure_check').checked = false; document.getElementById('aud_emp_name').value = ""; document.getElementById('aud_emp_pf').value = ""; document.getElementById('aud_join_date').value = "01/01/1990";
         renderComparativeTable();
     }
