@@ -181,7 +181,6 @@ let auditEntries = [];
 let pageBreaks = [];
 let isAppReady = false; 
 
-// 🌟 Safe Parse Function to strictly prevent NaN or undefined 🌟
 function safeParse(val, fallback) {
     if (val === null || val === undefined || val === "" || isNaN(parseFloat(val))) return fallback;
     return parseFloat(val);
@@ -216,26 +215,22 @@ window.onload = function() {
         document.getElementById('aud_join_date').value = "01/01/1990";
     }
 
-    let saved = localStorage.getItem("pmc_audit_4tables_exact_v18") || 
-                localStorage.getItem("pmc_audit_4tables_exact_v17") || 
-                localStorage.getItem("pmc_audit_4tables_exact_v16") || 
-                localStorage.getItem("pmc_audit_4tables_exact_v15");
+    let saved = localStorage.getItem("pmc_audit_4tables_exact_v19") || 
+                localStorage.getItem("pmc_audit_4tables_exact_v18") || 
+                localStorage.getItem("pmc_audit_4tables_exact_v17");
 
-    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v18") || 
-                      localStorage.getItem("pmc_audit_pagebreaks_v17") || 
-                      localStorage.getItem("pmc_audit_pagebreaks_v16") || 
-                      localStorage.getItem("pmc_audit_pagebreaks_v15");
+    let savedBreaks = localStorage.getItem("pmc_audit_pagebreaks_v19") || 
+                      localStorage.getItem("pmc_audit_pagebreaks_v18") || 
+                      localStorage.getItem("pmc_audit_pagebreaks_v17");
 
-    let savedClosure = localStorage.getItem("pmc_audit_closure_v18") || 
-                       localStorage.getItem("pmc_audit_closure_v17") || 
-                       localStorage.getItem("pmc_audit_closure_v16") || 
-                       localStorage.getItem("pmc_audit_closure_v15");
+    let savedClosure = localStorage.getItem("pmc_audit_closure_v19") || 
+                       localStorage.getItem("pmc_audit_closure_v18") || 
+                       localStorage.getItem("pmc_audit_closure_v17");
 
     if (saved) { try { auditEntries = JSON.parse(saved); } catch(e) { auditEntries = []; } }
     if (savedBreaks) { try { pageBreaks = JSON.parse(savedBreaks); } catch(e) { pageBreaks = []; } }
     if (savedClosure === "true") { document.getElementById('global_closure_check').checked = true; }
     
-    // 🌟 अत्यंत महत्त्वाची दुरुस्ती: पेज लोड झाल्यावर लगेच सर्व कॅल्क्युलेशन रिफ्रेश करा म्हणजे undefined निघून जाईल 🌟
     recalculateAllRecords(); 
     isAppReady = true; 
 };
@@ -273,9 +268,9 @@ function restoreBackup() {
                 let entStr = typeof content.entries === "object" ? JSON.stringify(content.entries) : content.entries;
                 let brkStr = typeof content.breaks === "object" ? JSON.stringify(content.breaks) : content.breaks;
                 
-                if(entStr) localStorage.setItem("pmc_audit_4tables_exact_v18", entStr);
-                if(brkStr) localStorage.setItem("pmc_audit_pagebreaks_v18", brkStr);
-                if(content.closure) localStorage.setItem("pmc_audit_closure_v18", content.closure);
+                if(entStr) localStorage.setItem("pmc_audit_4tables_exact_v19", entStr);
+                if(brkStr) localStorage.setItem("pmc_audit_pagebreaks_v19", brkStr);
+                if(content.closure) localStorage.setItem("pmc_audit_closure_v19", content.closure);
                 if(content.empName) localStorage.setItem("pmc_aud_emp_name", content.empName);
                 if(content.empPf) localStorage.setItem("pmc_aud_emp_pf", content.empPf);
                 if(content.joinDate) localStorage.setItem("pmc_aud_join_date", content.joinDate);
@@ -449,7 +444,7 @@ function insertPageBreakAt(idx) {
     if (!pageBreaks.includes(idx)) {
         pageBreaks.push(idx);
         pageBreaks.sort((a, b) => a - b);
-        localStorage.setItem("pmc_audit_pagebreaks_v18", JSON.stringify(pageBreaks));
+        localStorage.setItem("pmc_audit_pagebreaks_v19", JSON.stringify(pageBreaks));
         renderComparativeTable();
     } else {
         alert("या ओळीवर आधीच पेज ब्रेक दिलेला आहे!");
@@ -463,12 +458,12 @@ function addManualPageBreak() {
 
 function removeManualPageBreak(idx) {
     pageBreaks = pageBreaks.filter(b => b !== idx);
-    localStorage.setItem("pmc_audit_pagebreaks_v18", JSON.stringify(pageBreaks));
+    localStorage.setItem("pmc_audit_pagebreaks_v19", JSON.stringify(pageBreaks));
     renderComparativeTable();
 }
 
 function handleGlobalClosureToggle(isChecked) {
-    localStorage.setItem("pmc_audit_closure_v18", isChecked ? "true" : "false");
+    localStorage.setItem("pmc_audit_closure_v19", isChecked ? "true" : "false");
     recalculateAllRecords();
 }
 
@@ -641,7 +636,6 @@ function recalculateAllRecords() {
 
         curSbEL = row.calcSbFinalEL; curSbML = row.calcSbFinalML;
 
-        // 🌟 LWP Auto calculation safely applied 🌟
         row.actualSbLwp = safeParse(row.sbE, 0) + (row.sbQ === "बिनपगारी रजा" ? safeParse(row.calcSbR, 0) : 0);
         row.actualDueLwp = safeParse(row.dueE, 0) + safeParse(row.actualAutoLwp, 0);
 
@@ -678,7 +672,7 @@ function recalculateAllRecords() {
         row.systemRemark = remList.join(" ");
     });
 
-    localStorage.setItem("pmc_audit_4tables_exact_v18", JSON.stringify(auditEntries));
+    localStorage.setItem("pmc_audit_4tables_exact_v19", JSON.stringify(auditEntries));
     renderComparativeTable();
 }
 
@@ -860,6 +854,9 @@ function renderReports() {
         return;
     }
 
+    let gSbF = 0, gSbEarnEL = 0, gSbEarnML = 0, gSbSpentEL = 0, gSbSpentML = 0, gSbLwp = 0;
+    let gDueF = 0, gDueEarnEL = 0, gDueEarnML = 0, gDueSpentEL = 0, gDueSpentML = 0, gDueSpentSpl = 0, gDueLwp = 0;
+
     let pgSbF = 0, pgSbG = 0, pgSbH = 0, pgSbSpentEL = 0, pgSbSpentML = 0, pgSbLwp = 0;
     let pgSbOpenEL = 0.00, pgSbOpenML = 0.00;
     
@@ -884,6 +881,8 @@ function renderReports() {
         if (row.type === "extra") {
             pgSbG += toUnits(row.extraDays, 11);
             pgDueEarnEL += toUnits(row.extraDays, 11);
+            gSbEarnEL += toUnits(row.extraDays, 11);
+            gDueEarnEL += toUnits(row.extraDays, 11);
         } else {
             pgSbF += safeParse(row.calcSbF, 0);
             pgSbG += toUnits(safeParse(row.calcSbG, 0), 11); pgSbH += toUnits(safeParse(row.calcSbH, 0), 30);
@@ -894,6 +893,16 @@ function renderReports() {
             pgDueEarnEL += toUnits(safeParse(row.calcDueG, 0), 11); pgDueEarnML += toUnits(safeParse(row.calcDueH, 0), 30);
             pgDueSpentEL += safeParse(row.actualSpentEL, 0); pgDueSpentML += safeParse(row.actualSpentML, 0);
             pgDueSpentSpl += safeParse(row.actualSpentSpl, 0); pgDueLwp += safeParse(row.actualDueLwp, 0);
+
+            gSbF += safeParse(row.calcSbF, 0);
+            gSbEarnEL += toUnits(safeParse(row.calcSbG, 0), 11); gSbEarnML += toUnits(safeParse(row.calcSbH, 0), 30);
+            gSbSpentEL += safeParse(row.actualSbSpentEL, 0); gSbSpentML += safeParse(row.actualSbSpentML, 0);
+            gSbLwp += safeParse(row.actualSbLwp, 0);
+
+            gDueF += safeParse(row.calcDueF, 0);
+            gDueEarnEL += toUnits(safeParse(row.calcDueG, 0), 11); gDueEarnML += toUnits(safeParse(row.calcDueH, 0), 30);
+            gDueSpentEL += safeParse(row.actualSpentEL, 0); gDueSpentML += safeParse(row.actualSpentML, 0);
+            gDueSpentSpl += safeParse(row.actualSpentSpl, 0); gDueLwp += safeParse(row.actualDueLwp, 0);
         }
 
         if (pageBreaks.includes(idx) || idx === auditEntries.length - 1) {
@@ -937,6 +946,46 @@ function renderReports() {
             pgDueF = 0; pgDueEarnEL = 0; pgDueEarnML = 0; pgDueSpentEL = 0; pgDueSpentML = 0; pgDueSpentSpl = 0; pgDueLwp = 0;
         }
     });
+
+    // 🌟 4A & 4B Grand Total Rows 🌟
+    let finalSbEL = auditEntries.length > 0 ? safeParse(auditEntries[auditEntries.length-1].calcSbFinalEL, 0) : 0;
+    let finalSbML = auditEntries.length > 0 ? safeParse(auditEntries[auditEntries.length-1].calcSbFinalML, 0) : 0;
+
+    let trSbG = sbTbody.insertRow();
+    trSbG.style.backgroundColor = "#ffe0b2";
+    trSbG.style.fontWeight = "bold";
+    trSbG.innerHTML = `
+        <td>ग्रँड एकूण (Grand Total)</td>
+        <td>---</td><td>---</td>
+        <td>${gSbF}</td>
+        <td>${fromUnits(gSbEarnEL, 11).toFixed(2)}</td>
+        <td>${fromUnits(gSbEarnML, 30).toFixed(2)}</td>
+        <td style="color:#e65100;">${gSbSpentEL}</td>
+        <td style="color:#e65100;">${gSbSpentML}</td>
+        <td style="color:#d32f2f;">${gSbLwp}</td>
+        <td style="color:#bf360c;">${finalSbEL.toFixed(2)}</td>
+        <td style="color:#bf360c;">${finalSbML.toFixed(2)}</td>
+    `;
+
+    let finalDueEL = auditEntries.length > 0 ? safeParse(auditEntries[auditEntries.length-1].calcDueFinalEL, 0) : 0;
+    let finalDueML = auditEntries.length > 0 ? safeParse(auditEntries[auditEntries.length-1].calcDueFinalML, 0) : 0;
+
+    let trDueG = dueTbody.insertRow();
+    trDueG.style.backgroundColor = "#c5cae9";
+    trDueG.style.fontWeight = "bold";
+    trDueG.innerHTML = `
+        <td>ग्रँड एकूण (Grand Total)</td>
+        <td>---</td><td>---</td>
+        <td>${gDueF}</td>
+        <td>${fromUnits(gDueEarnEL, 11).toFixed(2)}</td>
+        <td>${fromUnits(gDueEarnML, 30).toFixed(2)}</td>
+        <td style="color:#e65100;">${gDueSpentEL}</td>
+        <td style="color:#e65100;">${gDueSpentML}</td>
+        <td style="color:#e65100;">${gDueSpentSpl}</td>
+        <td style="color:#d32f2f;">${gDueLwp}</td>
+        <td style="color:#002171;">${finalDueEL.toFixed(2)}</td>
+        <td style="color:#002171;">${finalDueML.toFixed(2)}</td>
+    `;
 
     let leaveMap = {}; let lwpMap = {};
     auditEntries.forEach((row) => {
@@ -1028,7 +1077,7 @@ function exportComparativeExcel() {
 function clearAuditData() {
     if (confirm("सर्व तुलनात्मक ऑडिट नोंदी पुसल्या जातील. खात्री आहे का?")) {
         auditEntries = []; pageBreaks = [];
-        localStorage.removeItem("pmc_audit_4tables_exact_v18"); localStorage.removeItem("pmc_audit_pagebreaks_v18"); localStorage.removeItem("pmc_audit_closure_v18"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
+        localStorage.removeItem("pmc_audit_4tables_exact_v19"); localStorage.removeItem("pmc_audit_pagebreaks_v19"); localStorage.removeItem("pmc_audit_closure_v19"); localStorage.removeItem("pmc_aud_emp_name"); localStorage.removeItem("pmc_aud_emp_pf"); localStorage.removeItem("pmc_aud_join_date");
         document.getElementById('global_closure_check').checked = false; document.getElementById('aud_emp_name').value = ""; document.getElementById('aud_emp_pf').value = ""; document.getElementById('aud_join_date').value = "01/01/1990";
         renderComparativeTable();
     }
